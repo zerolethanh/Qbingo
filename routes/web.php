@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/cuong', function() {
+Route::get('/cuong', function () {
     return null;
 });
+
+Route::group(['prefix' => 'upload'], function () {
+    Route::get('/', 'UploadController@index');
+    Route::post('/', 'UploadController@upload');
+});
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
