@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'happy',
         'passwords' => 'users',
     ],
 
@@ -39,6 +39,10 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+        'happy' => [
+            'driver' => 'session',
+            'provider' => 'happies',
         ],
 
         'api' => [
@@ -69,6 +73,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
+        'happies' => [
+            'driver' => 'eloquent',
+            'model' => App\Happy::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -94,6 +102,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'happies' => [
+            'provider' => 'happies',
             'table' => 'password_resets',
             'expire' => 60,
         ],

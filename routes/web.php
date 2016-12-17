@@ -11,18 +11,47 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+//Route::get('/cuong', function () {
+//    return null;
+//});
+
+
+Route::get('/', 'HappyController@index');
+Route::post('/', 'HappyController@login');
+Route::get('logout', 'HappyController@logout');
+
+Route::group(['prefix' => 'bingo'], function () {
+    Route::get('/', 'BingoController@index');
+    Route::get('/upload-list', 'BingoController@uploadList');
+    Route::get('/quiz', 'BingoController@quiz');
+    Route::get('/start', 'BingoController@start');
 });
 
-Route::get('/cuong', function () {
-    return null;
-});
+//Route::resource('/', 'HappyController');
 
 Route::group(['prefix' => 'upload'], function () {
     Route::get('/', 'UploadController@index');
     Route::post('/', 'UploadController@upload');
 });
+Route::get('getphoto/upload/{photoname}', 'PhotoController@getphoto');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/', 'AdminController@index');
+    Route::post('make-random', 'AdminController@makeRandom');
+    Route::post('/', 'AdminController@makeHappier');
+
+});
+
+Route::get('/invite', 'InviteController@invite');
+//Route::resource('/admin', 'AdminController');
+
+//Auth::routes();
+
+//Route::get('/home', 'HomeController@index');

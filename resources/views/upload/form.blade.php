@@ -34,7 +34,7 @@
                             <label for="user_name" class="col-md-4 control-label">名前：</label>
                             <div class="col-md-6">
                                 <input id="user_name" type="text" class="form-control" name="user_name"
-                                       value="{{old('user_name')}}"
+                                       value="{{ Faker\Provider\ja_JP\Person::firstKanaName(). Faker\Provider\ja_JP\Person::lastKanaName() }}"
                                        required
                                        autofocus>
                             </div>
@@ -58,14 +58,14 @@
                                 <textarea class="form-control" id="user_message" name="user_message"
                                           placeholder="Message"
                                           required
-                                          rows="5">{{old('user_message')}}</textarea>
+                                          rows="5">{{ \App\Shiawase::gift() }}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="user_photo" class="col-md-4 control-label">自撮り</label>
                             <div class="col-md-6">
-                                <input type="file" id="user_photo" name="user_photo">
+                                <input type="file" id="user_photo" name="user_photo" accept="image/*" required>
                             </div>
                         </div>
 
