@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function makeRandom(Request $request)
     {
         $happy_id = date('YmdHis') . uniqid();
-        $password = bcrypt(uniqid());
+        $password = bcrypt($request->_token);
         $happy_code = bcrypt($happy_id);
         $happy_uuid = \Faker\Provider\Uuid::uuid();
 
