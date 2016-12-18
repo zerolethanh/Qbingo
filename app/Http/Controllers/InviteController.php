@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Happy;
+use App\Mail\InviteMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class InviteController extends Controller
 {
@@ -26,12 +28,14 @@ class InviteController extends Controller
 
     public function send_url()
     {
-        $this->validate(request(),
-            ['email' => 'required|email']
-        );
+//        $this->validate(request(),
+//            ['email' => 'required|email']
+//        );
 
         $url = (new BingoController())->getUrl();
 
-        return $url;
+        Mail::to(request('email'))->send(new InviteMail($url));
+
+//        return $url;
     }
 }

@@ -18,13 +18,20 @@
                 <div class="panel-heading">アップロード</div>
                 <div class="panel-body">
 
-                    <input type="text" name="url" value="{{ $url }}" class="form-control"/>
-                    {{--<input type="text" name="qrcode" value="qrcode" class="form-control">--}}
+                    <div class="input-group">
+                        <input type="text" id="invite_url" name="url" value="{{ $url }}" class="form-control"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning" onclick="invite_link_open(event)">
+                                招待リンクを開く
+                            </button>
+                        </span>
+                    </div>
                     <img src="/getqr/{{ \Illuminate\Support\Facades\Auth::user()->happy_uuid }}.png">
 
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMailModal">
                         招待リンクを送る
                     </button>
+
                 </div>
             </div>
         </div>
@@ -112,7 +119,7 @@
     function invite_send_url(e) {
         e.preventDefault();
         var url = '/invite/send_url/?' +
-            'email=' + document.getElementById('invite_send_url_email').value;
+            'email=' + encodeURIComponent(document.getElementById('invite_send_url_email').value);
 
         $.ajax({
             url: url,
@@ -120,6 +127,13 @@
                 console.log(data)
             }
         })
+    }
+
+    function invite_link_open(e) {
+        e.preventDefault();
+        var url = document.getElementById('invite_url').value;
+        var win = window.open(url, '_blank');
+//        win.focus();
     }
 </script>
 </body>
