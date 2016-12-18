@@ -49,7 +49,12 @@ Route::group(['prefix' => 'admin'], function () {
 
 });
 
-Route::get('/invite', 'InviteController@invite');
+Route::group(['prefix' => 'invite'], function () {
+    Route::get('/', 'InviteController@invite');
+    Route::get('/send_url', 'InviteController@send_url');
+});
+
+Route::get('getqr/{filename}', 'QRController@getQRImg');
 //Route::resource('/admin', 'AdminController');
 
 //Auth::routes();

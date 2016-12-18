@@ -24,4 +24,5 @@ class PhotoController extends Controller
 
         return 'photo not exists in storage/app/upload';
     }
+
 }

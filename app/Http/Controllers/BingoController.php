@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPQRCode\Constants;
 
 class BingoController extends Controller
 {
@@ -23,6 +24,7 @@ class BingoController extends Controller
     {
         $uploads = Auth::user()->uploads->toArray();
         $url = $this->getUrl();
+        \PHPQRCode\QRcode::png($url, storage_path('app/qr/' . Auth::user()->happy_uuid . '.png'), Constants::QR_ECLEVEL_L, 4, 2);
         return view('bingo.uploadList')->with(compact('uploads', 'url'));
     }
 
@@ -32,7 +34,7 @@ class BingoController extends Controller
         $happy_code = Auth::user()->happy_code;
 
         $query = http_build_query(get_defined_vars());
-        $url = url('/invite?' . $query);
+        $url = url('/invite?' . $query);//InviteControllerへ
         return $url;
     }
 

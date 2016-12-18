@@ -11,8 +11,47 @@
 <body>
 
 <div class="container">
-    <input type="text" name="url" value="{{ $url }}" class="form-control"/>
-    <input type="text" name="qrcode" value="qrcode" class="form-control">
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">アップロード</div>
+                <div class="panel-body">
+
+                    <input type="text" name="url" value="{{ $url }}" class="form-control"/>
+                    {{--<input type="text" name="qrcode" value="qrcode" class="form-control">--}}
+                    <img src="/getqr/{{ \Illuminate\Support\Facades\Auth::user()->happy_uuid }}.png">
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMailModal">
+                        招待リンクを送る
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- モーダル・ダイアログ -->
+    <div class="modal fade" id="sendMailModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                    <h4 class="modal-title">招待リンク送信</h4>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="invite_send_url(event);return false">
+                        <div class="input-group">
+                            <input type="email" id="invite_send_url_email" required placeholder="EMAIL"
+                                   class="form-control">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary">送信</button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <table class="table table-bordered">
         <thead>
@@ -67,5 +106,21 @@
     </table>
 
 </div>
+
+<script>
+
+    function invite_send_url(e) {
+        e.preventDefault();
+        var url = '/invite/send_url/?' +
+            'email=' + document.getElementById('invite_send_url_email').value;
+
+        $.ajax({
+            url: url,
+            success: function (data) {
+                console.log(data)
+            }
+        })
+    }
+</script>
 </body>
 </html>

@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>アップロード</title>
     @include('bootstrap.sources')
 </head>
 <body>
@@ -30,6 +30,7 @@
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
 
+                        <input type="hidden" value="{{$happy->happy_uuid}}" name="happy_uuid">
                         <div class="form-group">
                             <label for="user_name" class="col-md-4 control-label">名前：</label>
                             <div class="col-md-6">
