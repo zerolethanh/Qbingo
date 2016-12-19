@@ -31,6 +31,9 @@
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMailModal">
                         招待リンクを送る
                     </button>
+                    <button type="button" class="btn btn-success" onclick="location.href='/bingo/quiz'">
+                        クイズ作成画面へ
+                    </button>
 
                 </div>
             </div>

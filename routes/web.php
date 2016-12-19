@@ -60,3 +60,7 @@ Route::get('getqr/{filename}', 'QRController@getQRImg');
 //Auth::routes();
 
 //Route::get('/home', 'HomeController@index');
+
+Route::group(['prefix' => 'quiz'], function () {
+    Route::post('/', 'QuizController@save');
+});
