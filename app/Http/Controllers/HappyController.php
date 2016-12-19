@@ -38,15 +38,14 @@ class HappyController extends Controller
             $credentials['password'] = $request->password;
             $login_succ = Auth::attempt($credentials, true, true);//remember & login
         }
-        if ($login_succ) {
-            $user = Auth::user();
-            $uploads = $user->uploads()->get();
+
+        if ($login_succ === true) {
+            return view('bingo.control');
         }
-//        return compact('login_succ', 'user', 'uploads');
 
-
-
-        return view('bingo.control');
+        return view('happy.index')->withErrors([
+            ['msg' => 'IDまたはPASSが間違っています。']
+        ]);
     }
 
     public function logout()

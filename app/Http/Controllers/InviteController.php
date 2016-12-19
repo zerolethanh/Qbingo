@@ -15,7 +15,7 @@ class InviteController extends Controller
     {
         $this->validate($request, [
             'happy_id' => 'required',
-            'happy_code' => 'required|exists:happies'
+            'happy_code' => 'required'
         ]);
 
         $happy = Happy::where(request()->only('happy_id', 'happy_code'))->first();

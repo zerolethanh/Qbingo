@@ -33,9 +33,10 @@ class AppServiceProvider extends ServiceProvider
 
     function logRequest()
     {
+        $method = request()->method();
         $url = request()->url();
         $request_all = request()->all();
-        Log::info(compact('url', 'request_all'));
+        Log::info(get_defined_vars());
     }
 
     /**
