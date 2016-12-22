@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>クイズ作成</title>
     @include('bootstrap.sources')
+    {{--<script src="https://unpkg.com/vue/dist/vue.js"></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
 </head>
 <body>
 
@@ -31,53 +33,85 @@
         <tbody>
 
         <?php
-        $uploads = \Illuminate\Support\Facades\Auth::user()->uploads->all();
+
         $numOfQuiz = 40;
 
-        $forWhoSelection = '<select name="upload_id"><option value=""></option>';
-        foreach ($uploads as $idx => $upload) {
-            $forWhoSelection .= "<option value='{$upload->id}'>{$upload->id} 番</option>";
+        $uploads = request()->user()->uploads;
+        $upload_id_list = $uploads->pluck('id');
+
+        $upload_id_options = '';
+
+        foreach ($uploads as $upload) {
+            $upload_id_options .= "<option value='{$upload->id}'>{$upload->id} 番</option>";
         }
-        $forWhoSelection .= "</select>";
 
         ?>
 
         @for($row = 1 ; $row <= $numOfQuiz ; $row++)
+            <?php
+
+            $q = $quizzes->first(function ($q) use ($row) {
+                return $q->quiz_number == $row;
+            });
+            $quiz_number = $q->quiz_number ?? null;
+            $quiz_method = $q->quiz_method ?? 's';
+            $upload_id = $q->upload_id ?? null;
+            $quiz_text = $q->quiz_text ?? null;
+
+            ?>
             <form action="/quiz" method="post" id="form_{{$row}}">
                 {{ csrf_field() }}
-                <tr>
-                    {{--@if (count($errors) > 0)--}}
-                        {{--<div class="alert alert-danger">--}}
-                            {{--<ul>--}}
-                                {{--@foreach ($errors->all() as $error)--}}
-                                    {{--<li>{{ $error }}</li>--}}
-                                {{--@endforeach--}}
-                            {{--</ul>--}}
-                        {{--</div>--}}
-                    {{--@endif--}}
-                    {{--問目--}}
-                    <td width="70px">{{ $row }} 問目</td>
-                    <input type="hidden" value="{{$row}}" name="quiz_number" required/>
+                <input type="hidden" name="quiz_number" value="{{$row}}" required/>
 
-                    {{--クイズ選択方法--}}
-                    <?php $method = "quiz_method" ?>
+                <tr id="row_{{$row}}">
+                    {{--QUIZ number--}}
+                    <td width="70px">{{ $row }} 問目</td>
+
+                    {{--QUIZ methods--}}
+
                     <td width="150px">
                         <div class="radio">
-                            <label><input type="radio" name="quiz_method" value="s" checked>シャッフル</label>
+                            <label><input type="radio" name="quiz_method"
+                                          value="s" {{ $quiz_method =='s' ? 'checked':'' }}>シャッフル</label>
                         </div>
                         <div class="radio">
-                            <label><input type="radio" name="quiz_method" value="a">指定</label>
+                            <label><input type="radio" name="quiz_method"
+                                          value="a" {{ $quiz_method == 'a' ? 'checked':'' }}>指定</label>
                         </div>
-                        <div>{!! $forWhoSelection !!}</div>
+
+                        <div>
+                            <select name="upload_id">
+                                <option value=""></option>
+                                <?php
+                                foreach ($upload_id_list as $id) {
+                                    $selected = '';
+                                    if ($id == $upload_id) {
+                                        $selected = 'selected';
+                                    }
+                                    echo "<option value='{$id}' {$selected}>{$id} 番</option>";
+                                }
+                                ?>
+
+                            </select>
+                            {{--{!! $forWhoSelection !!}--}}
+                        </div>
                     </td>
 
-                    {{-- QUIZ textfields--}}
+                    {{-- QUIZ text--}}
                     <td>
-                        <textarea class="form-control" rows="4" name="quiz_text" required></textarea>
+                        <textarea class="form-control" rows="4" name="quiz_text"
+                                  required>{{  $quiz_text }}</textarea>
                     </td>
+
+                    {{--SAVE buttons--}}
                     <td>
-                        <button>SAVE</button>
+                        <div>
+                            <button class="btn btn-primary btn-sm" onclick="save(event, this.form)">SAVE</button>
+                        </div>
+                        <br>
+                        <button class="btn btn-default btn-sm" onclick="saveAll(event, this.form)">SAVE ALL</button>
                     </td>
+
                 </tr>
             </form>
         @endfor
@@ -89,6 +123,72 @@
 
 <script>
 
+
+    function save(event, form) {
+
+        event.preventDefault();
+
+        if (!isFormDataValid(form)) {
+            return;
+        }
+        var form_data = $(form).serializeArray();
+
+        $.post(form.action, form_data, function (res) {
+            console.log(res);
+            $.notify('保存しました', 'success')
+        }).fail(function (res, status) {
+            console.log(res)
+        })
+    }
+
+    function saveAll(event) {
+
+        event.preventDefault()
+
+        var all_forms = document.getElementsByTagName('form');
+
+        for (var i = 0; i < all_forms.length; i++) {
+
+            var form = all_forms[i];
+
+            if (isFormDataValid(form, false)) {
+                save(event, form)
+            }
+        }
+    }
+
+    function isFormDataValid(form, isNotify) {
+        if (isNotify === undefined) isNotify = true;
+        try {
+            var form_data = new FormData(form);
+
+            if (!form_data.get('quiz_text')) {
+                if (isNotify) {
+                    $.notify('クイズ内容を入力してください', 'error');
+                }
+                return false;
+            }
+            if (form_data.get('quiz_text') && form_data.get('quiz_text').replace(/\s/g, '') == '') {
+                if (isNotify) {
+                    $.notify('クイズ内容を入力してください', 'error')
+                }
+                return false;
+            }
+
+            if (form_data.get('quiz_method') == 'a' && form_data.get('upload_id') == '') {
+                if (isNotify) {
+                    $.notify('指定番号を選択してください', 'error')
+                }
+                return false
+            }
+
+        } catch (e) {
+            console.log(e)
+            return false
+
+        }
+        return true
+    }
 </script>
 </body>
 </html>

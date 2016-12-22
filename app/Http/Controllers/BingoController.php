@@ -40,7 +40,9 @@ class BingoController extends Controller
 
     public function quiz()
     {
-        return view('bingo.quiz');
+        $quizzes = request()->user()->quizzes;
+
+        return view('bingo.quiz')->with(compact('quizzes'));
     }
 
     public function start()

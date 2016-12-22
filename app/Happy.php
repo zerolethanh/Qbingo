@@ -30,4 +30,10 @@ class Happy extends Authenticatable
         return $this->hasMany(Upload::class, 'happy_uuid', 'happy_uuid');
 
     }
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class, 'happy_uuid', 'happy_uuid');
+    }
+
 }
