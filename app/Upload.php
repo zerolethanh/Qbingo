@@ -27,4 +27,11 @@ class Upload extends Model
         return implode('.', [date('YmdHis'), uniqid(), $photo->getClientOriginalName()]);
     }
 
+//    public function scopeQuizzes($q, $happy_uuid)
+//    {
+//        return Quiz::where([
+//            'happy_uuid' => $happy_uuid,
+//        ]);
+//    }
+
 }

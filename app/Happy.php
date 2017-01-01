@@ -6,6 +6,7 @@ use App\Model\Helper;
 //use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class Happy extends Authenticatable
 {
@@ -34,6 +35,17 @@ class Happy extends Authenticatable
     public function quizzes()
     {
         return $this->hasMany(Quiz::class, 'happy_uuid', 'happy_uuid');
+    }
+
+    public function starts()
+    {
+
+        return $this->hasMany(Start::class, 'happy_uuid', 'happy_uuid');
+    }
+
+    public function scopeQuizNumber($q, $quiz_number)
+    {
+        return Auth::user()->quizzes()->where('quiz_number', $quiz_number);
     }
 
 }

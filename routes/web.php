@@ -27,7 +27,7 @@ Route::get('logout', 'HappyController@logout');
 Route::group(['prefix' => 'bingo'], function () {
     Route::get('/', 'BingoController@index');
     Route::get('/upload-list', 'BingoController@uploadList');
-    Route::get('/quiz', 'BingoController@quiz');
+    Route::get('/quizzes', 'BingoController@quizzes');
     Route::get('/start', 'BingoController@start');
 });
 
@@ -63,4 +63,17 @@ Route::get('getqr/{filename}', 'QRController@getQRImg');
 
 Route::group(['prefix' => 'quiz'], function () {
     Route::post('/', 'QuizController@save');
+});
+
+
+Route::group(['prefix' => 'start'], function () {
+    Route::post('face', 'StartController@face');
+    Route::post('quiz', 'StartController@quiz');
+    Route::post('restart_game', 'StartController@restart_game');
+    Route::post('hit', 'StartController@hit');
+    Route::post('undo', 'StartController@undo');
+    Route::post('face_shuffle', 'StartController@face_shuffle');
+    Route::post('hit_details', 'StartController@hit_details');
+
+
 });

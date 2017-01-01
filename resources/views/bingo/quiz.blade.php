@@ -143,7 +143,7 @@
 
     function saveAll(event) {
 
-        event.preventDefault()
+        event.preventDefault();
 
         var all_forms = document.getElementsByTagName('form');
 
@@ -183,7 +183,7 @@
             }
 
         } catch (e) {
-            console.log(e)
+            console.log(e);
             return false
 
         }
