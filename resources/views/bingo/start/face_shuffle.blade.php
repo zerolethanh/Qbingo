@@ -1,5 +1,5 @@
 <button onclick="face_shuffle()">
-    顔シャルフボタン
+    顔シャッフル
 </button>
 
 <script>

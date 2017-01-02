@@ -19,8 +19,7 @@ class UploadController extends Controller
 
     public function index()
     {
-//        return view('upload.form');
-        return 'Must be invited';
+        return '招待リンクからアクセスしてください。';
     }
 
     public function upload()
@@ -36,9 +35,20 @@ class UploadController extends Controller
         $data = $this->request->only(Upload::getColumnListing());
 
         $user_photo = Upload::savePhoto('user_photo');
+
 //        $happy_uuid = Uuid::uuid();//must match with happies.happy_uuid
-        return Upload::create(
+        $upload = Upload::create(
             array_merge($data, compact('user_photo'))
         );
+
+        if ($upload) {
+            return view('upload.form.upload_success');
+        }
     }
+
+    public function uploadConfirm()
+    {
+
+    }
+
 }

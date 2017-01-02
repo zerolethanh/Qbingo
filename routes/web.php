@@ -34,7 +34,7 @@ Route::group(['prefix' => 'bingo'], function () {
 //Route::resource('/', 'HappyController');
 
 Route::group(['prefix' => 'upload'], function () {
-    Route::get('/', 'UploadController@index');
+//    Route::get('/', 'UploadController@index');
     Route::post('/', 'UploadController@upload');
 });
 Route::get('getphoto/upload/{photoname}', 'PhotoController@getphoto');
@@ -74,6 +74,4 @@ Route::group(['prefix' => 'start'], function () {
     Route::post('undo', 'StartController@undo');
     Route::post('face_shuffle', 'StartController@face_shuffle');
     Route::post('hit_details', 'StartController@hit_details');
-
-
 });

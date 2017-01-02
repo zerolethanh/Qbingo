@@ -23,19 +23,15 @@ class InviteController extends Controller
         if ($happy) {
             return view('upload.form')->with(compact('happy'));
         }
-        return 'invalid invitation';
+
+        return '招待リンクが不正です。もう一度ご確認ください。';
     }
 
-    public function send_url()
-    {
-//        $this->validate(request(),
-//            ['email' => 'required|email']
-//        );
-
-        $url = (new BingoController())->getUrl();
-
-        Mail::to(request('email'))->send(new InviteMail($url));
-
-//        return $url;
-    }
+//    public function send_url()
+//    {
+//        $url = (new BingoController())->getUrl();
+//
+//        Mail::to(request('email'))->send(new InviteMail($url));
+//
+//    }
 }
