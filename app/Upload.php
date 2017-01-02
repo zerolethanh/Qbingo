@@ -44,6 +44,8 @@ class Upload extends Model
             $user_photo = static::UPLOAD_DIR . '/' . self::getPhotoSaveName();
             $done = imagejpeg($photo, storage_path('app/' . $user_photo));
             if ($done) {
+                imagedestroy($source);
+                imagedestroy($photo);
                 return $user_photo;
             }
         } else {
