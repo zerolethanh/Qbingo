@@ -1,4 +1,4 @@
-<video id="myVideo" width="400" height="300" autoplay="1" ></video>
+<video id="myVideo" width="400" height="300" autoplay="0" ></video>
 
 <script type="text/javascript">
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || window.navigator.mozGetUserMedia;

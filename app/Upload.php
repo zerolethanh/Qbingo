@@ -28,7 +28,7 @@ class Upload extends Model
         static::$upload_filename = $photo->getClientOriginalName();
 
         $exif = @exif_read_data($photo->getRealPath());
-        if (!empty($exif['Orientation'])) {
+        if (!empty($exif['Orientation']) && in_array($exif['Orientation'], [8, 3, 6])) {
             $source = imagecreatefromstring(file_get_contents($photo->getRealPath()));
             switch ($exif['Orientation']) {
                 case 8:

@@ -15,17 +15,27 @@
 </head>
 <body>
 
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <span class="text-center">Q&Bingo</span></a>
+        </div>
+    </div>
+</nav>
+
 
 <div class="container">
-    BingoStart
-
+    {{-- row 1--}}
     <div class="row">
 
         {{--left panel--}}
         <div class="col-sm-4 col-sm-offset-1">
 
             <p class="pull-right">
-                <img src="{{ isset($face) ? ('/getphoto/'. $face->user_photo) : '' }}" id="face_img" alt="フェイススロット"
+                <img src="{{ isset($face) ? ('/getphoto/'. $face->user_photo) : '' }}"
+                     id="face_img"
+                     alt="フェイススロット"
                      width="150px"
                      class="img-responsive">
             </p>
@@ -36,6 +46,7 @@
 
             <p class="pull-left">
                 <textarea name="quiz_text" id="quiz_text" cols="30"
+                          class="form-control"
                           rows="10">{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
             </p>
         </div>
@@ -64,22 +75,24 @@
         </div>
     </div>
 
+    {{-- row 2 --}}
     <div class="row">
-        {{-- left panel, right align--}}
+        {{-- left panel, right align, hit numbers panel --}}
+        @include('bingo.start.hit_details_modal')
         <div class="col-sm-4 col-sm-offset-1 text-right">
             <div id="hit_numbers">
                 @include('bingo.start.hit_numbers')
             </div>
         </div>
 
-        {{--right 1 panel , left align--}}
+        {{--right 1 panel , left align, camera panel--}}
         <div class="col-sm-4">
             <div class="col-sm-4">
-                外付けカメラ
+                {{--外付けカメラ--}}
                 {{--@include('bingo.start.camera')--}}
             </div>
         </div>
-        {{-- no hit bingo numbers, sidebar panel --}}
+        {{-- no hit bingo numbers, sidebar panel, bingo numbers panel --}}
         <div class="col-sm-3">
             <table class="table">
                 <tr>
@@ -93,8 +106,9 @@
         </div>
     </div>
 
+    @include('bingo.start.views_size')
 
-    @include('bingo.start.hit_details_modal')
+
 </div>
 
 </body>

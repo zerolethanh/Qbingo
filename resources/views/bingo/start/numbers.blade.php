@@ -1,4 +1,4 @@
-<label for="">Numbers:</label><br>
+{{--<label for="">Numbers:</label><br>--}}
 <?php
 
 $no_hits->each(function ($n) {
@@ -20,9 +20,10 @@ $no_hits->each(function ($n) {
                 return;
             }
             var hit_elements = ['<label for="">Hit Numbers:</label><br>'];
-            var no_hit_elements = ['<label for="">Numbers:</label><br>'];
+            var no_hit_elements = [/*'<label for="">Numbers:</label><br>'*/];
             res.hits.forEach(function (hit) {
                 hit_elements.push("<button  data-toggle='modal'" +
+                    "class='btn btn-default btn-lg'" +
                     " data-target='#hit_details'" +
                     " onclick='hit_details(" +
                     hit +
