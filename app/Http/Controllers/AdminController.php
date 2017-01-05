@@ -22,14 +22,16 @@ class AdminController extends Controller
     public function makeRandom(Request $request)
     {
         $happy_id = date('YmdHis') . uniqid();
-        $password = bcrypt($request->_token);
+        $password = bcrypt(csrf_token());
         $happy_code = bcrypt($happy_id);
         $happy_uuid = \Faker\Provider\Uuid::uuid();
 
         $is_random = true;
 
-
-        return Happy::create(compact('happy_id', 'password', 'is_random', 'happy_code', 'happy_uuid'));
+        $new_happy = compact('happy_id', 'password', 'is_random', 'happy_code', 'happy_uuid');
+//dd($new_happy);
+        $happy = Happy::create($new_happy);
+        return view('admin.make_random_success')->with($new_happy);
     }
 
     public function makeHappier(Request $request)
@@ -43,7 +45,13 @@ class AdminController extends Controller
         $happy_code = bcrypt($happy_id);
         $happy_uuid = \Faker\Provider\Uuid::uuid();
         $is_random = false;
-        return Happy::create(compact('happy_id', 'password', 'is_random', 'happy_code', 'happy_uuid'));
+
+        $new_happy = compact('happy_id', 'password', 'is_random', 'happy_code', 'happy_uuid');
+        Happy::create($new_happy);
+        return view('admin.make_success')->with([
+            'happy_id' => $happy_id,
+            'password' => request('password')
+        ]);
 
     }
 
