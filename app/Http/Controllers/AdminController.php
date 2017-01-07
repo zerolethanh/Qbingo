@@ -29,7 +29,7 @@ class AdminController extends Controller
         $is_random = true;
 
         $new_happy = compact('happy_id', 'password', 'is_random', 'happy_code', 'happy_uuid');
-//dd($new_happy);
+
         $happy = Happy::create($new_happy);
         return view('admin.make_random_success')->with($new_happy);
     }
