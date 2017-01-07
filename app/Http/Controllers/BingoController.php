@@ -24,8 +24,18 @@ class BingoController extends Controller
     {
         $uploads = Auth::user()->uploads()->latest()->get()->toArray();
         $url = $this->getUrl();
-        \PHPQRCode\QRcode::png($url, storage_path('app/qr/' . Auth::user()->happy_uuid . '.png'), Constants::QR_ECLEVEL_L, 4, 2);
+        \PHPQRCode\QRcode::png($url, $this->QRSavePath(), Constants::QR_ECLEVEL_L, 4, 2);
         return view('bingo.uploadList')->with(compact('uploads', 'url'));
+    }
+
+    public function QRSavePath()
+    {
+        $dir = storage_path('app/qr/');
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        return $dir . Auth::user()->happy_uuid . '.png';
+
     }
 
     public function getUrl()
