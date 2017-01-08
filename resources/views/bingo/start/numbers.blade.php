@@ -22,12 +22,12 @@ $no_hits->each(function ($n) {
             var hit_elements = ['<label for="">Hit Numbers:</label><br>'];
             var no_hit_elements = [/*'<label for="">Numbers:</label><br>'*/];
             res.hits.forEach(function (hit) {
-                hit_elements.push("<button  data-toggle='modal'" +
-                    "class='btn btn-default btn-lg'" +
+                hit_elements.push("<button  data-toggle='modal' style='font-weight: bold;font-size: 50px'" +
+                    " class='btn btn-default btn-lg'" +
                     " data-target='#hit_details'" +
                     " onclick='hit_details(" +
-                    hit +
-                    ")'>" + hit + "</button>");
+                    hit
+                    + ")'>" + hit + "</button>");
             });
             res.no_hits.forEach(function (no_hit) {
 //                var hit_number_function = new Function('hit_number(' + no_hit + ')');
@@ -37,6 +37,7 @@ $no_hits->each(function ($n) {
             document.getElementById('hit_numbers').innerHTML = hit_elements.join('');
             document.getElementById('numbers').innerHTML = no_hit_elements.join('');
 
+//            document.getElementById("raw_hit_numbers").innerHTML = res.hits.join('&nbsp;&nbsp;&nbsp;&nbsp;')
         })
     }
 </script>

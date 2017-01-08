@@ -15,24 +15,17 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">
-                <span class="text-center">Q&Bingo</span></a>
-        </div>
-    </div>
-</nav>
-
+{{-- nav bar --}}
+@include('bingo.start.nav')
 
 <div class="container">
     {{-- row 1--}}
     <div class="row">
 
-        {{--left panel--}}
+        {{--left panel face photo --}}
         <div class="col-sm-4 col-sm-offset-1">
 
-            <p class="pull-right">
+            <p class="pull-right" id="face_img_div">
                 <img src="{{ isset($face) ? ('/getphoto/'. $face->user_photo) : '' }}"
                      id="face_img"
                      alt="フェイススロット"
@@ -41,14 +34,16 @@
             </p>
         </div>
 
-        {{--right 1 panel--}}
+        {{--right 1 panel quiz text --}}
         <div class="col-sm-4">
-
-            <p class="pull-left">
+            <div id="quiz_text_div">
+                <p class="pull-left">
                 <textarea name="quiz_text" id="quiz_text" cols="30"
+                          style="font-size: xx-large"
                           class="form-control"
-                          rows="10">{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
-            </p>
+                          rows="5">{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
+                </p>
+            </div>
         </div>
 
         {{-- right sidebar panel--}}
@@ -106,8 +101,12 @@
         </div>
     </div>
 
-    @include('bingo.start.views_size')
-
+    {{-- row 3--}}
+    <div class="row ">
+        <div class="col-sm-8 col-sm-offset-2">
+            @include('bingo.start.views_size')
+        </div>
+    </div>
 
 </div>
 
