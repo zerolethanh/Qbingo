@@ -26,10 +26,11 @@
                             </button>
                         </span>
                     </div>
-                    <img src="/getqr/{{ \Illuminate\Support\Facades\Auth::user()->happy_uuid }}.png">
+                    <img src="/getqr/{{ request()->user()->happy_uuid }}.png">
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMailModal">
-                        招待リンクを送る
+                    <button type="button" class="btn btn-primary" onclick="copyInviteLink(this)">
+                        {{--data-toggle="modal" data-target="#sendMailModal"--}}
+                        リンクをコピー
                     </button>
                     <button type="button" class="btn btn-success" onclick="window.open('/bingo/quizzes','_blank');">
                         クイズ作成画面へ
@@ -141,6 +142,13 @@
         var url = document.getElementById('invite_url').value;
         var win = window.open(url, '_blank');
 //        win.focus();
+    }
+
+    function copyInviteLink(el) {
+        document.getElementById('invite_url').select();
+        document.execCommand('copy');
+        $.notify('招待リンクをクリップボードにコピーしました。', 'success');
+
     }
 </script>
 </body>

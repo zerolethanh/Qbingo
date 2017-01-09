@@ -1,4 +1,4 @@
-<button onclick="return startFace(event);">
+<button onclick="return startFace(event);" class="btn btn-success btn-lg">
     フェイススロット<br>スタート
 </button>
 

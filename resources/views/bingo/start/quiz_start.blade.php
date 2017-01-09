@@ -1,4 +1,4 @@
-<button onclick="return startQuiz(event);">
+<button onclick="return startQuiz(event);"  class="btn btn-success btn-lg">
     クイズスロット<br>スタート
 </button>
 

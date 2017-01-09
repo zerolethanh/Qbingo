@@ -10,7 +10,8 @@
         "doctrine/dbal": "^2.5",
         "aferrandini/phpqrcode": "1.0.1",
         "guzzlehttp/guzzle": "^6.2",
-        "aws/aws-sdk-php": "~3.0"
+        "aws/aws-sdk-php": "~3.0",
+        "laracasts/utilities": "~2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

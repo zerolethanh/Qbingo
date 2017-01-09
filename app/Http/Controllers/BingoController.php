@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use JavaScript;
 use PHPQRCode\Constants;
 
 class BingoController extends Controller
@@ -81,6 +82,7 @@ class BingoController extends Controller
 
             }
         }
+
         return view('bingo.start', compact('faces', 'quizzes', 'hits', 'no_hits', 'start', 'face', 'quiz'));
     }
 

@@ -1,4 +1,4 @@
-<button onclick="restart_game()">
+<button onclick="restart_game()" class="btn btn-danger">
     Restart Game
 </button>
 

@@ -1,4 +1,4 @@
-<button onclick="face_shuffle()">
+<button onclick="face_shuffle()" class="btn btn-warning">
     顔シャッフル
 </button>
 

@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="/css/sidebar.css">
     @include('bootstrap.sources')
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
-
 </head>
 <body>
 
@@ -29,7 +27,7 @@
                 <img src="{{ isset($face) ? ('/getphoto/'. $face->user_photo) : '' }}"
                      id="face_img"
                      alt="フェイススロット"
-                     width="150px"
+                     {{--width="150px"--}}
                      class="img-responsive">
             </p>
         </div>
@@ -56,16 +54,16 @@
                 <tr>
                     <td>@include('bingo.start.quiz_start')</td>
                 </tr>
-                <tr>
-                    <td>@include('bingo.start.restart_game_button')</td>
-                </tr>
-                <tr>
-                    <td>@include('bingo.start.undo')</td>
-                </tr>
+
+                {{--<tr>--}}
+                    {{--<td>@include('bingo.start.undo')</td>--}}
+                {{--</tr>--}}
                 <tr>
                     <td>@include('bingo.start.face_shuffle')</td>
                 </tr>
-
+                <tr>
+                    <td>@include('bingo.start.restart_game_button')</td>
+                </tr>
             </table>
         </div>
     </div>

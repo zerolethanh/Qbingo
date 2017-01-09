@@ -8,7 +8,7 @@
     <title>クイズ作成</title>
     @include('bootstrap.sources')
     {{--<script src="https://unpkg.com/vue/dist/vue.js"></script>--}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
+
 </head>
 <body>
 
@@ -54,7 +54,7 @@
                 return $q->quiz_number == $row;
             });
             $quiz_number = $q->quiz_number ?? null;
-            $quiz_method = $q->quiz_method ?? 's';
+            $quiz_method = $q->quiz_method ?? 'a';
             $upload_id = $q->upload_id ?? null;
             $quiz_text = $q->quiz_text ?? null;
 
@@ -135,7 +135,7 @@
 
         $.post(form.action, form_data, function (res) {
             console.log(res);
-            $.notify('保存しました', 'success')
+            $.notify(res.quiz_number + '問目を保存しました', 'success')
         }).fail(function (res, status) {
             console.log(res)
         })
