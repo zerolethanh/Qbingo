@@ -56,7 +56,7 @@
                 </tr>
 
                 {{--<tr>--}}
-                    {{--<td>@include('bingo.start.undo')</td>--}}
+                {{--<td>@include('bingo.start.undo')</td>--}}
                 {{--</tr>--}}
                 <tr>
                     <td>@include('bingo.start.face_shuffle')</td>
@@ -80,10 +80,8 @@
 
         {{--right 1 panel , left align, camera panel--}}
         <div class="col-sm-4">
-            <div class="col-sm-4">
-                {{--外付けカメラ--}}
-                {{--@include('bingo.start.camera')--}}
-            </div>
+            {{--外付けカメラ--}}
+            @include('bingo.start.camera')
         </div>
         {{-- no hit bingo numbers, sidebar panel, bingo numbers panel --}}
         <div class="col-sm-3">
