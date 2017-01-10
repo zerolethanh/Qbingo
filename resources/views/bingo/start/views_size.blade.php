@@ -76,6 +76,10 @@
         )
     }
     function camera_fullscreen() {
+        var camera_region = document.getElementById('camera_region').innerHTML;
+        setFullScreenBody(
+            camera_region
+        )
 
     }
 

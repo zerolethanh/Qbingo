@@ -80,8 +80,10 @@
 
         {{--right 1 panel , left align, camera panel--}}
         <div class="col-sm-4">
-            {{--外付けカメラ--}}
-            @include('bingo.start.camera')
+            <div id="camera_region">
+                {{--外付けカメラ--}}
+                @include('bingo.start.camera')
+            </div>
         </div>
         {{-- no hit bingo numbers, sidebar panel, bingo numbers panel --}}
         <div class="col-sm-3">
