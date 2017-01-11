@@ -112,6 +112,22 @@ class Upload extends Model
         return static::$photo_save_name;
     }
 
+    static function createThumbFromUpload(Upload $upload)
+    {
+        $file = last(explode('/', $upload->user_photo));
+        $upload_file_path = self::uploadPath($file);
+        $upload_thumb_file_path = self::uploadThumbPath($file);
+        if (is_file($upload_file_path) && !$upload->thumb ) {// && !is_file($upload_thumb_file_path)
+            $img = Image::make($upload_file_path)->heighten(static::UPLOAD_THUMB_HEIGHT);
+
+            $img->save($upload_thumb_file_path);
+            $upload->thumb = $file;
+            $upload->save();
+
+            return compact('upload_thumb_file_path');
+        }
+    }
+
 //    public function scopeQuizzes($q, $happy_uuid)
 //    {
 //        return Quiz::where([

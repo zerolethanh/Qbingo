@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use JavaScript;
@@ -83,7 +84,10 @@ class BingoController extends Controller
             }
         }
 
-        JavaScript::put(['bingo_hit_numbers' => $hits]);
+//        JavaScript::put(['bingo_hit_numbers' => $hits]);
+        foreach ($uploads as $upload) {
+            Upload::createThumbFromUpload($upload);
+        }
         return view('bingo.start', compact('faces', 'quizzes', 'hits', 'no_hits', 'start', 'face', 'quiz', 'uploads'));
     }
 
