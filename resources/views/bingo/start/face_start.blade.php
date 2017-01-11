@@ -19,13 +19,25 @@
                 }
                 if (res.game_ended) {
                     $.notify('ゲームが終了しました。\n再度ゲームをしたい時がゲームリスタートボタンをクリックしてください。');
-                    document.getElementById('face_img').src = '';
-                    document.getElementById('quiz_text').value = '';
+                    try {
+                        document.getElementById('face_img').src = '';
+                        document.getElementById('quiz_text').value = '';
+                    }catch(e){
+                        console.log(e);
+                    }
                     return;
                 }
 
-                document.getElementById('face_img').src = "/getphoto/" + res.face.user_photo;
-                document.getElementById('quiz_text').value = res.quiz.quiz_text;
+                try{
+                    roll(res.face_index);
+                    document.getElementById('quiz_text').value = res.quiz.quiz_text;
+                    console.log(document.getElementById('face_img').src)
+                    document.getElementById('face_img').src = "/getphoto/" + res.face.user_photo;
+                }catch(e){
+                    console.log(e);
+                }
+
+
 
             }
         ).fail(function (res, status) {

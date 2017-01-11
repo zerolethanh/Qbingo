@@ -24,11 +24,12 @@
         <div class="col-sm-4 col-sm-offset-1">
 
             <p class="pull-right" id="face_img_div">
-                <img src="{{ isset($face) ? ('/getphoto/'. $face->user_photo) : '' }}"
-                     id="face_img"
-                     alt="フェイススロット"
-                     {{--width="150px"--}}
-                     class="img-responsive">
+                {{--<img src="{{ isset($face) ? ('/getphoto/'. $face->user_photo) : '' }}"--}}
+                {{--id="face_img"--}}
+                {{--alt="フェイススロット"--}}
+                {{--class="img-responsive">--}}
+                @include('bingo.start.rouletter')
+                <img src="" alt="" id="face_img" hidden>
             </p>
         </div>
 
@@ -106,6 +107,9 @@
         </div>
     </div>
 
+    {{--<div class="row">--}}
+    {{--@include('bingo.start.rouletter')--}}
+    {{--</div>--}}
 </div>
 
 </body>

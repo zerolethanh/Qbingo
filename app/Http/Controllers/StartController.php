@@ -50,11 +50,12 @@ class StartController extends Controller
                 return $quiz_number == $q->quiz_number;
             });
 
+            $uploads = Auth::user()->uploads;
             // get upload face
             switch ($quiz->quiz_method) {
                 case self::QUIZ_METHOD_SHUFFLE:
                     //シャッフル
-                    $face = Auth::user()->uploads->random();
+                    $face = $uploads->random();
                     break;
 
                 default:
@@ -62,6 +63,8 @@ class StartController extends Controller
                     $face = Auth::user()->uploads()->where('id', $quiz->upload_id)->first();
                     break;
             }
+
+            $face_index = array_search($face->thumb, $uploads->pluck('thumb')->toArray());
 
             // write last quiz number to starts table
             Auth::user()->starts()->create([
@@ -73,7 +76,7 @@ class StartController extends Controller
             session()->put('upload_id', $face->id);
 
             $game_ended = false;
-            return compact('quiz', 'face', 'game_ended');
+            return compact('quiz', 'face', 'game_ended', 'face_index');
         }
 
         $game_ended = true;
@@ -138,15 +141,19 @@ class StartController extends Controller
 
     public function face_shuffle()
     {
-
+        $uploads = Auth::user()->uploads;
         if ($start = $this->lastStart()) {
-            $face = Auth::user()->uploads->random();
+            $face = $uploads->random();
             $updated = $start->update(['upload_id' => $face->id]);
             if ($updated) {
                 session()->put('upload_id', $face->id);
             }
+
+            $face_index = array_search($face->thumb, $uploads->pluck('thumb')->toArray());
         }
-        return compact('face', 'start');
+
+
+        return compact('face', 'start', 'face_index');
     }
 
     public function hit_details()

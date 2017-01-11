@@ -9,7 +9,12 @@
             {_token: "{{csrf_token()}}"},
             function (res, status) {
                 console.log(res);
-                document.getElementById('face_img').src = "/getphoto/" + res.face.user_photo;
+                try {
+                    roll(res.face_index);
+//                    document.getElementById('face_img').src = "/getphoto/" + res.face.user_photo;
+                } catch (e) {
+                    console.log(e);
+                }
             }
         )
     }

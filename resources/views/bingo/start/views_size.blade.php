@@ -42,7 +42,7 @@
         var face_src =
             "<img src='"
             + document.getElementById('face_img').src
-            + "' class='img-responsive'/>"
+            + "' class='img-responsive'/>";
 
         var quiz_text =
             "<h1 style='font-size: 100px;'>" +

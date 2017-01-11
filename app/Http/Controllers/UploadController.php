@@ -34,11 +34,11 @@ class UploadController extends Controller
 
         $data = $this->request->only(Upload::getColumnListing());
 
-        $user_photo = Upload::savePhoto('user_photo');
+        list($user_photo, $thumb) = Upload::savePhoto('user_photo');
 
 //        $happy_uuid = Uuid::uuid();//must match with happies.happy_uuid
         $upload = Upload::create(
-            array_merge($data, compact('user_photo'))
+            array_merge($data, compact('user_photo', 'thumb'))
         );
 
         if ($upload) {

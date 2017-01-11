@@ -38,6 +38,7 @@ Route::group(['prefix' => 'upload'], function () {
     Route::post('/', 'UploadController@upload');
 });
 Route::get('getphoto/upload/{photoname}', 'PhotoController@getphoto');
+Route::get('thumb/{photoname}', 'PhotoController@getThumbPhoto');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');

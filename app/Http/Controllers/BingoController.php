@@ -84,7 +84,7 @@ class BingoController extends Controller
         }
 
         JavaScript::put(['bingo_hit_numbers' => $hits]);
-        return view('bingo.start', compact('faces', 'quizzes', 'hits', 'no_hits', 'start', 'face', 'quiz'));
+        return view('bingo.start', compact('faces', 'quizzes', 'hits', 'no_hits', 'start', 'face', 'quiz', 'uploads'));
     }
 
     public function face()

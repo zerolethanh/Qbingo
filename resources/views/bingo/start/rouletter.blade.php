@@ -1,10 +1,10 @@
 
 <script src="/js/roulette.min.js"></script>
 
-<div class="roulette" style="display:none;">
+<div class="roulette">
 
     <?php
-    $faces = request()->user()->uploads;
+    $faces = $uploads;
 
     $face_imgs = [];
     $face_idxs = [];
@@ -12,7 +12,7 @@
 
     foreach ($faces as $face) {
         $face_idxs[] = $face->id;
-        $f = "<img src='/getphoto/{$face->user_photo}' id='face-{$face->id}' width='150px' class='img-responsive' />";
+        $f = "<img src='/thumb/{$face->thumb}' id='face-{$face->id}' height='500px' width='100%'/>";
         $face_imgs[] = $f;
     }
 
@@ -21,12 +21,12 @@
     echo implode('', $face_imgs);
     ?>
 </div>
-<div class="btn_container">
-    <p>
-        <button class="btn btn-large btn-primary start"> START</button>
-        <button class="stop btn-large btn btn-warning"> STOP</button>
-    </p>
-</div>
+{{--<div class="btn_container">--}}
+    {{--<p>--}}
+        {{--<button class="btn btn-lg btn-primary start" onclick="roll(Math.floor(Math.random() * face_idxs.length) + 1  )"> START</button>--}}
+        {{--<button class="stop btn-large btn btn-warning"> STOP</button>--}}
+    {{--</p>--}}
+{{--</div>--}}
 
 <script>
 
@@ -36,8 +36,8 @@
     // roulette 設定
 
     var option = {
-        speed: 10,
-        duration: 3,
+        speed: 20,
+        duration: 1,
         stopImageNumber: 0,
         startCallback: function () {
             console.log('start');

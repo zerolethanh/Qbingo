@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Model\Helper;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class Upload extends Model
 {
@@ -16,6 +17,10 @@ class Upload extends Model
     const UPLOAD_DIR = 'upload';
 
     static $upload_filename;
+
+    static $photo_save_name;
+
+    const UPLOAD_THUMB_HEIGHT = 500;
 
     /**
      * @param string $file_name
@@ -41,24 +46,70 @@ class Upload extends Model
                     $photo = imagerotate($source, -90, 0);
                     break;
             }
-            $user_photo = static::UPLOAD_DIR . '/' . self::getPhotoSaveName();
-            $done = imagejpeg($photo, storage_path('app/' . $user_photo));
+            // save new rotated image to storage/upload/ directory
+            $done = imagejpeg($photo, self::uploadPath(self::getPhotoSaveName()));
             if ($done) {
                 imagedestroy($source);
                 imagedestroy($photo);
-                return $user_photo;
+                //save thumb img
+                $thumb_path = self::saveUploadThumb();
+
+                //img path
+                $upload_path = static::UPLOAD_DIR . '/' . self::getPhotoSaveName();
+
             }
+
         } else {
 
-            if ($photo && $photo->isValid()) {
-                return $photo->storeAs(static::UPLOAD_DIR, self::getPhotoSaveName());
+            //save img
+            $upload_path = $photo->storeAs(static::UPLOAD_DIR, self::getPhotoSaveName());
+
+            //save thumb img
+            $thumb_path = self::saveUploadThumb();
+
+        }
+
+        return [$upload_path, $thumb_path];
+    }
+
+    static function saveUploadThumb($uploadPath = null)
+    {
+        if (is_null($uploadPath) || !is_file($uploadPath))
+            $uploadPath = self::uploadPath(self::getPhotoSaveName());
+        $img = Image::make($uploadPath)->heighten(static::UPLOAD_THUMB_HEIGHT);
+
+        $thumb_path = self::uploadThumbPath();
+        $img->save($thumb_path);
+
+        return self::getPhotoSaveName();
+    }
+
+    static function uploadPath($path = null)
+    {
+        return storage_path('app/upload/' . ($path ?? ''));
+    }
+
+    static function uploadThumbPath($path = null)
+    {
+        $thumb_dir = storage_path('app/upload/thumb/');
+        if (!is_dir($thumb_dir)) {
+            $created_thumb_dir = mkdir($thumb_dir);
+            if (!$created_thumb_dir) {
+                return 'can not create ' . $thumb_dir;
             }
         }
+        if (is_null($path))
+            $path = self::getPhotoSaveName();
+        return $thumb_dir . '/' . ($path ?? '');
     }
+
 
     static function getPhotoSaveName()
     {
-        return implode('.', [date('YmdHis'), uniqid(), static::$upload_filename]);
+        if (!static::$photo_save_name) {
+            return static::$photo_save_name = implode('.', [date('YmdHis'), uniqid(), static::$upload_filename]);
+        }
+        return static::$photo_save_name;
     }
 
 //    public function scopeQuizzes($q, $happy_uuid)
