@@ -2,7 +2,7 @@
 <?php
 
 $no_hits->each(function ($n) {
-    echo "<button onclick='hit_number($n)'>$n</button>";
+    echo "<button onclick='hit_number($n)' class='btn-screens' style='width: 30px;font-weight: bold'>$n</button>";
 });
 ?>
 
@@ -19,11 +19,11 @@ $no_hits->each(function ($n) {
                 //game is not be started
                 return;
             }
-            var hit_elements = ['<label for="">Hit Numbers:</label><br>'];
+            var hit_elements = [/*'<label for="">Hit Numbers:</label><br>'*/];
             var no_hit_elements = [/*'<label for="">Numbers:</label><br>'*/];
             res.hits.forEach(function (hit) {
-                hit_elements.push("<button  data-toggle='modal' style='font-weight: bold;font-size: 50px'" +
-                    " class='btn btn-default btn-lg'" +
+                hit_elements.push("<button  data-toggle='modal' style='font-weight: bold;'" +
+                    " class='suuji'" +
                     " data-target='#hit_details'" +
                     " onclick='hit_details(" +
                     hit
@@ -31,7 +31,8 @@ $no_hits->each(function ($n) {
             });
             res.no_hits.forEach(function (no_hit) {
 //                var hit_number_function = new Function('hit_number(' + no_hit + ')');
-                no_hit_elements.push('<button onclick="hit_number(' + no_hit + ')">' + no_hit + '</button>');
+                no_hit_elements.push('<button class="btn-screens" style="width: 30px;font-weight: bold" ' +
+                    'onclick="hit_number(' + no_hit + ')">' + no_hit + '</button>');
             });
 
             document.getElementById('hit_numbers').innerHTML = hit_elements.join('');

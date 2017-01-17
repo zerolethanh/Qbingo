@@ -8,15 +8,24 @@
         left: 0;
     }
 
+    .btn-screens {
+        background: url('/img/bn107-32.jpg');
+        background-size: 100% 100%;
+        width: 107px;
+        height: 32px;
+        border: 0px;
+        font-weight:bold;
+    }
+
     /*#quiz_text_div{background:#cc0000}*/
 </style>
 <div>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="all_fullscreen()">全画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="face_quiz_fullscreen()">フェイスクイズ画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="face_fullscreen()">フェイス1画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="quiz_fullscreen()">クイズ1画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="hit_numbers_fullscreen()">数字1画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="camera_fullscreen()">外付けカメラ１画面</button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="all_fullscreen()" class=" btn-screens">全画面</button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="face_quiz_fullscreen()" class=" btn-screens" style="width: 150px">フェイスクイズ画面</button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="face_fullscreen()" class=" btn-screens" style="width: 120px">フェイス1画面</button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="quiz_fullscreen()" class=" btn-screens">クイズ1画面</button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="hit_numbers_fullscreen()" class=" btn-screens">数字1画面</button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="camera_fullscreen()" class=" btn-screens" style="width: 180px">外付けカメラ１画面</button>
 </div>
 <!-- モーダル・ダイアログ -->
 <div class="modal" id="fullscreen_modal" tabindex="-1">
@@ -76,9 +85,13 @@
         )
     }
     function camera_fullscreen() {
-        var camera_region = document.getElementById('camera_region').innerHTML;
+//        var camera_region = document.getElementById('camera_region').innerHTML;
+        var camera =
+            "<video src='"
+            + document.getElementById('camera').src
+            + "' width='100%' autoplay></video>";
         setFullScreenBody(
-            camera_region
+            camera
         )
 
     }
@@ -94,11 +107,7 @@
     function setFullScreenBody(content) {
         try {
             var content_el = document.querySelector('#fullscreen_modal .modal-body');
-            content_el.innerHTML =
-
-                content
-
-
+            content_el.innerHTML =  content;
         } catch (e) {
             console.log(e)
         }

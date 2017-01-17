@@ -31,7 +31,7 @@
         }
     }
 
-    navigator.mediaDevices.getUserMedia({audio: true, video: true})
+    navigator.mediaDevices.getUserMedia({audio: false, video: true})
         .then(function (stream) {
             var video = document.querySelector('video');
             // Older browsers may not have srcObject

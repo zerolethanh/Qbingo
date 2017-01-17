@@ -1,6 +1,16 @@
-<button onclick="return startFace(event);" class="btn btn-success btn-lg">
-    フェイススロット<br>スタート
-</button>
+<style>
+    .btn-slot {
+        background: url('/img/srot710-385.png');
+        background-size: 100% 100%;
+        position: absolute;
+        width: 200px;
+        height: 108px;
+        border: 0;
+
+    }
+
+</style>
+<button onclick="return startFace(event);" class="btn-slot start-buttons"></button>
 
 <script>
 
@@ -22,21 +32,20 @@
                     try {
                         document.getElementById('face_img').src = '';
                         document.getElementById('quiz_text').value = '';
-                    }catch(e){
+                    } catch (e) {
                         console.log(e);
                     }
                     return;
                 }
 
-                try{
+                try {
                     roll(res.face_index);
                     document.getElementById('quiz_text').value = res.quiz.quiz_text;
                     console.log(document.getElementById('face_img').src)
                     document.getElementById('face_img').src = "/getphoto/" + res.face.user_photo;
-                }catch(e){
+                } catch (e) {
                     console.log(e);
                 }
-
 
 
             }

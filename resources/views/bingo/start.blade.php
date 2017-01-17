@@ -10,106 +10,228 @@
     <link rel="stylesheet" href="/css/sidebar.css">
     @include('bootstrap.sources')
 
+    <style>
+
+        body {
+            background-image: url("/img/bg980-550.jpg");
+            background-position: center top;
+            background-size: 100% auto;
+        }
+
+        .btn-background {
+            background: url('/img/bn107-32.jpg');
+            background-size: 100% 100%;
+        }
+
+        .buttons-container {
+            position: absolute;
+            right: 100px;
+            bottom: 20px;
+            width: 850px;
+            height: 65px;
+        }
+
+        .buttons-container-buttons {
+            position: absolute;
+            right: 120px;
+            bottom: 35px;
+        }
+
+        .top-image {
+            width: 100%;
+            height: 105px;
+        }
+
+        .top-bingo-image {
+            width: 220px;
+            height: auto;
+            position: absolute;
+            left: 50px;
+            top: 10px;
+        }
+
+        .face-slot-bg-image {
+            position: absolute;
+            top: 70px;
+            height: 320px;
+            width: auto;
+        }
+
+        .face-container {
+            position: absolute;
+            top: 75px;
+            left: 7px;
+        }
+
+        .mondai-img {
+            position: absolute;
+            top: 13px;
+            left: 60px;
+            width: 260px;
+        }
+
+        .name-img {
+            position: absolute;
+            top: 55px;
+            width: 104%;
+            height: 70px
+        }
+
+        .start-buttons {
+            position: absolute;
+            top: 100px;
+        }
+
+        .hitnumbers-container {
+            left: 250px;
+            width: 60%;;
+        }
+
+        .bottom-containers {
+            position: fixed;
+            bottom: 20px;
+        }
+
+        .suuji {
+            background-image: url('/img/suuzi20-20.jpg');
+            width: 30px;
+            height: 30px;
+            /*position: absolute;*/
+            border: none;
+            /*margin: 3px;;*/
+            /*top: 10px;*/
+            /*left: 20px;;*/
+        }
+    </style>
+
 </head>
 <body>
 
 {{-- nav bar --}}
-@include('bingo.start.nav')
+{{--@include('bingo.start.nav')--}}
+
+<div class="container-fluid">
+    <div class="row" style="position: relative;">
+
+        <img src="/img/head980-105.jpg" alt="" class="top-image">
+        <div>
+            <img src="/img/rogo975-575.png" alt="" class="top-bingo-image">
+        </div>
+
+        <div>
+            <img src="/img/heads620-65.jpg" alt="" class="buttons-container">
+            <div class="buttons-container-buttons">
+                @include('bingo.start.views_size')
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container">
     {{-- row 1--}}
-    <div class="row">
+    <div class="row center-block">
 
         {{--left panel face photo --}}
-        <div class="col-sm-4 col-sm-offset-1">
+        <div class="col-sm-4">
+            <div style="position: relative; ">
+                <img src="/img/name250-50.jpg" alt="" class="name-img">
+            </div>
+            <div style="position: relative; top: 60px;">
+                <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
+                <div id="face_img_div" class="face-container">
+                    @include('bingo.start.rouletter')
+                </div>
 
-            <p class="pull-right" id="face_img_div">
-                {{--<img src="{{ isset($face) ? ('/getphoto/'. $face->user_photo) : '' }}"--}}
-                {{--id="face_img"--}}
-                {{--alt="フェイススロット"--}}
-                {{--class="img-responsive">--}}
-                @include('bingo.start.rouletter')
                 <img src="" alt="" id="face_img" hidden>
-            </p>
+            </div>
         </div>
 
         {{--right 1 panel quiz text --}}
         <div class="col-sm-4">
-            <div id="quiz_text_div">
-                <p class="pull-left">
-                <textarea name="quiz_text" id="quiz_text" cols="30"
-                          style="font-size: xx-large"
-                          class="form-control"
-                          rows="5">{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
-                </p>
+            <div style="position: relative; ">
+                <img src="/img/mondai705-300.png" alt="" class="mondai-img">
             </div>
+            <div id="quiz_text_div" style="position: relative; top: 60px;">
+
+                <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
+
+                {{--<p class="pull-left">--}}
+                <div class="face-container">
+                <textarea name="quiz_text" id="quiz_text"
+                          style="font-size: xx-large; width: 352px;height: 305px"
+                          class="form-control">{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
+                </div>
+                {{--</p>--}}
+
+            </div>
+
         </div>
 
         {{-- right sidebar panel--}}
-        <div class="col-sm-3">
-            <table class="table">
+        <div class="col-sm-4">
 
-                <tr>
-                    <td>@include('bingo.start.face_start')</td>
-                </tr>
-                <tr>
-                    <td>@include('bingo.start.quiz_start')</td>
-                </tr>
+            <div style="position: relative; ">
+                <img src="/img/live705-300.png" alt="" class="mondai-img">
+            </div>
 
-                {{--<tr>--}}
-                {{--<td>@include('bingo.start.undo')</td>--}}
-                {{--</tr>--}}
-                <tr>
-                    <td>@include('bingo.start.face_shuffle')</td>
-                </tr>
-                <tr>
-                    <td>@include('bingo.start.restart_game_button')</td>
-                </tr>
-            </table>
+
+            <div style="position: relative; top: 60px;">
+
+                <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
+
+                <div class="face-container" >
+                    @include('bingo.start.camera')
+                </div>
+
+            </div>
         </div>
-    </div>
 
-    {{-- row 2 --}}
+
+    </div>
+</div>
+
+<div class="container-fluid" style="position: relative; top: 400px;">
+
     <div class="row">
-        {{-- left panel, right align, hit numbers panel --}}
+
         @include('bingo.start.hit_details_modal')
-        <div class="col-sm-4 col-sm-offset-1 text-right">
-            <div id="hit_numbers">
+
+        <div style="position: absolute; left: 100px; top: 100px;">
+            <img src="/img/hit145-110.png" class="bottom-containers" style="left: 100px;">
+        </div>
+
+        <div class="col-sm-3 col-sm-offset-2">
+
+            <div style="position: absolute; left: 10px;">
+                @include('bingo.start.face_start')
+            </div>
+
+            <img src="/img/heads620-65.jpg" class="hitnumbers-container bottom-containers" style="height: 150px;">
+
+            <div id="hit_numbers" class="hitnumbers-container bottom-containers" style="bottom: 130px;left: 255px;">
                 @include('bingo.start.hit_numbers')
             </div>
         </div>
 
-        {{--right 1 panel , left align, camera panel--}}
-        <div class="col-sm-4">
-            <div id="camera_region">
-                {{--外付けカメラ--}}
-                @include('bingo.start.camera')
+
+        <div class="col-sm-2 ">
+            <div>
+                @include('bingo.start.quiz_start')
             </div>
         </div>
-        {{-- no hit bingo numbers, sidebar panel, bingo numbers panel --}}
+
         <div class="col-sm-3">
-            <table class="table">
-                <tr>
-                    <td>
-                        <div id="numbers">
-                            @include('bingo.start.numbers')
-                        </div>
-                    </td>
-                </tr>
-            </table>
+
+            @include('bingo.start.face_shuffle')
+            @include('bingo.start.restart_game_button')
+        </div>
+
+        <div class="col-sm-2">
+            <div id="numbers">
+                @include('bingo.start.numbers')
+            </div>
         </div>
     </div>
-
-    {{-- row 3--}}
-    <div class="row ">
-        <div class="col-sm-8 col-sm-offset-2">
-            @include('bingo.start.views_size')
-        </div>
-    </div>
-
-    {{--<div class="row">--}}
-    {{--@include('bingo.start.rouletter')--}}
-    {{--</div>--}}
 </div>
 
 </body>

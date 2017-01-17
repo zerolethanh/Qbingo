@@ -1,6 +1,14 @@
-<button onclick="face_shuffle()" class="btn btn-warning">
-    顔シャッフル
-</button>
+<style>
+    .btn-shuffle {
+        background: url('/img/face475-310.png');
+        background-size: 100% 100%;
+        width: 120px;
+        height: 80px;
+        border: none;
+        left: 10%;
+    }
+</style>
+<button onclick="face_shuffle()" class=" start-buttons btn-shuffle"></button>
 
 <script>
     function face_shuffle() {

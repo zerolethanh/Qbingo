@@ -20,7 +20,7 @@ class Upload extends Model
 
     static $photo_save_name;
 
-    const UPLOAD_THUMB_HEIGHT = 500;
+    const UPLOAD_THUMB_HEIGHT = 308;
 
     /**
      * @param string $file_name
@@ -117,14 +117,21 @@ class Upload extends Model
         $file = last(explode('/', $upload->user_photo));
         $upload_file_path = self::uploadPath($file);
         $upload_thumb_file_path = self::uploadThumbPath($file);
-        if (is_file($upload_file_path) && !$upload->thumb ) {// && !is_file($upload_thumb_file_path)
-            $img = Image::make($upload_file_path)->heighten(static::UPLOAD_THUMB_HEIGHT);
 
-            $img->save($upload_thumb_file_path);
+        // if thumb is not exists then make thumb from uploaded file
+        if (!is_file($upload_thumb_file_path) || (!$upload->thumb && is_file($upload_file_path))) {
+
+            if (!file_exists($upload_thumb_file_path)) {
+                //copy upload file to thumb file
+                $img = Image::make($upload_file_path)->heighten(static::UPLOAD_THUMB_HEIGHT);
+                $img->save($upload_thumb_file_path);
+            }
+            // write to database thumb file name
             $upload->thumb = $file;
             $upload->save();
 
             return compact('upload_thumb_file_path');
+
         }
     }
 

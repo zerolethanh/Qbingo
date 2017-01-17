@@ -1,4 +1,3 @@
-
 <script src="/js/roulette.min.js"></script>
 
 <div class="roulette">
@@ -8,11 +7,11 @@
 
     $face_imgs = [];
     $face_idxs = [];
-
+    $thumb_heigth = \App\Upload::UPLOAD_THUMB_HEIGHT;
 
     foreach ($faces as $face) {
         $face_idxs[] = $face->id;
-        $f = "<img src='/thumb/{$face->thumb}' id='face-{$face->id}' height='500px' width='100%'/>";
+        $f = "<img src='/thumb/{$face->thumb}' id='face-{$face->id}' height='$thumb_heigth'/>";
         $face_imgs[] = $f;
     }
 
@@ -22,10 +21,10 @@
     ?>
 </div>
 {{--<div class="btn_container">--}}
-    {{--<p>--}}
-        {{--<button class="btn btn-lg btn-primary start" onclick="roll(Math.floor(Math.random() * face_idxs.length) + 1  )"> START</button>--}}
-        {{--<button class="stop btn-large btn btn-warning"> STOP</button>--}}
-    {{--</p>--}}
+{{--<p>--}}
+{{--<button class="btn btn-lg btn-primary start" onclick="roll(Math.floor(Math.random() * face_idxs.length) + 1  )"> START</button>--}}
+{{--<button class="stop btn-large btn btn-warning"> STOP</button>--}}
+{{--</p>--}}
 {{--</div>--}}
 
 <script>
