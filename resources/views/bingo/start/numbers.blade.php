@@ -38,6 +38,7 @@ $no_hits->each(function ($n) {
             document.getElementById('hit_numbers').innerHTML = hit_elements.join('');
             document.getElementById('numbers').innerHTML = no_hit_elements.join('');
 
+
 //            document.getElementById("raw_hit_numbers").innerHTML = res.hits.join('&nbsp;&nbsp;&nbsp;&nbsp;')
         })
     }

@@ -52,8 +52,11 @@
     var rouletter = $('div.roulette');
     rouletter.roulette('option', option);
 
-    function roll(stopFaceIndex) {
+    function roll(stopFaceIndex, whenRollEnded, whenRollStart) {
         option['stopImageNumber'] = Number(stopFaceIndex);
+        option.stopCallback = whenRollEnded;
+        option.startCallback = whenRollStart;
+
         console.log(option);
         rouletter.roulette('option', option);
         rouletter.roulette('start');

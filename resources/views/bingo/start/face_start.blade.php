@@ -39,10 +39,24 @@
                 }
 
                 try {
-                    roll(res.face_index);
-                    document.getElementById('quiz_text').value = res.quiz.quiz_text;
-                    console.log(document.getElementById('face_img').src)
-                    document.getElementById('face_img').src = "/getphoto/" + res.face.user_photo;
+                    var userNameField = document.getElementById('user_name');
+                    var faceImageEle = document.getElementById('face_img');
+                    var quizTextField = document.getElementById('quiz_text');
+
+                    var whenRollStart = function () {
+                        userNameField.value = '';
+                        faceImageEle.src = '';
+                        quizTextField.value = '';
+                    };
+                    var whenRollEnded = function () {
+                        // when roll stop then set text, user name , face img
+                        userNameField.value = res.face.user_name;
+                        quizTextField.value = res.quiz.quiz_text;
+                        faceImageEle.src = "/getphoto/" + res.face.user_photo;
+                    };
+
+                    roll(res.face_index, whenRollEnded, whenRollStart);
+
                 } catch (e) {
                     console.log(e);
                 }

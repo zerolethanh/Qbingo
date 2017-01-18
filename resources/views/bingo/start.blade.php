@@ -102,6 +102,21 @@
             /*top: 10px;*/
             /*left: 20px;;*/
         }
+
+        .user-name-field {
+
+            position: relative;
+            top: 75px;
+            left: 5px;
+            height: 30px;
+            width: 100%;
+            background-color: black;
+            border: none;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -133,10 +148,12 @@
 
         {{--left panel face photo --}}
         <div class="col-sm-4">
+
             <div style="position: relative; ">
                 <img src="/img/name250-50.jpg" alt="" class="name-img">
+                <input type="text" id="user_name" value="{{$face->user_name or ''}}" class="user-name-field" disabled>
             </div>
-            <div style="position: relative; top: 60px;">
+            <div style="position: relative; top: 30px;">
                 <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
                 <div id="face_img_div" class="face-container">
                     @include('bingo.start.rouletter')
@@ -179,7 +196,7 @@
 
                 <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
 
-                <div class="face-container" >
+                <div class="face-container">
                     @include('bingo.start.camera')
                 </div>
 
@@ -206,7 +223,7 @@
                 @include('bingo.start.face_start')
             </div>
 
-            <img src="/img/heads620-65.jpg" class="hitnumbers-container bottom-containers" style="height: 150px;">
+            <img src="/img/heads620-65.jpg" class="hitnumbers-container bottom-containers" style="height: 150px;z-index: -1">
 
             <div id="hit_numbers" class="hitnumbers-container bottom-containers" style="bottom: 130px;left: 255px;">
                 @include('bingo.start.hit_numbers')

@@ -18,7 +18,18 @@
             function (res, status) {
                 console.log(res);
                 try {
-                    roll(res.face_index);
+                    var userNameField = document.getElementById('user_name');
+                    var faceImageEle = document.getElementById('face_img');
+                    var whenRollEnded = function () {
+                        // when roll stop then set text, user name , face img
+                        userNameField.value = res.face.user_name;
+                        faceImageEle.src = "/getphoto/" + res.face.user_photo;
+                    };
+                    var whenRollStart = function () {
+                        userNameField.value = '';
+                        faceImageEle.src = '';
+                    };
+                    roll(res.face_index, whenRollEnded, whenRollStart);
 //                    document.getElementById('face_img').src = "/getphoto/" + res.face.user_photo;
                 } catch (e) {
                     console.log(e);
