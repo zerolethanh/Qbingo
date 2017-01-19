@@ -9,53 +9,57 @@
     @include('bootstrap.sources')
 
     <style>
-        .centered {
-            position: fixed;
-            top: 40%;
-            left: 50%;
-            /* bring your own prefixes */
-            transform: translate(-50%, -50%);
+
+        .position-ref {
+            position: relative;
+        }
+
+        .flex-center {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .full-height {
+            height: 100vh;
+        }
+
+        .button-background {
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            width: 420px;
+            height: 210px;
+            border: none;
         }
     </style>
 
 </head>
 <body>
 
-<div class="container centered">
+<div class="position-ref flex-center full-height">
+    <div>
+        <div>
+            <button style="background-image: url('/botann/newボタン1.png') ; margin-right: 10px; margin-bottom: 5px;"
+                    class="button-background">
+            </button>
+            <button onclick="location.href = '/bingo/upload-list'" style="background-image: url('/botann/newボタン2.png')"
+                    class="button-background">
 
-    <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
-            <table class="table table-bordered">
+            </button>
+        </div>
+        <div>
+            <button onclick=" location.href = '/bingo/quizzes'"
+                    style="background-image: url('/botann/newボタン3.png'); margin-right: 10px;"
+                    class="button-background">
 
-                <tr>
-                    <td>
-                        <button style="width: 100%; height: 100%;" >Q&ビンゴ<br>説明書</button>
-                    </td>
-                    <td>
-                        <button onclick="location.href = '/bingo/upload-list'" style="width: 100%; height: 100%;"
-                        >
-                            顔写真<br>メッセージ<br>アップロード
-                        </button>
+            </button>
+            <button onclick=" location.href = '/bingo/start'" class="button-background"
+                    style="background-image: url('/botann/newボタン41.png')">
 
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button onclick=" location.href = '/bingo/quizzes'"
-                                style="width: 100%; height: 100%;">
-                            クイズ作成
-                        </button>
-                    </td>
-                    <td>
-                        <button onclick=" location.href = '/bingo/start'"
-                                style="width: 100%; height: 100%;">
-                            Q＆ビンゴ<br>スタート
-                        </button>
-                    </td>
-                </tr>
-            </table>
+            </button>
         </div>
     </div>
 </div>
+
 </body>
 </html>

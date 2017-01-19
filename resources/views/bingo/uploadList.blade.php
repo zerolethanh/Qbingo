@@ -7,62 +7,84 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>アップロードリスト</title>
     @include('bootstrap.sources')
+
+    <style>
+        html, body {
+            margin-top: 10px;
+        }
+
+        .control-buttons {
+            background-size: 100%;
+            width: 105px;
+            height: 52px;
+            border: none;
+        }
+
+        .logo {
+            width: 195px;
+            height: 115px;
+            position: absolute;
+            top: 0;
+            float: left;
+
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
 
+    <div class="row" style="display: inline;">
+        <img src="/img/rogo975-575.png" class="logo">
+        <div style="float: right;">
+
+            <button style="background-image: url('/botann/newボタン1.png'); " class="control-buttons">
+            </button>
+            <button onclick="location.href = '/bingo/upload-list'"
+                    style="background-image: url('/botann/newボタン2.png')"
+                    class="control-buttons">
+
+            </button>
+
+            <button onclick=" location.href = '/bingo/quizzes'"
+                    style="background-image: url('/botann/newボタン3.png');"
+                    class="control-buttons">
+
+            </button>
+            <button onclick=" location.href = '/bingo/start'" class="control-buttons"
+                    style="background-image: url('/botann/newボタン41.png')">
+
+            </button>
+
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">アップロード</div>
                 <div class="panel-body">
-
+                    <span style="font-weight: bold;font-size: 2em;">写真、コメント登録用URL</span>
                     <div class="input-group">
                         <input type="text" id="invite_url" name="url" value="{{ $url }}" class="form-control"/>
                         <span class="input-group-btn">
                             <button class="btn btn-warning" onclick="invite_link_open(event)">
                                 招待リンクを開く
                             </button>
+
                         </span>
                     </div>
-                    <img src="/getqr/{{ request()->user()->happy_uuid }}.png">
 
-                    <button type="button" class="btn btn-primary" onclick="copyInviteLink(this)">
-                        {{--data-toggle="modal" data-target="#sendMailModal"--}}
-                        リンクをコピー
-                    </button>
-                    <button type="button" class="btn btn-success" onclick="window.open('/bingo/quizzes','_blank');">
-                        クイズ作成画面へ
-                    </button>
+                    <div style="display: inline;">
+                        <img src="/getqr/{{ request()->user()->happy_uuid }}.png">
+                        <button type="button" class="btn btn-primary" onclick="copyInviteLink(this)">
+                            リンクをコピー
+                        </button>
+                        <button style="font-weight: bold;background-color: white;border:none;text-align: left; ">
+                            ラインで連絡する場合は上記<br>のURLをコピーして送って下さい。
+                        </button>
+                    </div>
 
-                    <button type="button" class="btn btn-success" onclick="window.open('/bingo/start','_blank');">
-                        ビンゴスタート画面へ
-                    </button>
 
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- モーダル・ダイアログ -->
-    <div class="modal fade" id="sendMailModal" tabindex="-1">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                    <h4 class="modal-title">招待リンク送信</h4>
-                </div>
-                <div class="modal-body">
-                    <form onsubmit="invite_send_url(event);return false">
-                        <div class="input-group">
-                            <input type="email" id="invite_send_url_email" required placeholder="EMAIL"
-                                   class="form-control">
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary">送信</button>
-                            </span>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
