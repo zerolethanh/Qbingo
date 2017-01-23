@@ -106,10 +106,10 @@
                     {{--SAVE buttons--}}
                     <td>
                         <div>
-                            <button class="btn btn-primary btn-sm" onclick="save(event, this.form)">SAVE</button>
+                            <button class="btn btn-primary btn-sm" onclick="save(event, this.form)">保存</button>
                         </div>
                         <br>
-                        <button class="btn btn-default btn-sm" onclick="saveAll(event, this.form)">SAVE ALL</button>
+                        <button class="btn btn-default btn-sm" onclick="saveAll(event, this.form)">全て保存</button>
                     </td>
 
                 </tr>
