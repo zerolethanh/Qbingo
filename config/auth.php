@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'happies',
         ],
+        'master' => [
+            'driver' => 'session',
+            'provider' => 'masters',
+        ],
 
         'api' => [
             'driver' => 'token',
@@ -77,6 +81,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Happy::class,
         ],
+        'masters' => [
+            'driver' => 'eloquent',
+            'model' => App\Master::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

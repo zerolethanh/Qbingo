@@ -75,4 +75,23 @@ Route::group(['prefix' => 'start'], function () {
     Route::post('undo', 'StartController@undo');
     Route::post('face_shuffle', 'StartController@face_shuffle');
     Route::post('hit_details', 'StartController@hit_details');
+    Route::post('update-hit-number', 'StartController@update_hit_number');
 });
+
+Route::group(['prefix' => 'master'], function () {
+    Route::get('', 'MasterController@showLoginForm');
+    Route::post('login', 'MasterController@login');
+    Route::get('logout', 'MasterController@logout');
+
+    Route::get('control', 'MasterController@control');
+    Route::get('create', 'MasterController@create');
+
+    Route::get('shops', 'MasterController@shops');
+    Route::get('/shops/register', 'MasterController@showShopRegisterForm');
+    Route::post('/shops/register', 'MasterController@shopRegister');
+    Route::get('/shops/{shop_id}', 'MasterController@shopDetail');
+
+    Route::get('users', 'MasterController@users');
+
+});
+
