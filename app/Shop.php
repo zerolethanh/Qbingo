@@ -15,4 +15,14 @@ class Shop extends Model
     {
         return $this->belongsTo(Master::class);
     }
+
+    public function getRegDateAttribute()
+    {
+        return $this->created_at->format('Y/m/d');
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }
