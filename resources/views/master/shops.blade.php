@@ -28,11 +28,16 @@
             <th></th>
         </tr>
         @foreach($shops as $s)
+            <?php $shopURL = url("/master/shops/$s->id") ?>
             <tr>
                 @foreach($headers as $h)
-                    {!!  "<td>{$s[$h]}</td>"  !!}
+                    @if($h == 'reg_name')
+                        {!!  "<td><a href='$shopURL'>{$s->{$h}}</a></td>"  !!}
+                    @else
+                        {!!  "<td>{$s->{$h}}</td>"  !!}
+                    @endif
                 @endforeach
-                <td><a href="/master/shops/{{ $s->id }}" class="center-block text-center">詳細</a></td>
+                <td><a href="{{ $shopURL }}" class="center-block text-center">詳細</a></td>
                 <td>
                     <button onclick="stop_shop()" class="btn btn-warning center-block">停止</button>
                 </td>
