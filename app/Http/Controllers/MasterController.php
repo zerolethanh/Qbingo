@@ -24,11 +24,6 @@ class MasterController extends Controller
         $this->middleware(MasterLogin::class)->except('showLoginForm', 'login', 'logout');
     }
 
-    public function master()
-    {
-        return Auth::guard('master')->user();
-    }
-
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      *
@@ -104,12 +99,9 @@ class MasterController extends Controller
      */
     public function shops()
     {
-        $shops = $this->master()->shops;
-        $headers = ['id', 'raw_password', 'reg_name', 'created_at_dateonly'];
+        $shops = Master::user()->shops;
+        $headers = ['id', 'raw_password', 'reg_name', 'reg_date'/*from Shop model*/];
         $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
-        foreach ($shops as $s) {
-            $s->created_at_dateonly = $s->created_at->format('Y/m/d');
-        }
         return view('master.shops')->with(compact('shops', 'headers', 'headers_trans'));
     }
 
@@ -145,7 +137,7 @@ class MasterController extends Controller
         $shop_data['raw_password'] = str_random();
         $shop_data['password'] = bcrypt($shop_data['raw_password']);
 
-        $newShop = $this->master()->shops()->create($shop_data);
+        $newShop = Master::user()->shops()->create($shop_data);
         if ($newShop) {
             return view('master.shops.register')->with(['shop' => $newShop]);
         }
@@ -154,12 +146,18 @@ class MasterController extends Controller
 
     public function shopDetail($shop_id)
     {
-        $shop = $this->master()->shops()->find($shop_id);
+        $shop = Master::user()->shops()->find($shop_id);
+
         if (!$shop) {
             return back();
         }
 
-        return view('master.shops.detail')->with(compact('shop'));
+        // save for next save \App\Ticket by Shop
+        session(['shop' => $shop]);
+
+        $ticket_fields = ['issued_id', 'issued_password_date', 'user', 'user_email', 'formatted_use_date', 'issued_password'];
+        $ticket_fields_trans = ['ID', 'パスワード発行日', '使用名', '使用者メールアドレス', '使用日時', 'ユーザーパスワード'];
+        return view('master.shops.detail')->with(compact('shop', 'ticket_fields', 'ticket_fields_trans'));
     }
 }
 

@@ -95,3 +95,6 @@ Route::group(['prefix' => 'master'], function () {
 
 });
 
+Route::group(['prefix' => 'ticket'], function () {
+    Route::post('create', 'TicketController@create');
+});
