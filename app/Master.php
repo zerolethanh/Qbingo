@@ -23,4 +23,9 @@ class Master extends Authenticatable
     {
         return $this->hasMany(Shop::class);
     }
+
+    public static function user($guard = 'master')
+    {
+        return Auth::guard($guard)->user();
+    }
 }
