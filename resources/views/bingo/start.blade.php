@@ -98,6 +98,7 @@
             height: 30px;
             /*position: absolute;*/
             border: none;
+            font-weight:bol;
             /*margin: 3px;;*/
             /*top: 10px;*/
             /*left: 20px;;*/

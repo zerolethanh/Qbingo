@@ -28,4 +28,9 @@ class Master extends Authenticatable
     {
         return Auth::guard($guard)->user();
     }
+
+    public function tickets()
+    {
+        return $this->hasManyThrough(Ticket::class, Shop::class);
+    }
 }

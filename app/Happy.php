@@ -4,6 +4,7 @@ namespace App;
 
 use App\Model\Helper;
 //use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
@@ -14,9 +15,11 @@ class Happy extends Authenticatable
     use Helper;
     use Notifiable;
 
+    use SoftDeletes;
     protected $guarded = ['id'];
     protected $table = 'happies';
 
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -48,4 +51,8 @@ class Happy extends Authenticatable
         return Auth::user()->quizzes()->where('quiz_number', $quiz_number);
     }
 
+    public function ticket()
+    {
+        $this->belongsTo(Ticket::class);
+    }
 }

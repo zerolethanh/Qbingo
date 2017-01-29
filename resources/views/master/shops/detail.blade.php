@@ -197,8 +197,19 @@
 
                             <td>{{ $t->{$f} }}</td>
                         @endforeach
-                        <td><button class="btn btn-warning center-block" >停止</button></td>
-                        <td><button class="btn btn-danger center-block">削除</button></td>
+                        <td>
+                            @if($t->is_expired)
+                                <button class="btn btn-success center-block" onclick="ticket_stop({{ $t->id }})">稼働
+                                </button>
+                            @else
+                                <button class="btn btn-warning center-block" onclick="ticket_stop({{ $t->id }})">停止
+                                </button>
+                            @endif
+                        </td>
+                        <td>
+                            <button class="btn btn-danger center-block" onclick="ticket_delete({{ $t->id }})">削除
+                            </button>
+                        </td>
                     </tr>
                 @endforeach
             </table>
@@ -214,6 +225,28 @@
 
     @endif
 
+    @if($detail_update_success = session('update_success'))
+
+        $.notify('アップデートしました。', 'success');
+    @endif
+
+    function ticket_stop($ticket_id) {
+        event.preventDefault();
+        $.post('/ticket/stop', {
+            '_token': "{{ csrf_token() }}",
+            'ticket_id': $ticket_id
+        }, function (res, status) {
+            console.log(res, status);
+            if (res.saved) {
+                location.reload();
+            }
+        })
+    }
+
+    function ticket_delete() {
+        event.preventDefault();
+
+    }
 </script>
 
 </body>

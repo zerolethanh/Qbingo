@@ -21,7 +21,7 @@ class MasterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(MasterLogin::class)->except('showLoginForm', 'login', 'logout');
+        $this->middleware(MasterLogin::class)->except('showLoginForm', 'login', 'logout', 'create');
     }
 
     /**
@@ -99,7 +99,7 @@ class MasterController extends Controller
      */
     public function shops()
     {
-        $shops = Master::user()->shops;
+        $shops = Master::user()->shops()->latest()->get();
         $headers = ['id', 'raw_password', 'reg_name', 'reg_date'/*from Shop model*/];
         $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
         return view('master.shops')->with(compact('shops', 'headers', 'headers_trans'));
@@ -158,6 +158,19 @@ class MasterController extends Controller
         $ticket_fields = ['issued_id', 'issued_password_date', 'user', 'user_email', 'formatted_use_date', 'issued_password'];
         $ticket_fields_trans = ['ID', 'パスワード発行日', '使用名', '使用者メールアドレス', '使用日時', 'ユーザーパスワード'];
         return view('master.shops.detail')->with(compact('shop', 'ticket_fields', 'ticket_fields_trans'));
+    }
+
+    public function updateShopDetail(Request $request, $shop_id)
+    {
+        $cllist = Shop::getColumnListing();
+        $rall = $request->all();
+        $update_data = array_only($rall, $cllist);
+
+        $shop = Master::user()->shops()->where('id', $shop_id)->first();
+        if ($shop) {
+            $update_success = $shop->update($update_data);
+        }
+        return back()->with(compact('update_success'));
     }
 }
 

@@ -92,16 +92,32 @@ class StartController extends Controller
 
     public function hit()
     {
-        $start = Auth::user()->starts()->where(['quiz_number' => session('quiz_number')])->first();
+        // 最後のstarts's record を更新
+//        $start = $this->lastStart();//Auth::user()->starts()->where(['quiz_number' => session('quiz_number')])->first();
+//        if ($start) {
+//            $start->update([
+//                'hit' => request('number')
+//            ]);
+//        }
 
+        // update前のレコードか？レコードを追加していくか？
+        // update when 前のレコードのhitが設定されない場合。
+        // else new record
+        $start = $this->lastQuestionedStartButNoHitNumberSetted();
         if ($start) {
             $start->update([
                 'hit' => request('number')
             ]);
-
-            list($hits, $no_hits) = $this->hitsAndNoHits();
+        } else {
+            // レコード追加していく
+            $start = Auth::user()->starts()->create(
+                [
+                    'hit' => request('number')
+                ]
+            );
         }
 
+        list($hits, $no_hits) = $this->hitsAndNoHits();
         return compact('start', 'hits', 'no_hits');
 
     }
@@ -109,6 +125,11 @@ class StartController extends Controller
     public function lastStart()
     {
         return $start = Auth::user()->starts()->latest()->first();
+    }
+
+    public function lastQuestionedStartButNoHitNumberSetted()
+    {
+        return Auth::user()->starts()->whereNotNull('quiz_number')->whereNotNull('upload_id')->whereNull('hit')->latest()->first();
     }
 
     public function hitsAndNoHits()
@@ -129,6 +150,7 @@ class StartController extends Controller
         session()->flush();
         return compact('restart');
     }
+
 
     public function undo()
     {
@@ -162,5 +184,25 @@ class StartController extends Controller
 
         return compact('start');
     }
+
+    public function update_hit_number(Request $request)
+    {
+        $this->validate($request, [
+            'newNumber' => 'numeric | max:75',
+            'oldNumber' => 'required'
+        ]);
+        $start = Auth::user()->starts()->where('hit', $request->oldNumber)->first();
+        if ($start) {
+            $start->update(
+                [
+
+                    'hit' => $request->newNumber
+                ]
+            );
+        }
+
+        return $start;
+    }
+
 }
 

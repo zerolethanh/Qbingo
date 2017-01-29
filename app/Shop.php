@@ -2,11 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Model\SafeModel;
+//use Illuminate\Database\Eloquent\Model;
 
-class Shop extends Model
+class Shop extends SafeModel
 {
     //
+
     protected $guarded = ['id'];
 
     protected $hidden = ['password'];

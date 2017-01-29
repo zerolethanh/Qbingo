@@ -17,12 +17,13 @@ $no_hits->each(function ($n) {
 
             if (!res.start) {
                 //game is not be started
+                $.notify('ゲームを始めてください。');
                 return;
             }
             var hit_elements = [/*'<label for="">Hit Numbers:</label><br>'*/];
             var no_hit_elements = [/*'<label for="">Numbers:</label><br>'*/];
             res.hits.forEach(function (hit) {
-                hit_elements.push("<button  data-toggle='modal' style='font-weight: bold;'" +
+                hit_elements.push("<button  data-toggle='modal'" +
                     " class='suuji'" +
                     " data-target='#hit_details'" +
                     " onclick='hit_details(" +

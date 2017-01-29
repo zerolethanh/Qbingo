@@ -90,11 +90,12 @@ Route::group(['prefix' => 'master'], function () {
     Route::get('/shops/register', 'MasterController@showShopRegisterForm');
     Route::post('/shops/register', 'MasterController@shopRegister');
     Route::get('/shops/{shop_id}', 'MasterController@shopDetail');
-
+    Route::post('/shops/{shop_id}', 'MasterController@updateShopDetail');
     Route::get('users', 'MasterController@users');
 
 });
 
 Route::group(['prefix' => 'ticket'], function () {
     Route::post('create', 'TicketController@create');
+    Route::post('stop', 'TicketController@stop');
 });

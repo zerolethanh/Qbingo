@@ -4,7 +4,6 @@
 
 foreach ($hits as $h) {
     $hit_number_button = "<button  data-toggle='modal'
- style='font-weight: bold;'
 class='suuji'
  data-target='#hit_details'
  onclick='hit_details($h)'>" . $h . "</button>";

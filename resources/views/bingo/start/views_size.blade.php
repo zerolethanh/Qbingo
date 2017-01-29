@@ -15,6 +15,7 @@
         height: 32px;
         border: 0px;
         font-weight:bold;
+
     }
 
     /*#quiz_text_div{background:#cc0000}*/

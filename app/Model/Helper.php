@@ -26,4 +26,5 @@ trait Helper
 
         return $columns;
     }
+
 }
