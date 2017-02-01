@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Master;
+use App\Ticket;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 class TicketController extends Controller
 {
     //
+    const TICKET_TABLE = 'ticket_table';
 
     public function create(Request $request)
     {
@@ -41,7 +43,8 @@ class TicketController extends Controller
                 'is_random' => 0
             ]);
             DB::commit();
-            return back()->with(compact('new_ticket', 'new_happy'));
+
+            return $this->buildTicketTableView($shop);
         }
 
         return 'shop is not valid';
@@ -55,9 +58,26 @@ class TicketController extends Controller
             $ticket->is_expired = !$ticket->is_expired;
             $saved = $ticket->save();
         }
-        $is_expired = $ticket->is_expired;
 
-        return compact('saved', 'is_expired', 'ticket');
-
+        return $this->buildTicketTableView();
     }
+
+    public function delete(Request $request)
+    {
+        $ticket = Ticket::id($request->ticket_id);
+        if ($ticket) {
+            DB::beginTransaction();
+            $deleted = $ticket->delete();
+            $ticket->happy->delete();
+            DB::commit();
+
+        }
+        return $this->buildTicketTableView();
+    }
+
+    public function buildTicketTableView($shop = null)
+    {
+        return updateView("master.shops.ticket_table", compact($shop));
+    }
+
 }

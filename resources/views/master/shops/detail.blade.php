@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Shop Detail</title>
     @include('bootstrap.sources')
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>--}}
     <style>
 
     </style>
@@ -130,7 +131,8 @@
                 </div>
             @endif
 
-            <form class="form-horizontal form-inline text-center" role="form" method="POST" action="/ticket/create">
+            <form class="form-horizontal form-inline text-center" id="create_ticket_form" role="form" method="POST"
+                  action="/ticket/create">
                 {{ csrf_field() }}
 
                 <?php  $f = \Faker\Factory::create('ja_JP'); ?>
@@ -165,7 +167,7 @@
 
                 <div class="form-group  col-md-3">
                     <div class="col-md-1">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" onclick="ticket_create(this.form)">
                             パスワード発行する
                         </button>
                     </div>
@@ -182,41 +184,14 @@
 
     <div class="row">
         <div class="col-md-12">
-            <table class="table  table-bordered">
-                <tr>
-                    @foreach($ticket_fields_trans as $f)
-                        <th>{{ $f }}</th>
-                    @endforeach
-                    <th></th>
-                    <th></th>
-                </tr>
-
-                @foreach($shop->tickets()->latest()->get() as $t)
-                    <tr>
-                        @foreach($ticket_fields as $f)
-
-                            <td>{{ $t->{$f} }}</td>
-                        @endforeach
-                        <td>
-                            @if($t->is_expired)
-                                <button class="btn btn-success center-block" onclick="ticket_stop({{ $t->id }})">稼働
-                                </button>
-                            @else
-                                <button class="btn btn-warning center-block" onclick="ticket_stop({{ $t->id }})">停止
-                                </button>
-                            @endif
-                        </td>
-                        <td>
-                            <button class="btn btn-danger center-block" onclick="ticket_delete({{ $t->id }})">削除
-                            </button>
-                        </td>
-                    </tr>
-                @endforeach
+            <table class="table  table-bordered" id="ticket_table">
+                @include('master.shops.ticket_table')
             </table>
         </div>
     </div>
 </div>
 
+@include('master.shops.ticket_delete_modal')
 <script>
 
     @if($t = session('new_ticket') )
@@ -230,22 +205,58 @@
         $.notify('アップデートしました。', 'success');
     @endif
 
+    function ticket_create(form) {
+        event.preventDefault();
+        var data = $(form).serializeArray()
+        $.post('/ticket/create', data, function (res, status) {
+            notifySuccess('ユーザーを作成しました。');
+            updateView(res)
+        }).fail(function (res) {
+            notifyFail(res.responseJSON.user_email[0]);
+        })
+    }
+
     function ticket_stop($ticket_id) {
         event.preventDefault();
         $.post('/ticket/stop', {
             '_token': "{{ csrf_token() }}",
             'ticket_id': $ticket_id
         }, function (res, status) {
-            console.log(res, status);
-            if (res.saved) {
-                location.reload();
-            }
+//            console.log(res, status);
+            updateView(res)
         })
     }
 
-    function ticket_delete() {
+    function ticket_delete(ticket_id) {
         event.preventDefault();
+        $.getScript('https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
+            function () {
 
+                bootbox.confirm({
+                    size: "small",
+                    message: "<h1>削除しますか?</h1>",
+                    buttons: {
+                        confirm: {
+                            label: 'はい、削除する',
+                            className: 'btn-danger'
+                        },
+                        cancel: {
+                            label: 'いいえ',
+                            className: 'btn-primary'
+                        }
+                    },
+                    callback: function (ok) {
+                        /* result is a boolean; true = OK, false = Cancel*/
+                        if (ok) {
+                            $.post('/ticket/delete', {ticket_id}, function (res) {
+                                updateView(res)
+                                notifySuccess('削除しました。')
+                            });
+                        }
+                    }
+                })
+            }
+        )
     }
 </script>
 

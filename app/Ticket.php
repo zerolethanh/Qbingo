@@ -33,4 +33,8 @@ class Ticket extends Model
         return $this->hasOne(Happy::class);
     }
 
+    public static function id($id)
+    {
+        return Master::user()->tickets()->where('tickets.id', $id)->first();
+    }
 }

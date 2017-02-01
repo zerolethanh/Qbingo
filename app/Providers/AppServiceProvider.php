@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
         //
         $this->listenDB();
         $this->logRequest();
+        $this->viewShareData();
+    }
+
+    public function viewShareData()
+    {
+        view()->share('UPDATE_VIEW_HTML_ID', 'UPDATE_VIEW_HTML_ID');
     }
 
     function listenDB()

@@ -155,9 +155,7 @@ class MasterController extends Controller
         // save for next save \App\Ticket by Shop
         session(['shop' => $shop]);
 
-        $ticket_fields = ['issued_id', 'issued_password_date', 'user', 'user_email', 'formatted_use_date', 'issued_password'];
-        $ticket_fields_trans = ['ID', 'パスワード発行日', '使用名', '使用者メールアドレス', '使用日時', 'ユーザーパスワード'];
-        return view('master.shops.detail')->with(compact('shop', 'ticket_fields', 'ticket_fields_trans'));
+        return view('master.shops.detail')->with(compact('shop'));
     }
 
     public function updateShopDetail(Request $request, $shop_id)
