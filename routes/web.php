@@ -101,3 +101,8 @@ Route::group(['prefix' => 'ticket'], function () {
     Route::post('delete', 'TicketController@delete');
 
 });
+
+Route::group(['prefix' => 'shop'], function () {
+    Route::post('stop', 'ShopController@stop');
+    Route::post('delete', 'ShopController@delete');
+});

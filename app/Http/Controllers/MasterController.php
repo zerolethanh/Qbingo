@@ -100,8 +100,6 @@ class MasterController extends Controller
     public function shops()
     {
         $shops = Master::user()->shops()->latest()->get();
-        $headers = ['id', 'raw_password', 'reg_name', 'reg_date'/*from Shop model*/];
-        $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
         return view('master.shops')->with(compact('shops', 'headers', 'headers_trans'));
     }
 

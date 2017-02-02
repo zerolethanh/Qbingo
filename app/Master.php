@@ -33,4 +33,5 @@ class Master extends Authenticatable
     {
         return $this->hasManyThrough(Ticket::class, Shop::class);
     }
+
 }

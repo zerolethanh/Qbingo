@@ -17,47 +17,11 @@
     <button onclick="location.href='/master/shops/register'">新規登録</button>
     <hr>
 
-    <table class="table table-bordered">
-        {{--header--}}
-        <tr>
-            @foreach($headers_trans as $h)
-                {!!  "<th>$h</th>"  !!}
-            @endforeach
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-        @foreach($shops as $s)
-            <?php $shopURL = url("/master/shops/$s->id") ?>
-            <tr>
-                @foreach($headers as $h)
-                    @if($h == 'reg_name')
-                        {!!  "<td><a href='$shopURL'>{$s->{$h}}</a></td>"  !!}
-                    @else
-                        {!!  "<td>{$s->{$h}}</td>"  !!}
-                    @endif
-                @endforeach
-                <td><a href="{{ $shopURL }}" class="center-block text-center">詳細</a></td>
-                <td>
-                    <button onclick="stop_shop()" class="btn btn-warning center-block">停止</button>
-                </td>
-                <td>
-                    <button onclick="del_shop()" class="btn btn-danger center-block">削除</button>
-                </td>
-            </tr>
-
-        @endforeach
-    </table>
+    <div id="shops_table">
+        @include('master.shops_table')
+    </div>
 
 </div>
 
-<script>
-    function stop_shop() {
-        console.log(event);
-    }
-    function del_shop() {
-        console.log(event);
-    }
-</script>
 </body>
 </html>

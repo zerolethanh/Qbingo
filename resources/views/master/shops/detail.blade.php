@@ -212,7 +212,7 @@
             notifySuccess('ユーザーを作成しました。');
             updateView(res)
         }).fail(function (res) {
-            notifyFail(res.responseJSON.user_email[0]);
+            notifyErrors(res)
         })
     }
 
@@ -224,37 +224,20 @@
         }, function (res, status) {
 //            console.log(res, status);
             updateView(res)
+        }).fail(function (res) {
+            notifyErrors(res)
         })
     }
 
     function ticket_delete(ticket_id) {
         event.preventDefault();
-        $.getScript('https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
+        Confirm.delete(
+            //yes button did push
             function () {
-
-                bootbox.confirm({
-                    size: "small",
-                    message: "<h1>削除しますか?</h1>",
-                    buttons: {
-                        confirm: {
-                            label: 'はい、削除する',
-                            className: 'btn-danger'
-                        },
-                        cancel: {
-                            label: 'いいえ',
-                            className: 'btn-primary'
-                        }
-                    },
-                    callback: function (ok) {
-                        /* result is a boolean; true = OK, false = Cancel*/
-                        if (ok) {
-                            $.post('/ticket/delete', {ticket_id}, function (res) {
-                                updateView(res)
-                                notifySuccess('削除しました。')
-                            });
-                        }
-                    }
-                })
+                $.post('/ticket/delete', {ticket_id}, function (res) {
+                    updateView(res)
+                    notifySuccess('削除しました。')
+                });
             }
         )
     }
