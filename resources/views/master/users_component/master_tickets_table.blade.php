@@ -2,7 +2,9 @@
 <?php
 $tickets = \App\Ticket::latest()->with('shop')->get();
 $tickets = collect($tickets)->filter(function ($t) {
-    return isset($t->shop) || $t->issued_id === 9999;
+    return
+        isset($t->shop)
+        || ($t->issued_id == \App\Http\Controllers\TicketController::NVIEW_DEFAULT_ISSUED_ID);
 });
 $ticket_fields = ['issued_id', 'issued_password', 'shop_reg_name', 'issued_password_date', 'formatted_use_date', 'user', 'user_email'];
 $ticket_fields_trans = ['ID', 'ユーザー<br>パスワード', '登録名 ( 契約店舗)', 'パスワード発行日', '使用日時', '使用名', '使用者<br>メールアドレス'];
