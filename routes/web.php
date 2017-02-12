@@ -11,9 +11,7 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', 'BieuController@welcome');
 
 //Route::get('/cuong', function () {
 //    return null;
@@ -79,6 +77,7 @@ Route::group(['prefix' => 'start'], function () {
 });
 
 Route::group(['prefix' => 'master'], function () {
+
     Route::get('', 'MasterController@showLoginForm');
     Route::post('login', 'MasterController@login');
     Route::get('logout', 'MasterController@logout');
@@ -105,4 +104,6 @@ Route::group(['prefix' => 'ticket'], function () {
 Route::group(['prefix' => 'shop'], function () {
     Route::post('stop', 'ShopController@stop');
     Route::post('delete', 'ShopController@delete');
+    Route::post('search', 'ShopController@search');
+    Route::post('stop_search', 'ShopController@stop_search');
 });

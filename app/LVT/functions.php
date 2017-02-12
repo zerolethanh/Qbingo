@@ -6,18 +6,24 @@
  */
 
 if (!function_exists('updateView')) {
-    function updateView($view, $data, $html_id = null)
+    function updateView($view, $data = null, $UPDATE_VIEW_HTML_ID = null)
     {
-        if (!$html_id) {
-            $html_id = last(explode('.', $view));
-        }
+        $UPDATE_VIEW_HTML_ID = $UPDATE_VIEW_HTML_ID ?: last(explode('.', $view));
+
         if (!view()->exists($view)) {
             throw  new ErrorException("$view not be found");
         }
 
         //render view string
-        ${$html_id} = view($view, $data)->render();
-        $UPDATE_VIEW_HTML_ID = $html_id;
-        return compact("$html_id", "UPDATE_VIEW_HTML_ID");
+        ${$UPDATE_VIEW_HTML_ID} = view($view, compact('data'))->render();
+        $date = date('c');
+        return get_defined_vars();
+//            [
+//            'UPDATE_VIEW_HTML_ID' => $html_id,
+//            "$html_id" => $viewRenderString,
+//            'time' => time(),
+//            'vars' => get_defined_vars()
+//        ];
+//        return compact("$html_id", "UPDATE_VIEW_HTML_ID", 'data');
     }
 }

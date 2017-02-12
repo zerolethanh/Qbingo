@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
             $sql = $query->sql;
             $bindings = $query->bindings;
             $time = $query->time;
-            Log::info(compact('sql', 'bindings', 'time'));
+            Log::debug(compact('sql', 'bindings', 'time'), [__CLASS__ . '@' . __FUNCTION__]);
         });
     }
 
@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
         $method = request()->method();
         $url = request()->url();
         $request_all = request()->all();
-        Log::info(get_defined_vars());
+        Log::debug(get_defined_vars(), [__CLASS__ . '@' . __FUNCTION__]);
     }
 
     /**

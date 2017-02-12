@@ -12,13 +12,20 @@
 <body>
 
 <div class="container">
-    <h1>ユーザー管理</h1>
-
+    <ol class="breadcrumb">
+        <li><a href="/master/control">マスター管理</a></li>
+        <li class="active">店舗管理</li>
+    </ol>
+    <h1> 店舗管理</h1>
+</div>
+<div class="container">
     <button onclick="location.href='/master/shops/register'">新規登録</button>
     <hr>
+    @include('master.shop_search_panel')
+    <hr>
 
-    <div id="shops_table">
-        @include('master.shops_table')
+    <div id="{{ \App\Http\Controllers\ShopController::SHOP_TABLE_HTML_ID }}">
+        @include(\App\Http\Controllers\ShopController::SHOP_TABLE_VIEW )
     </div>
 
 </div>

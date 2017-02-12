@@ -179,8 +179,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
-
+        Intervention\Image\ImageServiceProvider::class,
+        \App\Providers\ViewComposerServiceProvider::class
     ],
 
     /*

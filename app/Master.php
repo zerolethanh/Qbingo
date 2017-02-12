@@ -15,6 +15,7 @@ class Master extends Authenticatable
     use Helper;
     use Notifiable;
 
+    const SESSION_MASTER_KEY = 'master';
     protected $table = 'masters';
 
     protected $guarded = ['id'];
@@ -26,7 +27,13 @@ class Master extends Authenticatable
 
     public static function user($guard = 'master')
     {
-        return Auth::guard($guard)->user();
+        $master = Auth::guard($guard)->user();
+        return $master;
+    }
+
+    public static function fromSession()
+    {
+        return session(self::SESSION_MASTER_KEY);
     }
 
     public function tickets()

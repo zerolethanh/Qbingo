@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class MasterController extends Controller
 {
+    const URL_MASTER_SHOPS = '/master/shops';
+    const VIEW_MASTER_SHOP_DETAIL = 'master.shops.detail';
 
     /**
      * MasterController constructor.
@@ -53,6 +55,7 @@ class MasterController extends Controller
         $login_succ = Auth::guard('master')->attempt($credentials, true, true);
 
         if ($login_succ) {
+            MasterLogin::saveSessionMasterAndShareView();
             return redirect('/master/control');
         }
         return back()->withInput()->withErrors([
@@ -99,8 +102,8 @@ class MasterController extends Controller
      */
     public function shops()
     {
-        $shops = Master::user()->shops()->latest()->get();
-        return view('master.shops')->with(compact('shops', 'headers', 'headers_trans'));
+//        $shops = Master::user()->shops()->latest()->get();
+        return view('master.shops');//->with(compact('shops', 'headers', 'headers_trans'));
     }
 
     /**
@@ -144,28 +147,33 @@ class MasterController extends Controller
 
     public function shopDetail($shop_id)
     {
-        $shop = Master::user()->shops()->find($shop_id);
-
-        if (!$shop) {
-            return back();
+        if ($shop = Shop::id($shop_id)) {
+            // save for next save \App\Ticket by Shop
+//            session(['shop' => $shop]);
+            return view(self::VIEW_MASTER_SHOP_DETAIL)->with(compact('shop'));
         }
-
-        // save for next save \App\Ticket by Shop
-        session(['shop' => $shop]);
-
-        return view('master.shops.detail')->with(compact('shop'));
+        return redirect(self::URL_MASTER_SHOPS);
     }
 
     public function updateShopDetail(Request $request, $shop_id)
     {
-        $cllist = Shop::getColumnListing();
-        $rall = $request->all();
-        $update_data = array_only($rall, $cllist);
+        $shop = Shop::fromSessionOrRequest();
+        if (!$shop) return ['err' => true, 'err_message' => 'shop not found'];
+        if ($shop->reg_name != $request->reg_name)
+            $this->validate($request,
+                [
+                    'reg_name' => 'required|unique:shops,reg_name',
+                ], ['reg_name.unique' => '登録名が登録されています。']
+            );
+        if ($shop->email != $request->email)
+            $this->validate($request,
+                [
+                    'email' => 'required|email|unique:shops,email'
+                ], ['email.unique' => 'メールが登録されています。']
+            );
 
-        $shop = Master::user()->shops()->where('id', $shop_id)->first();
-        if ($shop) {
-            $update_success = $shop->update($update_data);
-        }
+        $update_success = $shop->safeUpdate($request->all());
+        //$shop->update($update_data);
         return back()->with(compact('update_success'));
     }
 }

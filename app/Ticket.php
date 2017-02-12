@@ -18,6 +18,11 @@ class Ticket extends Model
         return $this->belongsTo(Shop::class);
     }
 
+    public function master()
+    {
+        return $this->belongsTo(Master::class);
+    }
+
     public function getIssuedPasswordDateAttribute()
     {
         return $this->created_at->format('Y/m/d');
@@ -36,5 +41,25 @@ class Ticket extends Model
     public static function id($id)
     {
         return Master::user()->tickets()->where('tickets.id', $id)->first();
+    }
+
+
+    public static function latestOrder()
+    {
+        $shop = session('shop') ?: Shop::fromRequest();
+        if (isset($shop)) {
+            return $shop->tickets()->latest()->get();
+        }
+    }
+
+    public static function ofMaster()
+    {
+        //query builder for tickets of master
+        return Master::user()->tickets();
+    }
+
+    function getShopRegNameAttribute()
+    {
+        return isset($this->shop) ? $this->shop->reg_name : null;
     }
 }

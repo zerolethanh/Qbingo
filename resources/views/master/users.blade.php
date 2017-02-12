@@ -10,9 +10,26 @@
     @include('bootstrap.sources')
 </head>
 <body>
-
 <div class="container">
-    ユーザー管理
+    <ol class="breadcrumb">
+        <li><a href="/master/control">マスター管理</a></li>
+        <li class="active">ユーザー管理</li>
+    </ol>
+    <h1>ユーザー管理</h1>
+</div>
+{{-- ticket create form --}}
+@include('master.users_component.master_ticket_create_form')
+{{-- ticket table --}}
+<div class="container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="{{ \App\Http\Controllers\TicketController::TICKET_TABLE_HTML_ID }}">
+                    @include('master.users_component.master_tickets_table')
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

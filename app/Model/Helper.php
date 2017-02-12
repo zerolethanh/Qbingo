@@ -27,4 +27,11 @@ trait Helper
         return $columns;
     }
 
+    public function safeUpdate($data)
+    {
+        $cllist = self::getColumnListing();
+        $updateData = array_only($data, $cllist);
+        return $this->update($updateData);
+    }
+
 }
