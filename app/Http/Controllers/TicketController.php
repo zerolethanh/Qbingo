@@ -126,9 +126,9 @@ class TicketController extends Controller
 
     public function getTicketAndTableViewFromRequest(Request $request)
     {
-        if ($request->has('from_master')) {
+        if ($request->has('by_master')) {
             $this->table_view = self::MASTER_TICKET_TABLE_VIEW;
-            $ticket = Master::user()->tickets()->find($request->ticket_id);
+            $ticket = Ticket::find($request->ticket_id);
         } else {
             $this->table_view = self::TICKET_TABLE_VIEW;
             $shop = Shop::fromSessionOrRequest();

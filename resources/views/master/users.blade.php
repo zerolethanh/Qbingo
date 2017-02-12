@@ -21,15 +21,15 @@
 @include('master.users_component.master_ticket_create_form')
 {{-- ticket table --}}
 <div class="container">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="{{ \App\Http\Controllers\TicketController::TICKET_TABLE_HTML_ID }}">
-                    @include('master.users_component.master_tickets_table')
-                </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="{{ \App\Http\Controllers\TicketController::TICKET_TABLE_HTML_ID }}">
+                @include('master.users_component.master_tickets_table')
             </div>
         </div>
     </div>
+
 </div>
 </body>
 </html>

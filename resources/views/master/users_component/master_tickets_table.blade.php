@@ -38,15 +38,16 @@ $ticket_fields_trans = ['ID', 'ユーザー<br>パスワード', '登録名 ( �
 
 <script>
 
+    var by_master = 1;
+
     function ticket_stop(ticket_id) {
         event.preventDefault();
-        var from_master = 1;
-        $.post('/ticket/stop', {ticket_id, from_master},
+        $.post('/ticket/stop', {ticket_id, by_master},
             function (res, status) {
-                updateView(res)
+                updateView(res);
             }
         ).fail(function (res) {
-            notifyErrors(res)
+            notifyErrors(res);
         })
     }
 
@@ -55,11 +56,10 @@ $ticket_fields_trans = ['ID', 'ユーザー<br>パスワード', '登録名 ( �
         Confirm.delete(
             //yes button did push
             function () {
-                var from_master = 1;
-                $.post('/ticket/delete', {ticket_id, from_master},
+                $.post('/ticket/delete', {ticket_id, by_master},
                     function (res) {
-                        updateView(res)
-                        notifySuccess('削除しました。')
+                        updateView(res);
+                        notifySuccess('削除しました。');
                     }
                 ).fail(
                     function (res) {
