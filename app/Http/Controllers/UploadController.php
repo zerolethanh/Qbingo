@@ -28,18 +28,17 @@ class UploadController extends Controller
             'user_name' => 'required',
             'user_sex' => 'required',
             'user_message' => 'required',
-            'user_photo' => 'required|file|image',
+            PhotoController::REQUEST_USER_PHOTO_KEY => 'required|file|image',
             'happy_uuid' => 'required|exists:happies'
         ]);
 
         $data = $this->request->only(Upload::getColumnListing());
 
-        list($user_photo, $thumb) = Upload::savePhoto('user_photo');
-
-//        $happy_uuid = Uuid::uuid();//must match with happies.happy_uuid
-        $upload = Upload::create(
-            array_merge($data, compact('user_photo', 'thumb'))
-        );
+//        list($user_photo, $thumb) = Upload::savePhoto('user_photo');
+        PhotoController::savePhoto();
+        $user_photo = PhotoController::fullPhotoPath();
+        $thumb = PhotoController::fullThumbPath();
+        $upload = Upload::create(array_merge($data, compact('user_photo', 'thumb')));
 
         if ($upload) {
             return view('upload.form.upload_success');

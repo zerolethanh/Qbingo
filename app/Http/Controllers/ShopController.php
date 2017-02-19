@@ -25,6 +25,9 @@ class ShopController extends Controller
 
         if ($shop = Shop::id($request->shop_id)) {
             $shop->is_stopping = !$shop->is_stopping;
+            $shop->tickets()->update([
+                'is_expired' => $shop->is_stopping
+            ]);
             $shop->save();
         }
         if ($found = session(self::SESSION_SHOP_SEARCH_FOUND_KEY)) {

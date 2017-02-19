@@ -1,4 +1,3 @@
-
 <div class="container">
     <hr>
     <div class="row">
@@ -46,7 +45,7 @@
                 </div>
 
 
-                <div class="form-group  col-md-3">
+                <div class="form-group  col-md-1">
                     <div class="col-md-1">
                         <button type="submit" class="btn btn-primary" onclick="ticket_create(this.form)">
                             パスワード発行する
@@ -59,16 +58,22 @@
         </div>
     </div>
 </div>
+
+
 <script>
     function ticket_create(form) {
         event.preventDefault();
         var data = $(form).serializeArray();
         data.push({name: 'by_master', value: 1})
         $.post('/ticket/create', data, function (res, status) {
-            notifySuccess('ユーザーを作成しました。');
-            updateView(res)
+//            notifySuccess('ユーザーを作成しました。');
+//            updateView(res)
+            location.reload();
         }).fail(function (res) {
             notifyErrors(res)
         })
     }
+    @if($new_ticket = session('new_ticket'))
+        notifySuccess("{{ $new_ticket->issued_id }} ユーザーを作成しました");
+    @endif
 </script>

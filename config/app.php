@@ -180,7 +180,9 @@ return [
 
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        \App\Providers\ViewComposerServiceProvider::class
+        \App\Providers\ViewComposerServiceProvider::class,
+
+        Illuminated\Database\DbProfilerServiceProvider::class,
     ],
 
     /*

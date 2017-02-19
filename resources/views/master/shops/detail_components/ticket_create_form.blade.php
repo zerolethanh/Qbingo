@@ -64,8 +64,9 @@
         event.preventDefault();
         var data = $(form).serializeArray();
         $.post('/ticket/create', data, function (res, status) {
-            notifySuccess('ユーザーを作成しました。');
-            updateView(res)
+//            notifySuccess('ユーザーを作成しました。');
+//            updateView(res)
+            location.reload();
         }).fail(function (res) {
             notifyErrors(res)
         })

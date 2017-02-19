@@ -37,7 +37,8 @@ $ticket_fields_trans = ['ID', 'パスワード発行日', '使用名', '使用�
         event.preventDefault();
         $.post('/ticket/stop', {ticket_id},
             function (res, status) {
-                updateView(res)
+//                updateView(res)
+                location.reload();
             }
         ).fail(function (res) {
             notifyErrors(res)
@@ -51,8 +52,9 @@ $ticket_fields_trans = ['ID', 'パスワード発行日', '使用名', '使用�
             function () {
                 $.post('/ticket/delete', {ticket_id},
                     function (res) {
-                        updateView(res)
-                        notifySuccess('削除しました。')
+//                        updateView(res);
+//                        notifySuccess('削除しました。')
+                        location.reload();
                     }
                 ).fail(
                     function (res) {

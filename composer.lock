@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "919178f7a3608a85f44ddab37628b5e5",
-    "content-hash": "5a94402c864c7e0f2917c119e824b82b",
+    "hash": "b8b5d9f489df6d5b06104b359921d76e",
+    "content-hash": "5e9422e6938c0e69d84fb7c92d3a37c6",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -857,6 +857,58 @@
                 "uri"
             ],
             "time": "2016-06-24 23:00:38"
+        },
+        {
+            "name": "illuminated/db-profiler",
+            "version": "1.0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dmitry-ivanov/laravel-db-profiler.git",
+                "reference": "305f5c3f89258dc6c3152b5c2b829aadf2ee8c46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dmitry-ivanov/laravel-db-profiler/zipball/305f5c3f89258dc6c3152b5c2b829aadf2ee8c46",
+                "reference": "305f5c3f89258dc6c3152b5c2b829aadf2ee8c46",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^5.1",
+                "illuminate/support": "^5.1",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9",
+                "orchestra/database": "^3.1",
+                "orchestra/testbench": "^3.1",
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Illuminated\\Database\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Ivanov",
+                    "email": "dmitry.g.ivanov@gmail.com"
+                }
+            ],
+            "description": "Provides database queries profiling for Laravel http and console applications.",
+            "keywords": [
+                "database",
+                "db",
+                "laravel",
+                "mysql",
+                "profiler",
+                "profiling"
+            ],
+            "time": "2017-01-29 13:37:12"
         },
         {
             "name": "intervention/image",

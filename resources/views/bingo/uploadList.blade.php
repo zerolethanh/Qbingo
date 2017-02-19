@@ -110,7 +110,9 @@
                 foreach ($tdFields as $tdf) {
                     if ($tdf == 'user_photo') {
                         $user_photo = $upload[$tdf];
-                        $d = "<img src='/getphoto/$user_photo' width='80' class='img-responsive'/>";
+                        $basename = pathinfo($user_photo, PATHINFO_BASENAME);
+//                        $d = "<img src='/getphoto/$user_photo' width='80' class='img-responsive'/>";
+                        $d = "<img src='/photo/$basename' width='120' class='img-responsive'/>";
                         $datas[$tdf] = $d;
                     } elseif ($tdf == 'user_sex') {
                         switch ($upload[$tdf]) {

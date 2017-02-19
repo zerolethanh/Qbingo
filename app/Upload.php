@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Model\Helper;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -20,6 +21,7 @@ class Upload extends Model
 
     static $photo_save_name;
 
+    static $save_dir;
     const UPLOAD_THUMB_HEIGHT = 308;
 
     /**
@@ -55,14 +57,14 @@ class Upload extends Model
                 $thumb_path = self::saveUploadThumb();
 
                 //img path
-                $upload_path = static::UPLOAD_DIR . '/' . self::getPhotoSaveName();
+                $upload_path = self::get_save_dir(true) . DIRECTORY_SEPARATOR . self::getPhotoSaveName();
 
             }
 
         } else {
 
             //save img
-            $upload_path = $photo->storeAs(static::UPLOAD_DIR, self::getPhotoSaveName());
+            $upload_path = $photo->storeAs(self::get_save_dir(true), self::getPhotoSaveName());
 
             //save thumb img
             $thumb_path = self::saveUploadThumb();
@@ -84,9 +86,25 @@ class Upload extends Model
         return self::getPhotoSaveName();
     }
 
-    static function uploadPath($path = null)
+    static function uploadPath($path = '')
     {
-        return storage_path('app/upload/' . ($path ?? ''));
+        $save_dir = self::get_save_dir();
+        return "{$save_dir}/{$path}";
+    }
+
+    static function get_save_dir($from_upload_dir = false)
+    {
+        $uuid = Auth::user()->happy_uuid;
+        if ($from_upload_dir) {
+            $save_dir = static::UPLOAD_DIR . DIRECTORY_SEPARATOR . $uuid;
+        } else {
+            $save_dir = storage_path("app/upload/$uuid");
+            if (!is_dir($save_dir)) {
+                mkdir($save_dir);
+            }
+        }
+        //save dir
+        return $save_dir;
     }
 
     static function uploadThumbPath($path = null)
@@ -133,6 +151,18 @@ class Upload extends Model
             return compact('upload_thumb_file_path');
 
         }
+    }
+
+    function getUserPhotoAttribute($user_photo)
+    {
+        //return basename
+        return pathinfo($user_photo, PATHINFO_BASENAME);
+    }
+
+    function getThumbAttribute($thumb)
+    {
+        //return basename
+        return pathinfo($thumb, PATHINFO_BASENAME);
     }
 
 //    public function scopeQuizzes($q, $happy_uuid)

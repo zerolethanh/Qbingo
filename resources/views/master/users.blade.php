@@ -19,12 +19,14 @@
 </div>
 {{-- ticket create form --}}
 @include('master.users_component.master_ticket_create_form')
+{{--search ticket form--}}
+@include('master.users_component.search_ticket_form')
 {{-- ticket table --}}
 <div class="container">
     <hr>
     <div class="row">
         <div class="col-md-12">
-            <div id="{{ \App\Http\Controllers\TicketController::TICKET_TABLE_HTML_ID }}">
+            <div id="{{ \App\Http\Controllers\TicketController::MASTER_TICKET_TABLE_HTML_ID }}">
                 @include('master.users_component.master_tickets_table')
             </div>
         </div>

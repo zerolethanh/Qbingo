@@ -12,7 +12,8 @@
         "guzzlehttp/guzzle": "^6.2",
         "aws/aws-sdk-php": "~3.0",
         "laracasts/utilities": "~2.0",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "illuminated/db-profiler": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

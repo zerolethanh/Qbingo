@@ -53,6 +53,6 @@ class Happy extends Authenticatable
 
     public function ticket()
     {
-        $this->belongsTo(Ticket::class);
+        return $this->belongsTo(Ticket::class);
     }
 }

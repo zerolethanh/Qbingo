@@ -1,23 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', 'BieuController@welcome');
-
-//Route::get('/cuong', function () {
-//    return null;
-//});
-
-
 Route::get('/', 'HappyController@index');
 Route::post('/', 'HappyController@login');
 Route::get('logout', 'HappyController@logout');
@@ -36,10 +18,16 @@ Route::group(['prefix' => 'upload'], function () {
     Route::post('/', 'UploadController@upload');
 });
 Route::get('getphoto/upload/{photoname}', 'PhotoController@getphoto');
+Route::get('getphoto/{photoname?}', 'PhotoController@getphoto');
 Route::get('thumb/{photoname}', 'PhotoController@getThumbPhoto');
-Auth::routes();
+//new Photo
+Route::group(['prefix' => '/photo'], function () {
+    Route::get('/{name}', 'PhotoController@getPhotoByName');
+    Route::get('/thumb/{name}', 'PhotoController@getPhotoThumbByName');
+});
+//Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+//Route::get('/home', 'HomeController@index');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', 'AdminController@index');
@@ -98,6 +86,8 @@ Route::group(['prefix' => 'ticket'], function () {
     Route::post('create', 'TicketController@create');
     Route::post('stop', 'TicketController@stop');
     Route::post('delete', 'TicketController@delete');
+    Route::post('search', 'TicketController@search');
+    Route::post('clear_tickets_cache', 'TicketController@clear_tickets_cache');
 
 });
 

@@ -85,9 +85,9 @@ class BingoController extends Controller
         }
 
 //        JavaScript::put(['bingo_hit_numbers' => $hits]);
-        foreach ($uploads as $upload) {
-            Upload::createThumbFromUpload($upload);
-        }
+//        foreach ($uploads as $upload) {
+//            Upload::createThumbFromUpload($upload);
+//        }
         return view('bingo.start', compact('faces', 'quizzes', 'hits', 'no_hits', 'start', 'face', 'quiz', 'uploads'));
     }
 

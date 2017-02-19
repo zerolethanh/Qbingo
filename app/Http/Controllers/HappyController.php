@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 //use App\Happy;
 use App\Happy;
+use App\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -34,10 +35,29 @@ class HappyController extends Controller
             'password' => 'required'
         ]);
 
-        $user = Happy::where('happy_uuid', $request->happy_id)->orWhere('happy_id', $request->happy_id)->first();
+        $user = Happy::where('happy_uuid', $request->happy_id)
+            ->orWhere('happy_id', $request->happy_id)->first();
+        if (!$user) {
+            // get ticket via email
+            $email = $request->happy_id;
+            $ticket = Ticket::where('user_email', $email)->first();
+            $user = $ticket->happy;
+        }
+
         if ($user) {
+            //ticket
+            if (!isset($ticket))
+                $ticket = $user->ticket;
+            //check is expired ?
+            if ($ticket->is_expired) {
+                //期限切れているユーザー
+                return view('happy.index')->withErrors([
+                    ['msg' => 'このユーザーの使用が停止されています。']
+                ]);
+            }
+            //success, check password
             if (Hash::check($request->password, $user->password)) {
-                //login success
+                // login and save session
                 Auth::loginUsingId($user->id, true);
                 return view('bingo.control');
             }

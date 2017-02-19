@@ -75,11 +75,12 @@
 
                         {{-- user photo --}}
                         <div class="form-group">
-                            <label for="user_photo" class="col-md-4 control-label">自撮り</label>
+                            <?php $user_photo = \App\Http\Controllers\PhotoController::REQUEST_USER_PHOTO_KEY; ?>
+                            <label for="" class="col-md-4 control-label">自撮り</label>
                             <div class="col-md-6">
-                                <input type="file" id="user_photo"
+                                <input type="file" id="{{$user_photo}}"
                                        onchange="userPhotoPreview('preview_user_photo')"
-                                       name="user_photo" accept="image/*" required>
+                                       name="{{$user_photo}}" accept="image/*" required>
                                 <img src="" alt="" id="preview_user_photo" class="img-responsive">
                                 <p style="color:red" id="user_photo_validation_message"></p>
                             </div>
@@ -133,7 +134,7 @@
 
         var user_sex_radios = document.getElementsByName('user_sex');
         var user_sex = '';
-        for(var i = 0 ; i < user_sex_radios.length; i++){
+        for (var i = 0; i < user_sex_radios.length; i++) {
             if (user_sex_radios[i].checked) user_sex = user_sex_radios[i].value;
         }
 
