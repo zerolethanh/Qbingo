@@ -41,7 +41,9 @@ class HappyController extends Controller
             // get ticket via email
             $email = $request->happy_id;
             $ticket = Ticket::where('user_email', $email)->first();
-            $user = $ticket->happy;
+            if ($ticket) {
+                $user = $ticket->happy;
+            }
         }
 
         if ($user) {
@@ -58,7 +60,7 @@ class HappyController extends Controller
             //success, check password
             if (Hash::check($request->password, $user->password)) {
                 // login and save session
-                Auth::loginUsingId($user->id, true);
+                Auth::loginUsingId($user->id, true, true);
                 return view('bingo.control');
             }
         }
