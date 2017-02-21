@@ -34,8 +34,8 @@
 <body>
 
 <div class="position-ref flex-center full-height">
-    <button class="btn btn-success" onclick="location.href='/master/users'">ユーザー管理</button>
-    <button class="btn btn-success" onclick="location.href='/master/shops'">店舗管理</button>
+    <button class="btn btn-success btn-lg" onclick="location.href='/master/users'">ユーザー管理</button>
+    <button class="btn btn-success btn-lg" onclick="location.href='/master/shops'">店舗管理</button>
 </div>
 </body>
 </html>

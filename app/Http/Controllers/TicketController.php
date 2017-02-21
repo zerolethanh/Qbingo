@@ -6,11 +6,10 @@ namespace App\Http\Controllers;
 use App\Master;
 use App\Shop;
 use App\Ticket;
+use App\TicketSearch;
 use Faker\Provider\Uuid;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
@@ -18,15 +17,26 @@ class TicketController extends Controller
     //
     const TICKET_TABLE = 'ticket_table';
 
+    //table view
+    public $table_view = self::TICKET_TABLE_VIEW;
     const TICKET_TABLE_VIEW = 'master.shops.detail_components.ticket_table';
     const MASTER_TICKET_TABLE_VIEW = 'master.users_component.master_tickets_table';
+
     const TICKET_TABLE_HTML_ID = 'ticket_table';
     const MASTER_TICKET_TABLE_HTML_ID = 'master_tickets_table';
     const NVIEW_DEFAULT_ISSUED_ID = 9999;
-    public $table_view = self::TICKET_TABLE_VIEW;
     const URL_TICKET_SEARCH = '/ticket/search';
     const SESSION_TICKETS_KEY = 'tickets';
     const CACHE_TICKETS_KEY = 'tickets';
+
+    function __construct(Request $request)
+    {
+        if (Shop::fromHeader()) {
+            $this->table_view = self::TICKET_TABLE_VIEW;
+        } else {
+            $this->table_view = self::MASTER_TICKET_TABLE_VIEW;
+        }
+    }
 
     public function create(Request $request)
     {
@@ -110,7 +120,18 @@ class TicketController extends Controller
         if ($ticket) {
             $ticket->is_expired = !$ticket->is_expired;
             $saved = $ticket->save();
-            return updateView($this->table_view, get_defined_vars());
+//            return updateView($this->table_view, get_defined_vars());
+            session()->flash('stopped_ticket', $ticket);
+
+            if ($tickets = session('tickets')) {
+                foreach ($tickets as &$t) {
+                    if ($t->id == $ticket->id) {
+                        $t->is_expired = $ticket->is_expired;
+                    }
+                }
+                session(compact('tickets'));
+            }
+            return compact('ticket');
         }
 
         //get mas
@@ -168,6 +189,8 @@ class TicketController extends Controller
         $ticket_use_date_to = $request->ticket_use_date_to;
         $tickets = [];
 
+        dbStartLog();
+
         if ($ticket_id) {
             $tickets = Ticket::where('issued_id', $ticket_id)->with('shop')->get();
             //return 1
@@ -194,14 +217,37 @@ class TicketController extends Controller
             $result = Ticket::whereDate('use_date', '<=', $ticket_use_date_to)->with('shop')->get();
             $tickets = collect($tickets)->merge($result);
         }
+        if ($ticket_keyword) {
+            $search_fields = ['tickets.user', 'tickets.user_email', 'shops.reg_name'];
+            $ticket_keyword = "%$ticket_keyword%";
+            $result = Ticket::with('shop')
+                ->where('tickets.user', 'like', $ticket_keyword)
+                ->orWhere('tickets.user_email', 'like', $ticket_keyword)
+                ->orWhereHas('shop', function ($shop) use ($ticket_keyword) {
+                    $shop->where('reg_name', 'like', $ticket_keyword);
+                })
+                ->get();
+            $tickets = collect($tickets)->merge($result);
+        }
 
-        //save tickets in session
-        cache(compact(self::CACHE_TICKETS_KEY), 10);
+        dbEndLog(function ($sql) {
+            $this->writeSearchLog($sql);
+        });
 
-        //update view
-        return updateView(self::MASTER_TICKET_TABLE_VIEW, $tickets);
+        session(compact('tickets'));
 
-//        return $this->errorsResponse();
+        return updateView($this->table_view, $tickets);
+    }
+
+    function writeSearchLog($sql)
+    {
+        TicketSearch::create(
+            [
+                'by_type' => 'master',
+                'by_id' => Master::user()->id,
+                'sql' => $sql
+            ]
+        );
     }
 
     function errorsResponse($err = '該当なデータが見つかりませ 。', $code = 404)
@@ -220,7 +266,7 @@ class TicketController extends Controller
 
     function clear_tickets_cache()
     {
-        $cache_deleted = cache()->forget(self::CACHE_TICKETS_KEY);
+        $cache_deleted = session()->forget('tickets');
         return compact('cache_deleted');
     }
 

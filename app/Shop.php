@@ -57,6 +57,11 @@ class Shop extends SafeModel
         }
     }
 
+    static function fromHeader()
+    {
+        return static::fromRequest();
+    }
+
     public static function fromSessionOrRequest()
     {
         return session(static::SESSION_SHOP_KEY) ?: static::fromRequest();

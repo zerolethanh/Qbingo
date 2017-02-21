@@ -1,7 +1,7 @@
 {{-- $shop, $ticket_fields_trans, $ticket_fields--}}
 <?php
 
-$cached_tickets = cache(\App\Http\Controllers\TicketController::CACHE_TICKETS_KEY);
+$cached_tickets = session('tickets');//setted by searching
 if ($cached_tickets) {
     $tickets = $cached_tickets;
 } else {
@@ -67,7 +67,8 @@ $ticket_fields_trans = ['ID', 'ユーザー<br>パスワード', '登録名 ( �
         event.preventDefault();
         $.post('/ticket/stop', {ticket_id, by_master},
             function (res, status) {
-                updateView(res);
+//                updateView(res);
+                location.reload();
             }
         ).fail(function (res) {
             notifyErrors(res);

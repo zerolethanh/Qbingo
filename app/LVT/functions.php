@@ -27,3 +27,48 @@ if (!function_exists('updateView')) {
 //        return compact("$html_id", "UPDATE_VIEW_HTML_ID", 'data');
     }
 }
+if (!function_exists('dbStartLog')) {
+    function dbStartLog()
+    {
+        app('db')->enableQueryLog();
+    }
+}
+if (!function_exists('dbEndLog')) {
+    function dbEndLog(Closure $closure = null)
+    {
+        $sqls = app('db')->getQueryLog();
+        $sqls_string = "";
+
+        foreach ($sqls as $sql) {
+            $bindings = $sql['bindings'];
+//            $time = $sql->time;
+            $sql = $sql['query'];
+            $sql = dbBindings($sql, $bindings);
+            $sqls_string .= $sql . '; ' . PHP_EOL;
+        }
+
+        if (isset($sqls_string)) {
+            app('log')->info($sqls_string);
+            if (!is_null($closure)) {
+                $closure($sqls_string);
+            }
+            return $sqls_string;
+        }
+        app('db')->disableQueryLog();
+    }
+
+    function dbBindings($sql, array $bindings)
+    {
+        if (empty($bindings)) {
+            return $sql;
+        }
+
+        $placeholder = preg_quote('?', '/');
+        foreach ($bindings as $binding) {
+            $binding = is_numeric($binding) ? $binding : "'{$binding}'";
+            $sql = preg_replace('/' . $placeholder . '/', $binding, $sql, 1);
+        }
+
+        return $sql;
+    }
+}
