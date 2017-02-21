@@ -53,16 +53,17 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
         $.post('/shop/stop', {shop_id},
             function (res, status, xhr) {
 //                console.log(res);
-                updateView(res, status, xhr)
+//                updateView(res, status, xhr)
+                location.reload();
             });
     }
     function del_shop(shop_id) {
         Confirm.delete(
             () => {
                 $.post('/shop/delete', {shop_id}, function (res) {
-//                    location.reload();
-                    updateView(res)
-                    notifyFail('店舗を削除しました。')
+//                    updateView(res)
+//                    notifyFail('店舗を削除しました。')
+                    location.reload();
                 })
             })
     }

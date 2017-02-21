@@ -42,7 +42,7 @@
         $upload_id_options = '';
 
         foreach ($uploads as $upload) {
-            $upload_id_options .= "<option value='{$upload->id}'>{$upload->id} 番</option>";
+            $upload_id_options .= "<option value='{$upload->id}'>{$upload->id} 番 {$upload->user_name}</option>";
         }
 
         ?>
@@ -88,7 +88,16 @@
                                     if ($id == $upload_id) {
                                         $selected = 'selected';
                                     }
-                                    echo "<option value='{$id}' {$selected}>{$id} 番</option>";
+
+                                    //user_name
+                                    $user_name = '';
+                                    $upload = collect($uploads)->first(function ($u) use ($id) {
+                                        return $id == $u->id;
+                                    });
+                                    if ($upload)
+                                        $user_name = $upload->user_name;
+
+                                    echo "<option value='{$id}' {$selected}>{$id} 番 {$user_name}</option>";
                                 }
                                 ?>
 
