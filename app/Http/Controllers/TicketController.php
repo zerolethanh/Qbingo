@@ -123,7 +123,8 @@ class TicketController extends Controller
 //            return updateView($this->table_view, get_defined_vars());
             session()->flash('stopped_ticket', $ticket);
 
-            if ($tickets = session('tickets')) {
+            $tickets = Shop::fromRequest() ? session('shop_tickets') : session('master_tickets');
+            if ($tickets) {
                 foreach ($tickets as &$t) {
                     if ($t->id == $ticket->id) {
                         $t->is_expired = $ticket->is_expired;
@@ -182,14 +183,34 @@ class TicketController extends Controller
 
     public function search(Request $request)
     {
+        dbStartLog();
+
+        if ($shop = Shop::fromHeader()) {
+            $prefix = 'shop';
+            $tickets = $this->search_by_shop($shop);
+        } else {
+            $prefix = 'master';
+            $tickets = $this->search_by_master();
+        }
+
+        dbEndLog(function ($sql) {
+            $this->writeSearchLog($sql);
+        });
+
+        session([$prefix . '_tickets' => $tickets]);
+
+        return updateView($this->table_view, $tickets);
+    }
+
+    private function search_by_master()
+    {
+        $request = request();
         $ticket_keyword = $request->ticket_keyword;
         $ticket_created_date = $request->ticket_created_date;
         $ticket_id = $request->ticket_id;
         $ticket_use_date_from = $request->ticket_use_date_from;
         $ticket_use_date_to = $request->ticket_use_date_to;
         $tickets = [];
-
-        dbStartLog();
 
         if ($ticket_id) {
             $tickets = Ticket::where('issued_id', $ticket_id)->with('shop')->get();
@@ -229,14 +250,58 @@ class TicketController extends Controller
                 ->get();
             $tickets = collect($tickets)->merge($result);
         }
+        return $tickets;
+    }
 
-        dbEndLog(function ($sql) {
-            $this->writeSearchLog($sql);
-        });
+    private function search_by_shop(Shop $shop)
+    {
+        $request = request();
+        $ticket_keyword = $request->ticket_keyword;
+        $ticket_created_date = $request->ticket_created_date;
+        $ticket_id = $request->ticket_id;
+        $ticket_use_date_from = $request->ticket_use_date_from;
+        $ticket_use_date_to = $request->ticket_use_date_to;
+        $tickets = [];
 
-        session(compact('tickets'));
-
-        return updateView($this->table_view, $tickets);
+        if ($ticket_id) {
+            $tickets = $shop->tickets()->where('issued_id', $ticket_id)->with('shop')->get();
+            //return 1
+//            if ($tickets) return $tickets;
+        }
+        if ($ticket_created_date) {
+            $result = $shop->tickets()->whereDate('created_at', $ticket_created_date)->with('shop')->get();
+            $tickets = collect($tickets)->merge($result);
+            //return 2
+//            if ($tickets) return $tickets;
+        }
+        if ($ticket_use_date_from) {
+            $where = $shop->tickets()->whereDate('use_date', '>=', $ticket_use_date_from)->with('shop');
+            if ($ticket_use_date_to) {
+                // to $ticket_use_date_to
+                $result = $where->whereDate('use_date', '<=', $ticket_use_date_to)->get();
+            } else {
+                //to today
+//                $result = $where->whereDate('use_date', '<=', date('Y-m-d'))->get();
+                $result = $where->get();
+            }
+            $tickets = collect($tickets)->merge($result);
+        } elseif ($ticket_use_date_to) {
+            $result = $shop->tickets()->whereDate('use_date', '<=', $ticket_use_date_to)->with('shop')->get();
+            $tickets = collect($tickets)->merge($result);
+        }
+        if ($ticket_keyword) {
+            $search_fields = ['tickets.user', 'tickets.user_email', 'shops.reg_name'];
+            $ticket_keyword = "%$ticket_keyword%";
+            $result = $shop->tickets()->with('shop')
+                ->where('tickets.user', 'like', $ticket_keyword)
+                ->orWhere('tickets.user_email', 'like', $ticket_keyword)
+                ->orWhereHas('shop', function ($shop) use ($ticket_keyword) {
+                    $shop->where('reg_name', 'like', $ticket_keyword);
+                })
+                ->get();
+            $tickets = collect($tickets)->merge($result);
+        }
+        return $tickets;
     }
 
     function writeSearchLog($sql)
@@ -266,7 +331,13 @@ class TicketController extends Controller
 
     function clear_tickets_cache()
     {
-        $cache_deleted = session()->forget('tickets');
+        $cache_deleted = session()->forget('master_tickets');
+        return compact('cache_deleted');
+    }
+
+    function clear_shop_ticket_session()
+    {
+        $cache_deleted = session()->forget('shop_tickets');
         return compact('cache_deleted');
     }
 

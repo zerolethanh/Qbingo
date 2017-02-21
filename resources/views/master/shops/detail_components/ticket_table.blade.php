@@ -1,9 +1,19 @@
 {{-- $shop, $ticket_fields_trans, $ticket_fields--}}
 <?php
-$tickets = \App\Ticket::latestOrder();
+$shop_tickets = session('shop_tickets');
+if ($shop_tickets) {
+    $tickets = $shop_tickets;
+} else {
+    $tickets = \App\Ticket::latestOrder();
+}
 $ticket_fields = ['issued_id', 'issued_password_date', 'user', 'user_email', 'formatted_use_date', 'issued_password'];
 $ticket_fields_trans = ['ID', 'パスワード発行日', '使用名', '使用者メールアドレス', '使用日時', 'ユーザーパスワード'];
 ?>
+
+@if(isset($shop_tickets))
+    <button class="btn btn-success" onclick="clearShopTicketsSession()">全て表示</button>
+    <br><br>
+@endif
 <table class="table table-bordered">
     <tr>
         @foreach($ticket_fields_trans as $f)
@@ -63,6 +73,12 @@ $ticket_fields_trans = ['ID', 'パスワード発行日', '使用名', '使用�
                 )
             }
         )
+    }
+
+    function clearShopTicketsSession() {
+        $.post('/ticket/clear_shop_ticket_session',function (res) {
+            location.reload();
+        })
     }
 
     @if($t = session('new_ticket') )

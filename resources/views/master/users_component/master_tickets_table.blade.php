@@ -1,7 +1,7 @@
 {{-- $shop, $ticket_fields_trans, $ticket_fields--}}
 <?php
 
-$cached_tickets = session('tickets');//setted by searching
+$cached_tickets = session('master_tickets');//setted by searching
 if ($cached_tickets) {
     $tickets = $cached_tickets;
 } else {

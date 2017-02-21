@@ -27,6 +27,8 @@
 <hr>
 @include('master.shops.detail_components.ticket_create_form')
 <hr>
+@include('master.users_component.search_ticket_form')
+<hr>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">

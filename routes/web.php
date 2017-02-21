@@ -88,6 +88,7 @@ Route::group(['prefix' => 'ticket'], function () {
     Route::post('delete', 'TicketController@delete');
     Route::post('search', 'TicketController@search');
     Route::post('clear_tickets_cache', 'TicketController@clear_tickets_cache');
+    Route::post('clear_shop_ticket_session', 'TicketController@clear_shop_ticket_session');
 
 });
 
