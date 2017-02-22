@@ -235,7 +235,7 @@ EOD;
     function quiz_select() {
         event.preventDefault();
         document.getElementById('quiz_text_' + selecting_form_id).value = event.target.innerText;
-        $('[data-toggle="popover"]').hide();
+        $('[data-toggle="popover"]').popover('hide');
     }
 </script>
 </body>
