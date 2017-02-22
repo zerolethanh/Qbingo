@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Quiz;
 use App\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,8 +54,8 @@ class BingoController extends Controller
     public function quizzes()
     {
         $quizzes = request()->user()->quizzes;
-
-        return view('bingo.quiz')->with(compact('quizzes'));
+        $quiz_samples = Quiz::quiz_samples();
+        return view('bingo.quiz')->with(compact('quizzes', 'quiz_samples'));
     }
 
     public function start()

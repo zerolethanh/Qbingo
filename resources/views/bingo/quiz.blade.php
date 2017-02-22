@@ -1,4 +1,17 @@
-<!doctype html>
+<?php
+$quiz_samples = collect($quiz_samples)->map(function ($q) {
+    return "<a href='#' onclick='quiz_select()' class='list-group-item'>$q</a>";
+});
+$quiz_samples = implode($quiz_samples->toArray());
+$quiz_samples_html =
+    <<<EOD
+    <div class="list-group">
+$quiz_samples
+</div>
+EOD;
+
+?>
+        <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -107,8 +120,9 @@
                     </td>
 
                     {{-- QUIZ text--}}
-                    <td>
+                    <td width="50%">
                         <textarea class="form-control" rows="4" name="quiz_text"
+                                  id="quiz_text_{{$row}}"
                                   required>{{  $quiz_text }}</textarea>
                     </td>
 
@@ -119,6 +133,13 @@
                         </div>
                         <br>
                         <button class="btn btn-default btn-sm" onclick="saveAll(event, this.form)">全て保存</button>
+                        <button class="btn btn-warning btn-sm"
+                                onclick="show_quiz_samples(this.form)"
+                                data-toggle="popover"
+                                title="クイズにクリックして選択できます"
+                                data-content="{{ $quiz_samples_html }}"
+                        >クイズ定型文から選ぶ
+                        </button>
                     </td>
 
                 </tr>
@@ -197,6 +218,24 @@
 
         }
         return true
+    }
+
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({html: true});
+    });
+
+    /**
+     * quiz sample select
+     */
+    var selecting_form_id;
+    function show_quiz_samples(form) {
+        event.preventDefault();
+        selecting_form_id = form.id.split('_')[1];
+    }
+    function quiz_select() {
+        event.preventDefault();
+        document.getElementById('quiz_text_' + selecting_form_id).value = event.target.innerText;
+        $('[data-toggle="popover"]').hide();
     }
 </script>
 </body>

@@ -23,5 +23,12 @@ class Quiz extends Model
                 'quiz_number' => $quiz_number
             ]);
     }
+
+    static function quiz_samples()
+    {
+        if ($samples = trans('quiz_samples'))
+            return explode(PHP_EOL, $samples[0]);
+        return [];
+    }
 }
 
