@@ -23,7 +23,7 @@ class ShopController extends Controller
     function stop(Request $request)
     {
 
-        if ($shop = Shop::id($request->shop_id)) {
+        if ($shop = Shop::findId($request->shop_id)) {
             $shop->is_stopping = !$shop->is_stopping;
             $shop->tickets()->update([
                 'is_expired' => $shop->is_stopping
@@ -42,7 +42,7 @@ class ShopController extends Controller
     function delete(Request $request)
     {
         DB::beginTransaction();
-        if ($shop = Shop::id($request->shop_id)) {
+        if ($shop = Shop::findId($request->shop_id)) {
             $shop->tickets()->delete();
             $shop->delete();
         }
@@ -58,51 +58,80 @@ class ShopController extends Controller
 
     function search(Request $request)
     {
-        $search_fields = [self::SHOP_SEARCH_ID, self::SHOP_SEARCH_REG_DATE, self::SHOP_SEARCH_KEYWORD];
+        $search_fields = [
+            self::SHOP_SEARCH_ID,
+            self::SHOP_SEARCH_REG_DATE,
+            self::SHOP_SEARCH_KEYWORD,
+            'ticket_use_date_from',
+            'ticket_use_date_to'
+        ];
+        $ticket_use_date_from = $request->ticket_use_date_from;
+        $ticket_use_date_to = $request->ticket_use_date_to;
+
         // if no data to search , return  all shops;
         if (empty(array_filter($request->only($search_fields)))) {
             return $this->stop_search();
         }
 //        search via ID
+        $found_shops = [];
+
         if ($shop_id = $request->{self::SHOP_SEARCH_ID}) {
-            $shop = Shop::id($shop_id);
+            $shop = Shop::findId($shop_id);
             if (isset($shop)) {
-                $shops = [$shop];
-//                return 1
-                return $this->buildShops($shops);
+                $found_shops[] = $shop;
+
             }
         }
 //        search via keyword
         if ($keyword = $request->{self::SHOP_SEARCH_KEYWORD}) {
             $search_fields = ['reg_name', 'tel', 'email'];
-
-            foreach ($search_fields as $idx => $field) {
-                if ($idx == 0) {
-                    $wheres = Shop::where($field, $keyword);
-                } else {
-                    if (isset($wheres)) {
-                        $wheres = $wheres->orWhere($field, $keyword);
-                    }
-                }
+            $shops = Shop::where('reg_name', $keyword)
+                ->orWhere('tel', $keyword)
+                ->orWhere('email', $keyword)
+                ->latest()->get();
+            if (count($shops)) {
+                $found_shops = array_merge($found_shops, collect($shops)->all());
             }
-            //query
-            if (isset($wheres)) {
-                $shops = $wheres->latest()->get();
-            }
-
-            if (isset($shops)) {
-//                return 2
-                return $this->buildShops($shops);
-            }
-
         }
         //        search via date
         if ($reg_date = $request->{self::SHOP_SEARCH_REG_DATE}) {
             $shops = Shop::whereDate('created_at', $reg_date)->latest()->get();
             if (count($shops)) {
-//                return 3
-                return $this->buildShops($shops);
+                $found_shops = array_merge($found_shops, collect($shops)->all());
             }
+        }
+        //
+        if ($ticket_use_date_from) {
+            dbStartLog();
+            $shops = Shop::whereHas('happies', function ($happies) use ($ticket_use_date_from, $ticket_use_date_to) {
+                $happies->whereHas('activities', function ($a) use ($ticket_use_date_from, $ticket_use_date_to) {
+                    $a->whereDate('last', '>=', $ticket_use_date_from);
+                    if ($ticket_use_date_to) {
+                        $a->whereDate('last', '<=', $ticket_use_date_to);
+                    }
+                });
+            })->get();
+
+            foreach ($shops as $shop) {
+                $happies = $shop->happies()->whereHas('activities', function ($a) use ($ticket_use_date_from,$ticket_use_date_to) {
+                    $a->whereDate('last', '>=', $ticket_use_date_from);
+                    if($ticket_use_date_to){
+                        $a->whereDate('last', '<=', $ticket_use_date_to);
+                    }
+                })->get();
+                $shop->found_use_date_from_happies = $happies;
+            }
+
+            dbEndLog();
+
+            if (count($shops)) {
+                $found_shops = array_merge($found_shops, collect($shops)->all());
+            }
+        }
+
+        //build view
+        if (count($found_shops)) {
+            return $this->buildShops($found_shops);
         }
         return [
             'err' => true,
@@ -110,6 +139,18 @@ class ShopController extends Controller
         ];
 //        return all shops if no shops found
 //        return $this->buildShops(null);
+    }
+
+    function show_activity_users(Request $request)
+    {
+        $SHOP_SEARCH_FOUND = session('SHOP_SEARCH_FOUND');
+        if ($SHOP_SEARCH_FOUND) {
+            $shop = collect($SHOP_SEARCH_FOUND)->first(function ($shop) use ($request) {
+                return $shop->id == $request->shop_id;
+            });
+            $found_use_date_from_happies = $shop->found_use_date_from_happies;
+            return compact('found_use_date_from_happies');
+        }
     }
 
     function buildShops($shops)

@@ -17,7 +17,7 @@ class Master extends Authenticatable
     use Notifiable;
 
     const SESSION_MASTER_KEY = 'master';
-    const REQUEST_HEADER_MASTER_ID_KEY = 'MASTER-ID';
+    const REQUEST_HEADER_MASTER_ID_KEY = 'X-MASTER-ID';
 
     protected $table = 'masters';
 

@@ -62,4 +62,9 @@ class Ticket extends Model
     {
         return isset($this->shop) ? $this->shop->reg_name : null;
     }
+
+    public function activities()
+    {
+        return $this->hasManyThrough(Activity::class, Happy::class);
+    }
 }

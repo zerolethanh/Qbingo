@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Shop Detail</title>
+    <title>店舗ベージ</title>
     @include('bootstrap.sources')
 
     <style>
@@ -26,7 +26,6 @@
 @include('master.shops.detail_components.shop_update_form')
 <hr>
 @include('master.shops.detail_components.ticket_create_form')
-<hr>
 @include('master.users_component.search_ticket_form')
 <hr>
 <div class="container-fluid">

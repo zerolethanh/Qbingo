@@ -62,7 +62,7 @@ class TicketController extends Controller
                     'err' => true,
                     'err_message' => '店舗が見つかりません。'
                 ], 404);
-                $shop_id = decrypt($request->header('SHOP-ID'));
+                $shop_id = decrypt($request->header('X-SHOP-ID'));
                 $shop = Shop::find($shop_id);
                 if (!$shop) {
                     return $err;

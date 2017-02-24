@@ -73,7 +73,6 @@ EOD;
 
             ?>
             <form action="/quiz" method="post" id="form_{{$row}}">
-                {{ csrf_field() }}
                 <input type="hidden" name="quiz_number" value="{{$row}}" required/>
 
                 <tr id="row_{{$row}}">
@@ -219,10 +218,6 @@ EOD;
         }
         return true
     }
-
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popover({html: true});
-    });
 
     /**
      * quiz sample select

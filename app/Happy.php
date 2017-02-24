@@ -55,4 +55,9 @@ class Happy extends Authenticatable
     {
         return $this->belongsTo(Ticket::class);
     }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
 }

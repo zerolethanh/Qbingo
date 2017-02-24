@@ -1,10 +1,11 @@
 <?php
-$data = $data ?? session('SHOP_SEARCH_FOUND');
-$shops = $data ?? \App\Shop::latestOrder();
+$SHOP_SEARCH_FOUND = $data ?? session('SHOP_SEARCH_FOUND');
+$shops = $SHOP_SEARCH_FOUND ?? \App\Shop::latestOrder();
 $headers = ['id', 'raw_password', 'reg_name', 'reg_date'/*from Shop model*/];
 $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
+
 ?>
-@if( session('SHOP_SEARCH_FOUND') )
+@if($SHOP_SEARCH_FOUND)
     <button type="button" class="btn btn-success" onclick="shop_stop_search()">全て表示</button>
     <br>
     <label for="" class="text-center center-block" style="font-size: large">検索結果</label>
@@ -17,7 +18,9 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
         @endforeach
         <th></th>
         <th></th>
-        <th></th>
+        @if($SHOP_SEARCH_FOUND)
+            <th></th>
+        @endif
     </tr>
     {{-- shops--}}
     @foreach($shops as $s)
@@ -30,7 +33,7 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
                     <td>{{ $s->$h }}</td>
                 @endif
             @endforeach
-            <td><a href="{{ $shopURL }}" class="center-block text-center">詳細</a></td>
+            {{--<td><a href="{{ $shopURL }}" class="center-block text-center">詳細</a></td>--}}
             <td>
                 @if( $s->is_stopping )
                     <button onclick="stop_shop({{ $s->id }})"
@@ -45,6 +48,20 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
             <td>
                 <button onclick="del_shop( {{ $s->id }} )" class="btn btn-danger center-block">削除</button>
             </td>
+            @if($count = count($hs = $s->found_use_date_from_happies))
+                <?php
+                $hs_happy_id_strings = implode(PHP_EOL, collect($hs)->pluck('happy_id')->all());
+                ?>
+                <td>
+                    <a href="#"
+                       id="show_activity_users_{{ $s->id }}"
+                       onclick="show_activity_users( {{ $s->id }})"
+                       data-toggle="popover"
+                       {{--title="クイズにクリックして選択できます"--}}
+                       data-content="{!! $hs_happy_id_strings !!}"
+                    >{{ $count }}ユーザー</a>
+                </td>
+            @endif
         </tr>
     @endforeach
 </table>
@@ -73,5 +90,33 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
 //            location.reload();
             updateView(res)
         })
+    }
+
+
+    function show_activity_users(shop_id) {
+//        $.post('/shop/show_activity_users', {shop_id}, function (res) {
+//            console.log(res);
+//            try {
+//                let a = $('#show_activity_users_' + shop_id);
+//                a.attr('data-content', pluckField(res.found_use_date_from_happies, 'happy_id', true));
+//                a.popover('show');
+//            } catch (e) {
+//                console.log(e);
+//            }
+//
+//        });
+        let a = $('#show_activity_users_' + shop_id);
+        a.popover('show');
+    }
+
+    function pluckField(array, field, returnString = false) {
+        var result = [];
+        for (let i = 0; i < array.length; i++) {
+            result.push(array[i][field]);
+        }
+        if (returnString) {
+            return result.join().split('\n');
+        }
+        return result;
     }
 </script>

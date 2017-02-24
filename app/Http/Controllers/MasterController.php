@@ -147,7 +147,7 @@ class MasterController extends Controller
 
     public function shopDetail($shop_id)
     {
-        if ($shop = Shop::id($shop_id)) {
+        if ($shop = Shop::findId($shop_id)) {
             // save for next save \App\Ticket by Shop
 //            session(['shop' => $shop]);
             return view(self::VIEW_MASTER_SHOP_DETAIL)->with(compact('shop'));

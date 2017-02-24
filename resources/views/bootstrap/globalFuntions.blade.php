@@ -4,9 +4,9 @@
 <script>
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            'MASTER-ID': "{!! isset($master) ? encrypt($master->id) : null !!}",
-            'SHOP-ID': "{!! isset($shop) ? encrypt($shop->id) : null  !!}",
+            'X-CSRF-TOKEN': "{{ csrf_token() }}",
+            'X-MASTER-ID': "{!! isset($master) ? encrypt($master->id) : null !!}",
+            'X-SHOP-ID': "{!! isset($shop) ? encrypt($shop->id) : null  !!}",
         }
         , cache: true
     });
@@ -51,5 +51,14 @@
             console.log(e);
         }
     }
-
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            animation: false,
+            placement: 'auto right'
+        });
+    });
+//    $(document).ready(function () {
+//        $('[data-toggle="popover"]').popover({html: true});
+//    });
 </script>

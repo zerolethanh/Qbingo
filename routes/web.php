@@ -97,4 +97,5 @@ Route::group(['prefix' => 'shop'], function () {
     Route::post('delete', 'ShopController@delete');
     Route::post('search', 'ShopController@search');
     Route::post('stop_search', 'ShopController@stop_search');
+    Route::post('show_activity_users', 'ShopController@show_activity_users');
 });

@@ -19,7 +19,7 @@
     <h1> 店舗管理</h1>
 </div>
 <div class="container">
-    <button onclick="location.href='/master/shops/register'">新規登録</button>
+    <button onclick="location.href='/master/shops/register'" class="btn btn-default">新規登録</button>
     <hr>
     @include('master.shop_search_panel')
     <hr>

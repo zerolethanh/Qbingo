@@ -42,6 +42,15 @@ $SHOP_SEARCH_ACTION = \App\Http\Controllers\ShopController::URL_SHOP_SEARCH_ACTI
                                name="{{ $SHOP_SEARCH_ID }}"/>
                     </div>
                 </div>
+                <div class="form-group col-md-3">
+                    <label for="ticket_use_date_from" class="col-md-3 control-label">アクティビティ日</label>
+                    <div class="col-md-6 form-inline">
+                        <input id="ticket_use_date_from" type="date" class="form-control col-md-6"
+                               name="ticket_use_date_from"/>
+                        ~<input id="ticket_use_date_to" type="date" class="form-control col-md-6"
+                                name="ticket_use_date_to"/>
+                    </div>
+                </div>
                 <div class="form-group  col-md-3">
                     <div class="col-md-1">
                         <button type="submit" class="btn btn-primary" onclick="shop_search(this.form)">

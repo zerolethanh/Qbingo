@@ -14,7 +14,7 @@ class Shop extends SafeModel
     use SoftDeletes;
 
     const SESSION_SHOP_KEY = 'shop';
-    const REQUEST_HEADER_SHOP_ID_KEY = 'SHOP-ID';
+    const REQUEST_HEADER_SHOP_ID_KEY = 'X-SHOP-ID';
     protected $guarded = ['id'];
 
     protected $hidden = ['password'];
@@ -34,7 +34,18 @@ class Shop extends SafeModel
         return $this->hasMany(Ticket::class);
     }
 
-    public static function id($id)
+    public function happies()
+    {
+        return $this->hasManyThrough(Happy::class, Ticket::class);
+    }
+
+//    public function happies_activities()
+//    {
+//        $tickets = $this->happies()->with('activities')->get();
+//        return $tickets;
+//    }
+
+    public static function findId($id = null)
     {
         $shop = Master::user()->shops()->find($id);
         session(compact(static::SESSION_SHOP_KEY));
