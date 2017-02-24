@@ -50,7 +50,7 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
             </td>
             @if($count = count($hs = $s->found_use_date_from_happies))
                 <?php
-                $hs_happy_id_strings = implode(PHP_EOL, collect($hs)->pluck('happy_id')->all());
+                $hs_happy_id_strings = implode('<br>', collect($hs)->pluck('happy_id')->all());
                 ?>
                 <td>
                     <a href="#"
