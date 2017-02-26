@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Master;
 use App\Shop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
@@ -19,6 +20,58 @@ class ShopController extends Controller
     const SHOP_SEARCH_ID = 'shop_search_id';
     const URL_SHOP_SEARCH_ACTION = '/shop/search';
     const SESSION_SHOP_SEARCH_FOUND_KEY = 'SHOP_SEARCH_FOUND';
+
+    function showLoginForm()
+    {
+        if ($shop = Shop::user()) {
+            view()->share(compact('shop'));
+            return view('shop.index');
+        }
+        return view('shop.login');
+    }
+
+    function login(Request $request)
+    {
+        $credentials = $request->only('id', 'pass');
+        $shopLoggedIn = Auth::guard('shop')->attempt(
+            [
+                'email' => $credentials['id'],
+                'password' => $credentials['pass']
+            ],
+            true//remember
+        );
+        if ($shopLoggedIn) {
+            $shop = Auth::guard('shop')->user();
+            session(compact('shop'));
+            view()->share(compact('shop'));
+            return view('master.shops.detail', compact('shop'));
+        }
+    }
+
+    public function update(Request $request)
+    {
+        if (!$loggedin_shop = Shop::user()) {
+            return;
+        }
+        if ($request->reg_name != $loggedin_shop->reg_name) {
+            $this->validate($request, [
+                'reg_name' => 'required|unique:shops,reg_name'
+            ]);
+        }
+        $updated = Shop::user()->safeUpdate($request->all());
+        if ($updated) {
+            $message = '情報をアップデートしました。';
+        } else {
+            $message = '情報がアップデート出来ませんでした。';
+        }
+        return compact('updated', 'message');
+    }
+
+    public function logout()
+    {
+        Auth::guard('shop')->logout();
+        return redirect('/shop');
+    }
 
     function stop(Request $request)
     {
@@ -113,9 +166,9 @@ class ShopController extends Controller
             })->get();
 
             foreach ($shops as $shop) {
-                $happies = $shop->happies()->whereHas('activities', function ($a) use ($ticket_use_date_from,$ticket_use_date_to) {
+                $happies = $shop->happies()->whereHas('activities', function ($a) use ($ticket_use_date_from, $ticket_use_date_to) {
                     $a->whereDate('last', '>=', $ticket_use_date_from);
-                    if($ticket_use_date_to){
+                    if ($ticket_use_date_to) {
                         $a->whereDate('last', '<=', $ticket_use_date_to);
                     }
                 })->get();

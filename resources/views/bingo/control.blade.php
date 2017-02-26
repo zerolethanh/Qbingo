@@ -39,21 +39,23 @@
 <div class="position-ref flex-center full-height">
     <div>
         <div>
-            <button style="background-image: url('/botann/newボタン1.png') ; margin-right: 10px; margin-bottom: 5px;"
+            <button style="background-image: url('/botann/newボタン1.png') ;
+                    margin-right: 10px; margin-bottom: 5px;"
+                    onclick="window.open().location.href = 'http://9view.jp/bingo/bingo.html'"
                     class="button-background">
             </button>
-            <button onclick="location.href = '/bingo/upload-list'" style="background-image: url('/botann/newボタン2.png')"
+            <button onclick="window.open().location.href = '/bingo/upload-list'" style="background-image: url('/botann/newボタン2.png')"
                     class="button-background">
 
             </button>
         </div>
         <div>
-            <button onclick=" location.href = '/bingo/quizzes'"
+            <button onclick="window.open().location.href = '/bingo/quizzes'"
                     style="background-image: url('/botann/newボタン3.png'); margin-right: 10px;"
                     class="button-background">
 
             </button>
-            <button onclick=" location.href = '/bingo/start'" class="button-background"
+            <button onclick="window.open().location.href = '/bingo/start'" class="button-background"
                     style="background-image: url('/botann/newボタン41.png')">
 
             </button>

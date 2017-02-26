@@ -93,6 +93,13 @@ Route::group(['prefix' => 'ticket'], function () {
 });
 
 Route::group(['prefix' => 'shop'], function () {
+    //shop control
+    Route::get('/', 'ShopController@showLoginForm');
+    Route::get('login', 'ShopController@showLoginForm');
+    Route::post('login', 'ShopController@login');
+    Route::post('update', 'ShopController@update');
+    Route::get('logout', 'ShopController@logout');
+    //master control
     Route::post('stop', 'ShopController@stop');
     Route::post('delete', 'ShopController@delete');
     Route::post('search', 'ShopController@search');

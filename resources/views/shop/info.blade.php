@@ -7,8 +7,4 @@
             &nbsp; 登録日 <b>{{ $shop->reg_date }} </b>
         </p>
     </div>
-    <br>
-    <button onclick="location.href='/master/shops'" class="btn btn-default">
-        店舗管理に戻る
-    </button>
 </div>

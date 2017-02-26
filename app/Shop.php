@@ -2,22 +2,29 @@
 
 namespace App;
 
-use App\Model\SafeModel;
+use App\Model\Helper;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 //use Illuminate\Database\Eloquent\Model;
 
-class Shop extends SafeModel
+class Shop extends Authenticatable
 {
     //
     use SoftDeletes;
-
+    use Helper;
     const SESSION_SHOP_KEY = 'shop';
     const REQUEST_HEADER_SHOP_ID_KEY = 'X-SHOP-ID';
     protected $guarded = ['id'];
 
     protected $hidden = ['password'];
+
+    static public function user()
+    {
+        return Auth::guard('shop')->user();
+    }
 
     public function master()
     {
