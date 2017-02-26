@@ -16,7 +16,6 @@ Route::group(['prefix' => 'bingo'], function () {
 Route::group(['prefix' => 'upload'], function () {
 //    Route::get('/', 'UploadController@index');
     Route::post('/', 'UploadController@upload');
-    Route::get('updateDbNumber', 'UploadController@updateDbNumber');
 });
 Route::get('getphoto/upload/{photoname}', 'PhotoController@getphoto');
 Route::get('getphoto/{photoname?}', 'PhotoController@getphoto');
@@ -80,7 +79,7 @@ Route::group(['prefix' => 'master'], function () {
     Route::get('/shops/{shop_id}', 'MasterController@shopDetail');
     Route::post('/shops/{shop_id}', 'MasterController@updateShopDetail');
     Route::get('users', 'MasterController@users');
-
+    Route::get('updateDbNumber', 'UploadController@updateDbNumber');
 });
 
 Route::group(['prefix' => 'ticket'], function () {

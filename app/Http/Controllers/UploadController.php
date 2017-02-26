@@ -61,14 +61,15 @@ class UploadController extends Controller
         if ($master = Master::fromRequest()) {
             $uploads = Upload::latest()->get();
             $collect = collect($uploads)->groupBy('happy_uuid');
-
+            $updated = [];
             foreach ($collect as $happy => $uploads) {
                 foreach ($uploads as $idx => $upload) {
-
-                    $upload->update(['number' => $idx + 1]);
+                    $updated[] = $upload->update(['number' => $idx + 1]);
                 }
             }
+            return $updated;
         }
+        return 'can be access by master only';
     }
 
 }
