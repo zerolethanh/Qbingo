@@ -58,7 +58,7 @@ class UploadController extends Controller
     public function updateDbNumber()
     {
         //master only can update
-        if ($master = Master::fromRequest()) {
+        if ($master = Master::user()) {
             $uploads = Upload::latest()->get();
             $collect = collect($uploads)->groupBy('happy_uuid');
             $updated = [];
