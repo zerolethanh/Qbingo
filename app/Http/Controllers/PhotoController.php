@@ -92,8 +92,9 @@ class PhotoController extends Controller
     {
         if (file_exists($name))
             return $name;
+        $happy_uuid = request()->happy_uuid ?? Auth::user()->happy_uuid;
         $name = $name ?: self::photoName();
-        $dir = storage_path('app/upload/' . Auth::user()->happy_uuid);
+        $dir = storage_path('app/upload/' . $happy_uuid);
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
@@ -104,8 +105,9 @@ class PhotoController extends Controller
     {
         if (file_exists($name))
             return $name;
+        $happy_uuid = request()->happy_uuid ?? Auth::user()->happy_uuid;
         $name = $name ?: self::photoName();
-        $dir = storage_path('app/upload/' . Auth::user()->happy_uuid . '/thumb');
+        $dir = storage_path('app/upload/' . $happy_uuid . '/thumb');
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
