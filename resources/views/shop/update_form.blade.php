@@ -11,7 +11,7 @@
                     </ul>
                 </div>
             @endif
-            <form class="form-horizontal" role="form" method="POST" action="/shop/update">
+            <form class="form-horizontal" role="form" method="POST">
                 {{ csrf_field() }}
 
                 <div class="form-group">
@@ -73,10 +73,8 @@
 
                 <div class="form-group">
                     <div class="col-md-8 col-md-offset-6">
-                        <button type="submit" class="btn btn-warning" onclick="shop_update(this.form)">
-                            編集
+                        <button class="btn btn-warning" onclick="return shop_update(this.form)">編集
                         </button>
-
                     </div>
                 </div>
 
@@ -85,18 +83,22 @@
         </div>
     </div>
 </div>
+
 <script>
     @if($detail_update_success = session('update_success'))
-        notifySuccess('アップデートしました。');
+        notifySuccess("{{ $detail_update_success }}");
     @endif
+
     function shop_update(form) {
         event.preventDefault();
         var data = $(form).serializeArray();
         $.post('/shop/update', data, function (res) {
-            if(res.updated)
-                notifySuccess(res.message);
-            else
-                notifyFail(res.message);
+            location.reload();
+//            if (res.updated) {
+//                notifySuccess(res.message);
+//            } else {
+//                notifyFail(res.message);
+//            }
         }).fail(function (res) {
             notifyErrors(res)
         })

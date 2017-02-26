@@ -97,6 +97,7 @@ Route::group(['prefix' => 'shop'], function () {
     Route::get('/', 'ShopController@showLoginForm');
     Route::get('login', 'ShopController@showLoginForm');
     Route::post('login', 'ShopController@login');
+    Route::get('index', 'ShopController@index');
     Route::post('update', 'ShopController@update');
     Route::get('logout', 'ShopController@logout');
     //master control

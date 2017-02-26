@@ -1,3 +1,6 @@
+<?php $shop = $shop ?? session('shop');
+
+?>
 <div class="container">
 
     <div class="pull-right">

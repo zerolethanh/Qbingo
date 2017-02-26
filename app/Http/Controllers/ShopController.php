@@ -25,9 +25,15 @@ class ShopController extends Controller
     {
         if ($shop = Shop::user()) {
             view()->share(compact('shop'));
+            session(compact('shop'));
             return view('shop.index');
         }
         return view('shop.login');
+    }
+
+    function index()
+    {
+        return view('shop.index');
     }
 
     function login(Request $request)
@@ -44,7 +50,7 @@ class ShopController extends Controller
             $shop = Auth::guard('shop')->user();
             session(compact('shop'));
             view()->share(compact('shop'));
-            return view('master.shops.detail', compact('shop'));
+            return view('shop.index', compact('shop'));
         }
     }
 
@@ -61,6 +67,7 @@ class ShopController extends Controller
         $updated = Shop::user()->safeUpdate($request->all());
         if ($updated) {
             $message = '情報をアップデートしました。';
+            session()->flash('update_success', '情報をアップデートしました');
         } else {
             $message = '情報がアップデート出来ませんでした。';
         }
