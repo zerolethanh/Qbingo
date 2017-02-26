@@ -105,7 +105,7 @@
         @foreach($uploads as $upload)
             <tr>
                 <?php
-                $tdFields = ['id', 'user_name', 'user_sex', 'user_photo', 'user_message'];
+                $tdFields = ['number', 'user_name', 'user_sex', 'user_photo', 'user_message'];
                 $datas = [];
                 foreach ($tdFields as $tdf) {
                     if ($tdf == 'user_photo') {

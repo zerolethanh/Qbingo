@@ -25,7 +25,7 @@ class BingoController extends Controller
 
     public function uploadList()
     {
-        $uploads = Auth::user()->uploads()->latest()->get()->toArray();
+        $uploads = Auth::user()->uploads()->orderBy('number','desc')->get()->toArray();
         $url = $this->getUrl();
         \PHPQRCode\QRcode::png($url, $this->QRSavePath(), Constants::QR_ECLEVEL_L, 4, 2);
         return view('bingo.uploadList')->with(compact('uploads', 'url'));

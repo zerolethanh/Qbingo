@@ -1,6 +1,6 @@
 <?php
 $quiz_samples = collect($quiz_samples)->map(function ($q) {
-    return "<a href='#' onclick='quiz_select()' class='list-group-item'>$q</a>";
+    return "<a href='#' onclick='sample_quiz_select()' class='list-group-item'>$q</a>";
 });
 $quiz_samples = implode($quiz_samples->toArray());
 $quiz_samples_html =
@@ -106,10 +106,11 @@ EOD;
                                     $upload = collect($uploads)->first(function ($u) use ($id) {
                                         return $id == $u->id;
                                     });
-                                    if ($upload)
-                                        $user_name = $upload->user_name;
 
-                                    echo "<option value='{$id}' {$selected}>{$id} 番 {$user_name}</option>";
+                                    $user_name = $upload->user_name ?? '';
+                                    $number = $upload->number ?? '';
+
+                                    echo "<option value='{$id}' {$selected}>{$number} 番 {$user_name}</option>";
                                 }
                                 ?>
 
@@ -227,7 +228,7 @@ EOD;
         event.preventDefault();
         selecting_form_id = form.id.split('_')[1];
     }
-    function quiz_select() {
+    function sample_quiz_select() {
         event.preventDefault();
         document.getElementById('quiz_text_' + selecting_form_id).value = event.target.innerText;
         $('[data-toggle="popover"]').popover('hide');

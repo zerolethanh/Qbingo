@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Master;
 use App\Upload;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UploadController extends Controller
 {
@@ -34,11 +36,14 @@ class UploadController extends Controller
 
         $data = $this->request->only(Upload::getColumnListing());
 
+        DB::beginTransaction();
 //        list($user_photo, $thumb) = Upload::savePhoto('user_photo');
         PhotoController::savePhoto();
         $user_photo = PhotoController::fullPhotoPath();
         $thumb = PhotoController::fullThumbPath();
-        $upload = Upload::create(array_merge($data, compact('user_photo', 'thumb')));
+        $number = Upload::where('happy_uuid', $this->request->happy_uuid)->max(('number')) + 1;
+        $upload = Upload::create(array_merge($data, compact('user_photo', 'thumb', 'number')));
+        DB::commit();
 
         if ($upload) {
             return view('upload.form.upload_success');
@@ -48,6 +53,22 @@ class UploadController extends Controller
     public function uploadConfirm()
     {
 
+    }
+
+    public function updateDbNumber()
+    {
+        //master only can update
+        if ($master = Master::fromRequest()) {
+            $uploads = Upload::latest()->get();
+            $collect = collect($uploads)->groupBy('happy_uuid');
+
+            foreach ($collect as $happy => $uploads) {
+                foreach ($uploads as $idx => $upload) {
+
+                    $upload->update(['number' => $idx + 1]);
+                }
+            }
+        }
     }
 
 }
