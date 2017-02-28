@@ -52,6 +52,9 @@ class ShopController extends Controller
             view()->share(compact('shop'));
             return view('shop.index', compact('shop'));
         }
+        return back()
+            ->withErrors('IDまたはパスワードが間違っています。')
+            ->withInput();
     }
 
     public function update(Request $request)
