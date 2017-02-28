@@ -28,7 +28,11 @@
                             </ul>
                         </div>
                     @endif
-
+                    <div class="text-center">
+                        <h2>新郎新婦のお二人にお祝いのメッセージを!!<br></h2>
+                        <h4>顔写真を自分撮りするかファイルから選択して<br></h4>
+                        <h4>コメントを添えて送ってください。</h4><br>
+                    </div>
                     {{-- upload form --}}
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/upload') }}"
                           id="upload_form"
