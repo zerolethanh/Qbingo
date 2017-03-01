@@ -185,7 +185,7 @@ class ShopController extends Controller
                 // html
                 $filted_tickets_html = '';
                 foreach ($shop->filted_tickets as $ticket) {
-                    $filted_tickets_html .= $ticket->use_date . '&nbsp;' . $ticket->user . PHP_EOL;
+                    $filted_tickets_html .= $ticket->formatted_use_date . '&nbsp;' . $ticket->user . PHP_EOL;
                 }
                 $shop->filted_tickets_html = $filted_tickets_html;
 //                info($shop->filted_tickets);
