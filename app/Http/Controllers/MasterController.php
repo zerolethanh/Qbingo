@@ -173,8 +173,15 @@ class MasterController extends Controller
             );
 
         $update_success = $shop->safeUpdate($request->all());
+        if ($update_success) {
+            $message = '店舗情報をアップデートしました。';
+        } else {
+            $message = '店舗情報をアップデート出来ませんでした。';
+        }
+        return back()->with(compact('message', 'update_success'));
+
         //$shop->update($update_data);
-        return back()->with(compact('update_success'));
+
     }
 }
 

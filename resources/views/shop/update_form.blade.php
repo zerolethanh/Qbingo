@@ -73,7 +73,7 @@
 
                 <div class="form-group">
                     <div class="col-md-8 col-md-offset-6">
-                        <button class="btn btn-warning" onclick="return shop_update(this.form)">編集
+                        <button class="btn btn-warning" onclick="shop_update(this.form);">編集
                         </button>
                     </div>
                 </div>

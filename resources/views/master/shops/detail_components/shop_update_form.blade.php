@@ -86,7 +86,9 @@
     </div>
 </div>
 <script>
-    @if($detail_update_success = session('update_success'))
-        notifySuccess('アップデートしました。');
+    @if($update_success = session('update_success'))
+        notifySuccess("{{ session('message') }}");
+    @else
+        notifyFail("{{ session('message') }}");
     @endif
 </script>

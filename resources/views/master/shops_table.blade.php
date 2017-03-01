@@ -48,18 +48,15 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
             <td>
                 <button onclick="del_shop( {{ $s->id }} )" class="btn btn-danger center-block">削除</button>
             </td>
-            @if($count = count($hs = $s->found_use_date_from_happies))
-                <?php
-                $hs_happy_id_strings = implode('<br>', collect($hs)->pluck('happy_id')->all());
-                ?>
+            @if(isset($s->filted_tickets_html))
                 <td>
                     <a href="#"
                        id="show_activity_users_{{ $s->id }}"
                        onclick="show_activity_users( {{ $s->id }})"
                        data-toggle="popover"
                        {{--title="クイズにクリックして選択できます"--}}
-                       data-content="{!! $hs_happy_id_strings !!}"
-                    >{{ $count }}ユーザー</a>
+                       data-content="<?php echo nl2br($s->filted_tickets_html) ?>"
+                    >{{ count($s->filted_tickets) }}ユーザー</a>
                 </td>
             @endif
         </tr>
@@ -106,6 +103,7 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
 //
 //        });
         let a = $('#show_activity_users_' + shop_id);
+        a.popover({html: true});
         a.popover('show');
     }
 

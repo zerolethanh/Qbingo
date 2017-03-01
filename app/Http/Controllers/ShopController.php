@@ -163,29 +163,55 @@ class ShopController extends Controller
                 $found_shops = array_merge($found_shops, collect($shops)->all());
             }
         }
-        //
+
+        //ticket use date fileter
         if ($ticket_use_date_from) {
             dbStartLog();
-            $shops = Shop::whereHas('happies', function ($happies) use ($ticket_use_date_from, $ticket_use_date_to) {
-                $happies->whereHas('activities', function ($a) use ($ticket_use_date_from, $ticket_use_date_to) {
-                    $a->whereDate('last', '>=', $ticket_use_date_from);
-                    if ($ticket_use_date_to) {
-                        $a->whereDate('last', '<=', $ticket_use_date_to);
-                    }
-                });
+            $shops = Shop::whereHas('tickets', function ($tickets) use ($ticket_use_date_from, $ticket_use_date_to) {
+                $tickets = $tickets->whereDate('use_date', '>=', $ticket_use_date_from);
+                if ($ticket_use_date_to) {
+                    $tickets->whereDate('use_date', '<=', $ticket_use_date_to);
+                }
             })->get();
+            foreach ($shops as $shop) {
+                $tickets = $shop->tickets()->whereDate('use_date', '>=', $ticket_use_date_from);
+                if ($ticket_use_date_to) {
+                    $tickets->whereDate('use_date', '<=', $ticket_use_date_to);
+                }
+                //get from db
+                $tickets = $tickets->get();
+                //assign to shop
+                $shop->filted_tickets = $tickets;
+                // html
+                $filted_tickets_html = '';
+                foreach ($shop->filted_tickets as $ticket) {
+                    $filted_tickets_html .= $ticket->use_date . '&nbsp;' . $ticket->user . PHP_EOL;
+                }
+                $shop->filted_tickets_html = $filted_tickets_html;
+//                info($shop->filted_tickets);
+            }
+            dbEndLog();
+
+            if (count($shops)) {
+                $found_shops = array_merge($found_shops, collect($shops)->all());
+            }
+        } elseif ($ticket_use_date_to) {
+            dbStartLog();
+            $shops = Shop::whereHas('tickets', function ($tickets) use ($ticket_use_date_to) {
+                $tickets->whereDate('use_date', '<=', $ticket_use_date_to);
+            })->get();
+            dbEndLog();
 
             foreach ($shops as $shop) {
-                $happies = $shop->happies()->whereHas('activities', function ($a) use ($ticket_use_date_from, $ticket_use_date_to) {
-                    $a->whereDate('last', '>=', $ticket_use_date_from);
-                    if ($ticket_use_date_to) {
-                        $a->whereDate('last', '<=', $ticket_use_date_to);
-                    }
-                })->get();
-                $shop->found_use_date_from_happies = $happies;
+                $tickets = $shop->tickets()->whereDate('use_date', '<=', $ticket_use_date_to)->get();
+                $shop->filted_tickets = $tickets;
+                // html
+                $filted_tickets_html = '';
+                foreach ($shop->filted_tickets as $ticket) {
+                    $filted_tickets_html .= $ticket->use_date . '&nbsp;' . $ticket->user . PHP_EOL;
+                }
+                $shop->filted_tickets_html = $filted_tickets_html;
             }
-
-            dbEndLog();
 
             if (count($shops)) {
                 $found_shops = array_merge($found_shops, collect($shops)->all());
@@ -200,8 +226,7 @@ class ShopController extends Controller
             'err' => true,
             'err_message' => '該当データはありません。'
         ];
-//        return all shops if no shops found
-//        return $this->buildShops(null);
+
     }
 
     function show_activity_users(Request $request)

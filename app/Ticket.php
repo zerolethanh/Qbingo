@@ -11,7 +11,7 @@ class Ticket extends Model
     use SoftDeletes;
     protected $guarded = ['id'];
 
-    protected $dates = ['use_date', 'deleted_at'];
+    protected $dates = ['deleted_at'];
 
     public function shop()
     {
