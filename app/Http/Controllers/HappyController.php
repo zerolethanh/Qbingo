@@ -17,9 +17,17 @@ class HappyController extends Controller
     {
         // check if logged in
         if (Auth::check()) {
+            if (IS_MOBILE) {
+                return view('mobile.bingo');
+            }
             return view('bingo.control');
+        } else {
+            if (IS_MOBILE) {
+                return view('mobile.index');
+            }
+            return view('happy.index');
         }
-        return view('happy.index');
+
     }
 
     /**

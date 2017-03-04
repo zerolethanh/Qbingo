@@ -66,8 +66,6 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
     function stop_shop(shop_id) {
         $.post('/shop/stop', {shop_id},
             function (res, status, xhr) {
-//                console.log(res);
-//                updateView(res, status, xhr)
                 location.reload();
             });
     }
@@ -75,8 +73,6 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
         Confirm.delete(
             () => {
                 $.post('/shop/delete', {shop_id}, function (res) {
-//                    updateView(res)
-//                    notifyFail('店舗を削除しました。')
                     location.reload();
                 })
             })
@@ -84,24 +80,12 @@ $headers_trans = ['ID', 'PASS', '登録名 ( 契約店舗)', '登録日'];
     function shop_stop_search() {
         event.preventDefault();
         $.post('/shop/stop_search', function (res) {
-//            location.reload();
             updateView(res)
         })
     }
 
 
     function show_activity_users(shop_id) {
-//        $.post('/shop/show_activity_users', {shop_id}, function (res) {
-//            console.log(res);
-//            try {
-//                let a = $('#show_activity_users_' + shop_id);
-//                a.attr('data-content', pluckField(res.found_use_date_from_happies, 'happy_id', true));
-//                a.popover('show');
-//            } catch (e) {
-//                console.log(e);
-//            }
-//
-//        });
         let a = $('#show_activity_users_' + shop_id);
         a.popover({html: true});
         a.popover('show');

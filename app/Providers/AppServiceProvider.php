@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         $this->listenDB();
         $this->logRequest();
         $this->viewShareData();
+        $this->defineIsMobile();
     }
 
     public function viewShareData()
@@ -43,6 +44,13 @@ class AppServiceProvider extends ServiceProvider
         $url = request()->url();
         $request_all = request()->all();
         Log::debug(get_defined_vars(), [__CLASS__ . '@' . __FUNCTION__]);
+    }
+
+    function defineIsMobile()
+    {
+        $is_mobile = (new \Mobile_Detect())->isMobile();
+        define('IS_MOBILE', $is_mobile);
+        define('IS_M', $is_mobile);
     }
 
     /**

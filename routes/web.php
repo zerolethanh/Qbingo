@@ -107,3 +107,10 @@ Route::group(['prefix' => 'shop'], function () {
     Route::post('stop_search', 'ShopController@stop_search');
     Route::post('show_activity_users', 'ShopController@show_activity_users');
 });
+
+//mobile 対応
+Route::get('/mobile/bingo', 'MobileController@bingo');
+Route::get('/mobile/rec2', 'MobileController@rec2');
+Route::get('/mobile/quiz', 'MobileController@quiz');
+Route::get('/mobile/start', 'MobileController@start');
+Route::get('/mobile/pdf', 'MobileController@pdf');

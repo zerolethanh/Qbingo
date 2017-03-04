@@ -13,7 +13,8 @@
         "aws/aws-sdk-php": "~3.0",
         "laracasts/utilities": "~2.0",
         "intervention/image": "^2.3",
-        "illuminated/db-profiler": "^1.0"
+        "illuminated/db-profiler": "^1.0",
+        "mobiledetect/mobiledetectlib": "^2.8"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
