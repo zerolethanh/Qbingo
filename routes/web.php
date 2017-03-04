@@ -2,7 +2,8 @@
 
 Route::get('/', 'HappyController@index');
 Route::post('/', 'HappyController@login');
-Route::get('logout', 'HappyController@logout');
+Route::post('/login', 'HappyController@login');
+Route::get('/logout', 'HappyController@logout');
 
 Route::group(['prefix' => 'bingo'], function () {
     Route::get('/', 'BingoController@index');
@@ -111,6 +112,7 @@ Route::group(['prefix' => 'shop'], function () {
 //mobile 対応
 Route::get('/mobile/bingo', 'MobileController@bingo');
 Route::get('/mobile/rec2', 'MobileController@rec2');
+Route::get('/mobile/rec', 'MobileController@rec');
 Route::get('/mobile/quiz', 'MobileController@quiz');
 Route::get('/mobile/start', 'MobileController@start');
 Route::get('/mobile/pdf', 'MobileController@pdf');

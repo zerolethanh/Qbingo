@@ -7,6 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Happy Login</title>
     @include('bootstrap.sources')
+    <style>
+        html, body {
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
 

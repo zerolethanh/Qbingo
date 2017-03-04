@@ -10,6 +10,7 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    @include('bootstrap.sources')
 </head>
 <body>
 <header>
@@ -23,9 +24,21 @@
         <div class="coment1"><img class="img_w" src="/image/rogo975-575.png"></div>
         <br>
 
-        <form>ID<br><input type="text" name="ID" size="45"><br>
-            パスワード<br><input type="password" name="パスワード" size="45"><br><br>
-            <a class="btn" href="#">ログイン</a></form>
+        <form action="/" method="post">
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            {{ csrf_field() }}
+            ID<br><input type="text" name="happy_id" size="45"><br>
+            パスワード<br><input type="password" name="password" size="45"><br><br>
+            <button class="btn" type="submit">ログイン</button>
+        </form>
     </div>
 </article>
 <p id="pageTop"><a href="#">top</a></p>

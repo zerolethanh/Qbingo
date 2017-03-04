@@ -10,13 +10,21 @@ class MobileController extends Controller
      * login redirect
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    function bingo(){
+    function bingo()
+    {
         return redirect('/');
     }
 
     function rec2()
     {
-        return view('mobile.rec2');
+        session(['upload_list_view' => 'rec2']);
+        return redirect('/bingo/upload-list');
+    }
+
+    function rec()
+    {
+        session(['upload_list_view' => 'rec']);
+        return redirect('/bingo/upload-list');
     }
 
     function quiz()

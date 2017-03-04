@@ -25,10 +25,25 @@ class BingoController extends Controller
 
     public function uploadList()
     {
-        $uploads = Auth::user()->uploads()->orderBy('number','desc')->get()->toArray();
+        $uploads = Auth::user()->uploads()->orderBy('number', 'desc')->get()->toArray();
         $url = $this->getUrl();
         \PHPQRCode\QRcode::png($url, $this->QRSavePath(), Constants::QR_ECLEVEL_L, 4, 2);
-        return view('bingo.uploadList')->with(compact('uploads', 'url'));
+        return $this->uploadList_view()->with(compact('uploads', 'url'));
+    }
+
+    function uploadList_view()
+    {
+        if (IS_MOBILE) {
+            switch ($view = session('upload_list_view')) {
+                case 'rec2':
+                    return view("mobile.{$view}");
+                case 'rec':
+                    return view("mobile.{$view}");
+                default:
+                    return view("mobile.rec2");
+            }
+        }
+        return view('bingo.uploadList');
     }
 
     public function QRSavePath()

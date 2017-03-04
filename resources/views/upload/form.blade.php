@@ -7,6 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>アップロード</title>
     @include('bootstrap.sources')
+    <style>
+        html, body {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 

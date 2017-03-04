@@ -17,15 +17,9 @@ class HappyController extends Controller
     {
         // check if logged in
         if (Auth::check()) {
-            if (IS_MOBILE) {
-                return view('mobile.bingo');
-            }
-            return view('bingo.control');
+            return $this->loggedin_view();
         } else {
-            if (IS_MOBILE) {
-                return view('mobile.index');
-            }
-            return view('happy.index');
+            return $this->login_form();
         }
 
     }
@@ -61,7 +55,7 @@ class HappyController extends Controller
             //check is expired ?
             if ($ticket->is_expired) {
                 //期限切れているユーザー
-                return view('happy.index')->withErrors([
+                return $this->login_form()->withErrors([
                     ['msg' => 'このユーザーの使用が停止されています。']
                 ]);
             }
@@ -69,11 +63,11 @@ class HappyController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 // login and save session
                 Auth::loginUsingId($user->id, true, true);
-                return view('bingo.control');
+                return $this->loggedin_view();
             }
         }
-        //login failed
-        return view('happy.index')->withErrors([
+        //login failed then return login form
+        return $this->login_form()->withErrors([
             ['msg' => 'IDまたはPASSが間違っています。']
         ]);
     }
@@ -83,4 +77,21 @@ class HappyController extends Controller
         Auth::logout();
         return redirect('/');
     }
+
+    function login_form()
+    {
+        if (IS_MOBILE) {
+            return view('mobile.index');
+        }
+        return view('happy.index');
+    }
+
+    function loggedin_view()
+    {
+        if (IS_MOBILE) {
+            return view('mobile.bingo');
+        }
+        return view('bingo.control');
+    }
+
 }
