@@ -138,11 +138,8 @@ foreach ($uploads as $upload) {
 
 <script>
     function save(form) {
-
         event.preventDefault();
-
         if (!isFormDataValid(form, true)) {
-
             return;
         }
         var form_data = $(form).serializeArray();
@@ -152,6 +149,7 @@ foreach ($uploads as $upload) {
             $.notify(res.quiz_number + '問目を保存しました', 'success')
         }).fail(function (res, status) {
             console.log(res)
+            alert(res.toString())
         })
     }
 
@@ -173,34 +171,44 @@ foreach ($uploads as $upload) {
 
     function isFormDataValid(form, isNotify = true) {
         try {
-            var form_data = new FormData(form);
-
-            if (!form_data.get('quiz_text')) {
-                if (isNotify) {
-                    $.notify('クイズ内容を入力してください', 'error');
+//            var form_data = new FormData(form);
+//            console.log($(form).serialize());
+            var form_data = $(form).serializeArray();
+//            console.log(form_data);
+            var quiz_method;
+            for (var i = 0; i < form_data.length; i++) {
+                var field_name, field_value;
+                field_name = form_data[i].name;
+                field_value = form_data[i].value;
+                switch (field_name) {
+                    case 'quiz_text':
+                        if (field_value == '' || (field_value.replace(/\s/g, '') == '')) {
+                            if (isNotify) {
+                                $.notify('クイズ内容を入力してください', 'error');
+                            }
+                            return false;
+                        }
+                        break;
+                    case 'quiz_method':
+                        if (field_value == 'a') {
+                            quiz_method = 'a';
+                        }
+                        break;
+                    case 'upload_id':
+                        if (quiz_method == 'a' && field_value == '') {
+                            if (isNotify) {
+                                $.notify('指定番号を選択してください', 'error')
+                            }
+                            return false;
+                        }
                 }
-                return false;
             }
-            if (form_data.get('quiz_text') && form_data.get('quiz_text').replace(/\s/g, '') == '') {
-                if (isNotify) {
-                    $.notify('クイズ内容を入力してください', 'error')
-                }
-                return false;
-            }
-
-            if (form_data.get('quiz_method') == 'a' && form_data.get('upload_id') == '') {
-                if (isNotify) {
-                    $.notify('指定番号を選択してください', 'error')
-                }
-                return false
-            }
+            return true;
 
         } catch (e) {
             console.log(e);
             return false
-
         }
-        return true
     }
 
     /**
