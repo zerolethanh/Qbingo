@@ -70,7 +70,16 @@ class BingoController extends Controller
     {
         $quizzes = request()->user()->quizzes;
         $quiz_samples = Quiz::quiz_samples();
-        return view('bingo.quiz')->with(compact('quizzes', 'quiz_samples'));
+        return $this->quizzes_view()
+            ->with(compact('quizzes', 'quiz_samples'));
+    }
+
+    function quizzes_view()
+    {
+        if (IS_MOBILE) {
+            return view('mobile.quiz');
+        }
+        return view('bingo.quiz');
     }
 
     public function start()

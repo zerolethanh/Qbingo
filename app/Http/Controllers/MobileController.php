@@ -29,7 +29,8 @@ class MobileController extends Controller
 
     function quiz()
     {
-        return view('mobile.quiz');
+//        return view('mobile.quiz');
+        return redirect('/bingo/quizzes');
     }
 
     function start()
