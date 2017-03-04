@@ -117,8 +117,8 @@ foreach ($uploads as $upload) {
             </div>
             {{-- quiz save buttons--}}
             <section2>
-                <button class="btn3" onclick="save(event, this.form)">保存</button>
-                <button class="btn3" onclick="saveAll(event, this.form)">すべて保存</button>
+                <button class="btn3" onclick="save(this.form)">保存</button>
+                <button class="btn3" onclick="saveAll(this.form)">すべて保存</button>
             </section2>
             <br><br><br>
         </form>
@@ -137,11 +137,12 @@ foreach ($uploads as $upload) {
 </footer>
 
 <script>
-    function save(event, form) {
+    function save(form) {
 
         event.preventDefault();
 
-        if (!isFormDataValid(form)) {
+        if (!isFormDataValid(form, true)) {
+
             return;
         }
         var form_data = $(form).serializeArray();
@@ -154,7 +155,7 @@ foreach ($uploads as $upload) {
         })
     }
 
-    function saveAll(event) {
+    function saveAll() {
 
         event.preventDefault();
 
@@ -165,13 +166,12 @@ foreach ($uploads as $upload) {
             var form = all_forms[i];
 
             if (isFormDataValid(form, false)) {
-                save(event, form)
+                save(form)
             }
         }
     }
 
-    function isFormDataValid(form, isNotify) {
-        if (isNotify === undefined) isNotify = true;
+    function isFormDataValid(form, isNotify = true) {
         try {
             var form_data = new FormData(form);
 
