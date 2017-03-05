@@ -14,7 +14,8 @@
         "laracasts/utilities": "~2.0",
         "intervention/image": "^2.3",
         "illuminated/db-profiler": "^1.0",
-        "mobiledetect/mobiledetectlib": "^2.8"
+        "mobiledetect/mobiledetectlib": "^2.8",
+        "barryvdh/laravel-dompdf": "^0.8.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -116,3 +116,4 @@ Route::get('/mobile/rec', 'MobileController@rec');
 Route::get('/mobile/quiz', 'MobileController@quiz');
 Route::get('/mobile/start', 'MobileController@start');
 Route::get('/mobile/pdf', 'MobileController@pdf');
+Route::get('/mobile/pdf_download', 'MobileController@pdf_download');

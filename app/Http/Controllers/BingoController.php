@@ -39,6 +39,8 @@ class BingoController extends Controller
                     return view("mobile.{$view}");
                 case 'rec':
                     return view("mobile.{$view}");
+                case 'pdf':
+                    return view("mobile.{$view}");
                 default:
                     return view("mobile.rec2");
             }
@@ -56,7 +58,7 @@ class BingoController extends Controller
 
     }
 
-    public function getUrl()
+    public static function getUrl()
     {
         $happy_id = Auth::user()->happy_id;
         $happy_code = Auth::user()->happy_code;
