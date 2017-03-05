@@ -715,7 +715,8 @@
     function downloadJPGfromCanvas(canvas, name = "{{ auth()->user()->happy_id }}.jpg") {
         var a = document.createElement('a');
         // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-        a.href = canvas.toDataURL("image/jpeg", 1.0).replace("image/jpeg", "image/octet-stream");
+        a.href = canvas.toDataURL("image/jpeg", 1.0);
+            //.replace("image/jpeg", "image/octet-stream");
         a.download = name;
         a.click();
     }
