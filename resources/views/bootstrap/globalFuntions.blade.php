@@ -52,13 +52,75 @@
         }
     }
     $(document).ready(function () {
-        $('[data-toggle="popover"]').popover({
-            html: true,
-            animation: false,
-            placement: 'auto right'
-        });
+        try {
+            $('[data-toggle="popover"]').popover({
+                html: true,
+                animation: false,
+                placement: 'auto right'
+            });
+        } catch (e) {
+            console.log(e)
+        }
     });
-//    $(document).ready(function () {
-//        $('[data-toggle="popover"]').popover({html: true});
-//    });
+    /**
+     *
+     * @param arr : [Object:{name:'a',value:'b'},Object:{name:'a1',value:'b1'}]
+     * @returns {a:b,a1:b1}
+     */
+    function keyValueSerializeArray(arr) {
+        var name, value, result = {};
+        for (let i = 0; i < arr.length; i++) {
+            name = arr[i].name;
+            value = arr[i].value;
+            result[name] = value;
+        }
+        return result;
+    }
+    function formNameValues(form) {
+        return keyValueSerializeArray($(form).serializeArray());
+    }
+    // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+    if (!Object.keys) {
+        Object.keys = (function () {
+            'use strict';
+            var hasOwnProperty = Object.prototype.hasOwnProperty,
+                hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+                dontEnums = [
+                    'toString',
+                    'toLocaleString',
+                    'valueOf',
+                    'hasOwnProperty',
+                    'isPrototypeOf',
+                    'propertyIsEnumerable',
+                    'constructor'
+                ],
+                dontEnumsLength = dontEnums.length;
+
+            return function (obj) {
+                if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+                    throw new TypeError('Object.keys called on non-object');
+                }
+
+                var result = [], prop, i;
+
+                for (prop in obj) {
+                    if (hasOwnProperty.call(obj, prop)) {
+                        result.push(prop);
+                    }
+                }
+
+                if (hasDontEnumBug) {
+                    for (i = 0; i < dontEnumsLength; i++) {
+                        if (hasOwnProperty.call(obj, dontEnums[i])) {
+                            result.push(dontEnums[i]);
+                        }
+                    }
+                }
+                return result;
+            };
+        }());
+    }
+    //    $(document).ready(function () {
+    //        $('[data-toggle="popover"]').popover({html: true});
+    //    });
 </script>

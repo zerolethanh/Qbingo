@@ -13,6 +13,7 @@ $quiz_samples_html = implode($quiz_samples->toArray());
     <link href="/css/reset.css" rel="stylesheet" type="text/css">
     <link href="/css/css.css" rel="stylesheet" type="text/css">
     @include('bootstrap.jquery')
+    @include('bootstrap.globalFuntions')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
     <script type="text/javascript" src="/js/top.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -171,37 +172,19 @@ foreach ($uploads as $upload) {
 
     function isFormDataValid(form, isNotify = true) {
         try {
-//            var form_data = new FormData(form);
-//            console.log($(form).serialize());
-            var form_data = $(form).serializeArray();
-//            console.log(form_data);
-            var quiz_method;
-            for (var i = 0; i < form_data.length; i++) {
-                var field_name, field_value;
-                field_name = form_data[i].name;
-                field_value = form_data[i].value;
-                switch (field_name) {
-                    case 'quiz_text':
-                        if (field_value == '' || (field_value.replace(/\s/g, '') == '')) {
-                            if (isNotify) {
-                                $.notify('クイズ内容を入力してください', 'error');
-                            }
-                            return false;
-                        }
-                        break;
-                    case 'quiz_method':
-                        if (field_value == 'a') {
-                            quiz_method = 'a';
-                        }
-                        break;
-                    case 'upload_id':
-                        if (quiz_method == 'a' && field_value == '') {
-                            if (isNotify) {
-                                $.notify('指定番号を選択してください', 'error')
-                            }
-                            return false;
-                        }
+            var data = formNameValues(form);
+
+            if (data['quiz_text'] == '' || data['quiz_text'].replace(/\s/g, '') == '') {
+                if (isNotify) {
+                    $.notify('クイズ内容を入力してください', 'error');
                 }
+                return false;
+            }
+            if (data['quiz_method'] == 'a' && data['upload_id'] == '') {
+                if (isNotify) {
+                    $.notify('指定番号を選択してください', 'error')
+                }
+                return false;
             }
             return true;
 
