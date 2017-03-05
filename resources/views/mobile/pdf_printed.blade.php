@@ -25,36 +25,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        @rich                                                _clark */
+        @rich                   _clark */
         html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
             margin: 0;
             padding: 0;
@@ -143,7 +114,6 @@
             vertical-align: middle;
         }
 
-        /* CSS Document */
         body {
             font: 14px/1.6 "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", "ＭＳ Ｐゴシック", "MS PGothic", Verdana, Arial, sans-serif;
             width: 100%;
@@ -626,7 +596,6 @@
             text-align: left;
             vertical-align: middle;
         }
-
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
@@ -675,8 +644,10 @@
 @endforeach
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+@include('bootstrap.jquery')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
 <script>
-    console.log(getPageHeight());
+
     capture();
     function capture() {
         html2canvas(document.body, {
@@ -704,8 +675,7 @@
         millimeters.width = Math.floor(width * 0.264583);
         millimeters.height = Math.floor(height * 0.264583);
 
-        var imgData = canvas.toDataURL(
-            'image/png');
+        var imgData = canvas.toDataURL('image/png');
         var doc = new jsPDF("p", "mm", "a4");
         doc.deletePage(1);
         doc.addPage(millimeters.width, millimeters.height);
@@ -713,21 +683,28 @@
         doc.save(name);
     }
     function downloadJPGfromCanvas(canvas, name = "{{ auth()->user()->happy_id }}.jpg") {
-        var a = document.createElement('a');
-        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-        a.href = canvas.toDataURL("image/jpeg", 1.0);
-            //.replace("image/jpeg", "image/octet-stream");
-        a.download = name;
-        a.click();
+        var jpeg_dataurl = canvas.toDataURL("image/jpeg", 1.0);
+        $.post('/mobile/upload_jpeg_dataurl', {
+            _token: "{{ csrf_token() }}"
+            , jpeg_dataurl
+        }, function (res) {
+            console.log(res);
+            if (res.saved) {
+                window.location.href = res.download_url;
+            } else {
+                $.notify(res.err_message)
+            }
+        });
+//        var a = document.createElement('a');
+//        a.href = canvas.toDataURL("image/jpeg", 1.0);
+        //.replace("image/jpeg", "image/octet-stream");
+//        a.download = name;
+        {{--@if(IS_MOBILE)--}}
+        //            $.notify('長押すことで画像を保存できます。', 'success');
+        {{--@endif--}}
+        //        a.click();
     }
-    function getPageHeight() {
-        var body = document.body,
-            html = document.documentElement;
 
-        var height = Math.max(body.scrollHeight, body.offsetHeight,
-            html.clientHeight, html.scrollHeight, html.offsetHeight);
-        return height;
-    }
 </script>
 </body>
 </html>
