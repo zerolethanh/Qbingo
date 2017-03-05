@@ -29,7 +29,8 @@
 
     <div class="urlrec3">
         <a class="btn"
-           href="/mobile/pdf_download?type=jpg">
+           {{--href="/mobile/pdf_download?type=jpg">--}}
+           onclick="pdf_download()">
             PDFでダウンロードする
         </a>
     </div>
@@ -83,8 +84,8 @@
     <!--コメント終わり--------------------------------------------->
     <div class="urlrec3">
         <a class="btn"
-           href="/mobile/pdf_download?type=jpg">
-            {{--onclick="pdf_download()">--}}
+           {{--href="/mobile/pdf_download?type=jpg">--}}
+           onclick="pdf_download()">
             PDFでダウンロードする
         </a>
     </div>
@@ -98,6 +99,9 @@
     <address>Copyright(C)2017 クイズ＆ビンゴAllright Reserved.</address>
 </footer>
 <script>
+    function pdf_download() {
+        location.href = "/mobile/pdf_download?type=jpg";
+    }
 </script>
 </body>
 </html>

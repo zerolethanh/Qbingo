@@ -63,39 +63,37 @@ class MobileController extends Controller
 
     }
 
-    function convertPHPSizeToBytes($sSize)
+    static function convertBytes($value)
     {
-        if (is_numeric($sSize)) {
-            return $sSize;
+        if (is_numeric($value)) {
+            return $value;
+        } else {
+            $value_length = strlen($value);
+            $qty = substr($value, 0, $value_length - 1);
+            $unit = strtolower(substr($value, $value_length - 1));
+            switch ($unit) {
+                case 'k':
+                    $qty *= 1024;
+                    break;
+                case 'm':
+                    $qty *= 1048576;
+                    break;
+                case 'g':
+                    $qty *= 1073741824;
+                    break;
+            }
+            return $qty;
         }
-        $sSuffix = substr($sSize, -1);
-        $iValue = substr($sSize, 0, -1);
-        switch (strtoupper($sSuffix)) {
-            case 'P':
-                $iValue *= 1024;
-                break;
-            case 'T':
-                $iValue *= 1024;
-                break;
-            case 'G':
-                $iValue *= 1024;
-                break;
-            case 'M':
-                $iValue *= 1024;
-                break;
-            case 'K':
-                $iValue *= 1024;
-                break;
-        }
-        return $iValue;
+    }
+
+    static function post_max_size()
+    {
+        return static::convertBytes(ini_get('post_max_size'));
     }
 
     function upload_jpeg_dataurl(Request $request)
     {
         $jpeg_dataurl = $request->jpeg_dataurl;
-        if ($jpeg_dataurl > ($post_max_size = $this->convertPHPSizeToBytes(ini_get('post_max_size')))) {
-            return 'post size must smaller than ' . $post_max_size . ' bytes, post size is ' . $request->dataurisize . ' bytes';
-        }
         list($type, $jpeg_dataurl) = explode(';', $jpeg_dataurl);
         list(, $jpeg_dataurl) = explode(',', $jpeg_dataurl);
         $jpeg_dataurl = base64_decode($jpeg_dataurl);
