@@ -119,3 +119,5 @@ Route::get('/mobile/pdf', 'MobileController@pdf');
 Route::get('/mobile/pdf_download', 'MobileController@pdf_download');
 Route::post('/mobile/upload_jpeg_dataurl', 'MobileController@upload_jpeg_dataurl');
 Route::get('/mobile/download_jpeg_dataurl', 'MobileController@download_jpeg_dataurl');
+Route::post('/mobile/upload_pdf_dataurl', 'MobileController@upload_pdf_dataurl');
+Route::get('/mobile/download_pdf_dataurl', 'MobileController@download_pdf_dataurl');

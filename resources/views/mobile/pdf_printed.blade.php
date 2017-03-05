@@ -39,7 +39,48 @@
 
 
 
-        @rich                                 _clark */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        @rich                                                                          _clark */
         html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
             margin: 0;
             padding: 0;
@@ -658,15 +699,14 @@
 @endforeach
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-@include('bootstrap.jquery')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
+@include('bootstrap.sources')
 <script>
 
     capture();
     function capture() {
         html2canvas(document.body, {
             onrendered: function (canvas) {
-                var downloadType = "{{ request('type','JPG') }}";
+                var downloadType = "{{ request('type','jpg') }}";
                 switch (downloadType.toUpperCase()) {
                     case 'JPG':
                     case 'JPEG':
@@ -694,16 +734,39 @@
         doc.deletePage(1);
         doc.addPage(millimeters.width, millimeters.height);
         doc.addImage(imgData, 'PNG', 0, 0);
-        doc.save(name);
+//        doc.save(name);
+        var jpeg_dataurl = doc.output('datauristring');
+        var dataurisize = getDataURISize(jpeg_dataurl);
+
+        $.post('/mobile/upload_jpeg_dataurl', {
+                _token: "{{ csrf_token() }}"
+                , jpeg_dataurl
+                , dataurisize
+            },
+            function (res) {
+                console.log(res);
+                if (res.saved) {
+                    window.location.href = res.download_url;
+                } else {
+                    $.notify(res.err_message)
+                }
+            }
+        ).fail(function (res) {
+            notifyFail(res);
+        });
     }
     function downloadJPGfromCanvas(canvas, name = "{{ auth()->user()->happy_id }}.jpg") {
         @if(IS_MOBILE)
             $.notify('長押ししたら画像を保存できます。', 'success');
                 @endif
         var jpeg_dataurl = canvas.toDataURL("image/jpeg", 1.0);
+
+        var dataurisize = getDataURISize(jpeg_dataurl);
+
         $.post('/mobile/upload_jpeg_dataurl', {
             _token: "{{ csrf_token() }}"
             , jpeg_dataurl
+            , dataurisize
         }, function (res) {
             console.log(res);
             if (res.saved) {
@@ -711,9 +774,21 @@
             } else {
                 $.notify(res.err_message)
             }
+        }).fail(function (res) {
+            notifyFail(res);
         });
+    }
+    /**
+     * getDataURISize in bytes
+     * @param datauri
+     * @returns {number}
+     */
+    function getDataURISize(datauri) {
+        return Math.round((datauri.length - 'data:image/png;base64,'.length) * 3 / 4);
     }
 
 </script>
 </body>
 </html>
+
+
