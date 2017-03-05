@@ -25,7 +25,21 @@
 
 
 
-        @rich                   _clark */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        @rich                                 _clark */
         html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
             margin: 0;
             padding: 0;
@@ -683,6 +697,9 @@
         doc.save(name);
     }
     function downloadJPGfromCanvas(canvas, name = "{{ auth()->user()->happy_id }}.jpg") {
+        @if(IS_MOBILE)
+            $.notify('長押ししたら画像を保存できます。', 'success');
+                @endif
         var jpeg_dataurl = canvas.toDataURL("image/jpeg", 1.0);
         $.post('/mobile/upload_jpeg_dataurl', {
             _token: "{{ csrf_token() }}"
@@ -695,14 +712,6 @@
                 $.notify(res.err_message)
             }
         });
-//        var a = document.createElement('a');
-//        a.href = canvas.toDataURL("image/jpeg", 1.0);
-        //.replace("image/jpeg", "image/octet-stream");
-//        a.download = name;
-        {{--@if(IS_MOBILE)--}}
-        //            $.notify('長押すことで画像を保存できます。', 'success');
-        {{--@endif--}}
-        //        a.click();
     }
 
 </script>
