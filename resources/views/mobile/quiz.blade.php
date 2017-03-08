@@ -13,8 +13,8 @@ $quiz_samples_html = implode($quiz_samples->toArray());
     <link href="/css/reset.css" rel="stylesheet" type="text/css">
     <link href="/css/css.css" rel="stylesheet" type="text/css">
     @include('bootstrap.jquery')
-    @include('bootstrap.globalFuntions')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
+    @include('bootstrap.globalFuntions')
     <script type="text/javascript" src="/js/top.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>

@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Happy;
+use App\Http\Middleware\HappyLoggedIn;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MobileController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware(HappyLoggedIn::class);
+    }
+
     /**
      * login redirect
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -121,7 +128,7 @@ class MobileController extends Controller
 
     function saveToPath($download_key, $type)
     {
-        return storage_path('temp/' . Auth::user()->happy_id . "_$download_key.$type");
+        return storage_path('temp/' . Happy::user()->id . '_' . Happy::user()->happy_id . "_$download_key.$type");
     }
 
     function download_jpeg_dataurl(Request $request)

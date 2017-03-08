@@ -60,4 +60,9 @@ class Happy extends Authenticatable
     {
         return $this->hasMany(Activity::class);
     }
+
+    public static function user()
+    {
+        return Auth::guard('happy')->user();
+    }
 }

@@ -39,13 +39,20 @@ class ShopController extends Controller
     function login(Request $request)
     {
         $credentials = $request->only('id', 'pass');
-        $shopLoggedIn = Auth::guard('shop')->attempt(
-            [
-                'email' => $credentials['id'],
-                'password' => $credentials['pass']
-            ],
-            true//remember
-        );
+        $id_fields = ['email', 'id'];
+        $shopLoggedIn = false;
+        foreach ($id_fields as $id) {
+            if (!$shopLoggedIn) {
+                $shopLoggedIn = Auth::guard('shop')->attempt(
+                    [
+                        $id => $credentials['id'],
+                        'password' => $credentials['pass']
+                    ],
+                    true//remember
+                );
+            }
+        }
+
         if ($shopLoggedIn) {
             $shop = Auth::guard('shop')->user();
             session(compact('shop'));
