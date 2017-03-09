@@ -10,7 +10,7 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    @include('bootstrap.sources')
+
 </head>
 <body>
 <header>
@@ -26,6 +26,7 @@
 
         <form action="/" method="post">
             @if (count($errors) > 0)
+                @include('bootstrap.sources')
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
