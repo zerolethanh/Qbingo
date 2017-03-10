@@ -32,7 +32,12 @@ class UploadController extends Controller
             'user_message' => 'required',
             PhotoController::REQUEST_USER_PHOTO_KEY => 'required|file|image',
             'happy_uuid' => 'required|exists:happies'
-        ]);
+        ], [
+                'user_name.required' => '名前が必須です。',
+                'user_message.required' => 'お祝いメッセージが必須です。',
+                PhotoController::REQUEST_USER_PHOTO_KEY . '.required' => '自撮りを選択してください。'
+            ]
+        );
 
         $data = $this->request->only(Upload::getColumnListing());
 
