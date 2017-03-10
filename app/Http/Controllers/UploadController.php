@@ -35,7 +35,7 @@ class UploadController extends Controller
         ], [
                 'user_name.required' => '名前が必須です。',
                 'user_message.required' => 'お祝いメッセージが必須です。',
-                PhotoController::REQUEST_USER_PHOTO_KEY . '.required' => '自撮りを選択してください。'
+                PhotoController::REQUEST_USER_PHOTO_KEY . '.required' => 'ファイルを選択して下さい。'
             ]
         );
 
