@@ -10,7 +10,11 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
+    <style>
+        .error {
+            color: #F00;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -18,23 +22,13 @@
 </header>
 
 <article>
-
-
     <div class="section3">
         <div class="coment1"><img class="img_w" src="/image/rogo975-575.png"></div>
         <br>
-
+        @if (count($errors) > 0)
+            <div class="error">IDまたはパスワードが間違っています。</div>
+        @endif
         <form action="/" method="post">
-            @if (count($errors) > 0)
-                @include('bootstrap.sources')
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
             {{ csrf_field() }}
             ID<br><input type="text" name="happy_id" size="45"><br>
             パスワード<br><input type="password" name="password" size="45"><br><br>
