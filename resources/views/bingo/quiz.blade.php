@@ -187,37 +187,28 @@ EOD;
         }
     }
 
-    function isFormDataValid(form, isNotify) {
-        if (isNotify === undefined) isNotify = true;
+    function isFormDataValid(form, isNotify = true) {
         try {
-            var form_data = new FormData(form);
+            var data = formNameValues(form);
 
-            if (!form_data.get('quiz_text')) {
+            if (data['quiz_text'] == '' || data['quiz_text'].replace(/\s/g, '') == '') {
                 if (isNotify) {
                     $.notify('クイズ内容を入力してください', 'error');
                 }
                 return false;
             }
-            if (form_data.get('quiz_text') && form_data.get('quiz_text').replace(/\s/g, '') == '') {
-                if (isNotify) {
-                    $.notify('クイズ内容を入力してください', 'error')
-                }
-                return false;
-            }
-
-            if (form_data.get('quiz_method') == 'a' && form_data.get('upload_id') == '') {
+            if (data['quiz_method'] == 'a' && data['upload_id'] == '') {
                 if (isNotify) {
                     $.notify('指定番号を選択してください', 'error')
                 }
-                return false
+                return false;
             }
+            return true;
 
         } catch (e) {
             console.log(e);
             return false
-
         }
-        return true
     }
 
     /**
