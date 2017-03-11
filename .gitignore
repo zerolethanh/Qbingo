@@ -11,3 +11,5 @@ Homestead.yaml
 bootstrap/cache/
 .env.*.php
 .env.php
+#blobdata dir ignored
+public/blobdata
