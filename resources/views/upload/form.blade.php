@@ -7,9 +7,42 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>アップロード</title>
     @include('bootstrap.sources')
+    <script src="/js/jquery.guillotine.min.js"></script>
+    <link rel="stylesheet" href="/css/jquery.guillotine.css">
+    <link href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css' rel='stylesheet'>
     <style>
         html, body {
             margin-top: 10px;
+        }
+
+        .frame {
+            border: 1px solid #ccc;
+            padding: 5px
+        }
+
+        .frame > img {
+            display: block;
+            width: 100%
+        }
+
+        #controls {
+            background-color: #1b1b1b;
+            text-align: center
+        }
+
+        #controls a {
+            display: inline-block;
+            padding: 0 5%;
+            height: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            font-weight: 300;
+            color: #888
+        }
+
+        #controls a:hover {
+            color: #fff;
+            text-decoration: none
         }
     </style>
 </head>
@@ -88,19 +121,52 @@
                             <label for="" class="col-md-4 control-label">自撮り</label>
                             <div class="col-md-6">
                                 <input type="file" id="{{$user_photo}}"
-                                       onchange="userPhotoPreview('preview_user_photo')"
+                                       onchange="/*uploadThenPreview('{{$user_photo}}');*/
+                                               userPhotoPreview('preview_user_photo')"
                                        name="{{$user_photo}}" accept="image/*" required>
-                                <img src="" alt="" id="preview_user_photo" class="img-responsive">
+                                <img src="" alt="" id="preview_user_photo" class="frame">
                                 <p style="color:red" id="user_photo_validation_message"></p>
                             </div>
                         </div>
+                        {{----}}
 
+                        <div class="form-group">
+
+                            <div id='controls' class='hidden col-md-6 col-md-offset-4'>
+                                <a href='#' id='rotate_left' title='Rotate left'><i class='fa fa-rotate-left'></i></a>
+                                <a href='#' id='zoom_out' title='Zoom out'><i class='fa fa-search-minus'></i></a>
+                                <a href='#' id='fit' title='Fit image'><i class='fa fa-arrows-alt'></i></a>
+                                <a href='#' id='zoom_in' title='Zoom in'><i class='fa fa-search-plus'></i></a>
+                                <a href='#' id='rotate_right' title='Rotate right'><i
+                                            class='fa fa-rotate-right'></i></a>
+                                {{--<button id='save_cropped_image' onclick="event.preventDefault();"--}}
+                                {{--style="background-color: white">Save--}}
+                                {{--</button>--}}
+                            </div>
+                        </div>
+
+                        {{--<ul id='data' class='hidden'>--}}
+                        {{--<div class='column'>--}}
+                        {{--<li>x: <span id='x'></span></li>--}}
+                        {{--<li>y: <span id='y'></span></li>--}}
+                        {{--</div>--}}
+                        {{--<div class='column'>--}}
+                        {{--<li>width: <span id='w'></span></li>--}}
+                        {{--<li>height: <span id='h'></span></li>--}}
+                        {{--</div>--}}
+                        {{--<div class='column'>--}}
+                        {{--<li>scale: <span id='scale'></span></li>--}}
+                        {{--<li>angle: <span id='angle'></span></li>--}}
+                        {{--</div>--}}
+                        {{--</ul>--}}
+                        {{----}}
                         {{--  validation & show confirm form --}}
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-6">
 
                                 @include('upload.form.confirm_upload_modal')
-                                <button type="submit" class="btn btn-primary"
+                                <button id="confirm_screen_button"
+                                        type="submit" class="btn btn-primary"
                                         data-toggle="modal" data-target="#confirm_upload_modal"
                                         {{--onclick="confirm_upload()"--}}
                                 >
@@ -118,23 +184,96 @@
 
 <script>
 
-
+    var last_file_name;
     function userPhotoPreview(preview_element_id, input_id) {
-        input_id = input_id || 'user_photo';
-        var file = document.getElementById(input_id).files[0];
-        var reader = new FileReader();
+        if (!!window.FileReader) {
+            input_id = input_id || 'user_photo';
+            var file = document.getElementById(input_id).files[0];
+            var reader = new FileReader();
 
-        var preview = document.getElementById(preview_element_id);
-        if (file) {
-            reader.onloadend = function () {
-                preview.src = reader.result;
-                id("user_photo_validation_message").innerHTML = '';
-            };
-            reader.readAsDataURL(file);
+            if (file) {
+                reader.onloadend = function () {
+
+                    uploadBlob(reader.result, function (res) {
+                        var picture = $('#' + preview_element_id);  // Must be already loaded or cached!
+                        picture.guillotine('remove');
+                        last_file_name = res.file_name;
+//                        $('#save_cropped_image')
+                        $('#confirm_screen_button').click(function (e) {
+                            e.preventDefault();
+                            var cropped_data = picture.guillotine('getData');
+                            cropped_data.file_name = res.file_name;
+                            cropped_data.origin_image_url = res.download_url;
+                            console.log(cropped_data);
+                            if (last_file_name == res.file_name) {
+                                $.post('save_cropped_image', {cropped_data: cropped_data}, function (res) {
+                                    console.log(res);
+                                    $('#confirm_user_photo_preview').attr('src', res.editted_image_url)
+                                })
+                            }
+
+                        });
+
+                        var camelize = function () {
+                            var regex = /[\W_]+(.)/g;
+                            var replacer = function (match, submatch) {
+                                return submatch.toUpperCase()
+                            };
+                            return function (str) {
+                                return str.replace(regex, replacer)
+                            }
+                        }();
+
+                        picture.on('load', function () {
+                            picture.guillotine({
+                                eventOnChange: 'guillotinechange',
+                                width: 352,
+                                height: 308,
+                            })
+                            picture.guillotine('fit')
+
+                            // Show controls and data
+                            $('.notice, #controls, #data').removeClass('hidden')
+
+                            // Bind actions
+                            $('#controls a').click(function (e) {
+                                e.preventDefault()
+                                var action = camelize(this.id)
+                                picture.guillotine(action)
+                            })
+
+                            // Update data on change
+                            picture.on('guillotinechange', function (e, data, action) {
+                                console.log(action, data);
+                            })
+                        })
+                        picture.attr('src', res.download_url);
+                    });
+                    id("user_photo_validation_message").innerHTML = '';
+                };
+                reader.readAsDataURL(file);
+            } else {
+//                preview.src = '';
+            }
         } else {
-            preview.src = '';
+            console.log('FileReader not supported');
         }
     }
+    function uploadBlob(blob, callback) {
+        $.post('/saveblob', {blobdata: blob}, function (res) {
+            console.log(res);
+            if (callback) {
+                callback(res);
+            }
+        })
+    }
+
+    $('#confirm_upload_modal').on('show.bs.modal', function (e) {
+        if (!checkFormIsValid())
+            return e.preventDefault(); // stops modal from being shown
+//        userPhotoPreview('preview_user_photo');
+        confirm_upload();
+    });
 
     function confirm_upload() {
         event.preventDefault();
@@ -158,14 +297,10 @@
         document.getElementById('confirm_user_name').innerHTML = user_name_el;
         document.getElementById('confirm_user_sex').innerHTML = user_sex_el;
         document.getElementById('confirm_user_message').innerHTML = user_message_el;
-        userPhotoPreview('confirm_user_photo_preview');
+//        userPhotoPreview('confirm_user_photo_preview');
 
     }
 
-    $('#confirm_upload_modal').on('show.bs.modal', function (e) {
-        if (!checkFormIsValid()) return e.preventDefault(); // stops modal from being shown
-        confirm_upload();
-    });
 
     function checkFormIsValid() {
         var check_el_ids = ['user_name', 'user_sex', 'user_message', 'user_photo'];
@@ -204,6 +339,10 @@
 
     function buildElement(label, content) {
         return '<p><b>' + label + ':</b><br> ' + content + '</p>';
+    }
+
+    function save_cropped_image() {
+        event.preventDefault();
     }
 </script>
 </body>

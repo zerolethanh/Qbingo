@@ -45,8 +45,8 @@
                         $user_photo = $upload[$tdf];
                         $basename = pathinfo($user_photo, PATHINFO_BASENAME);
 //                        $d = "<img src='/getphoto/$user_photo' width='80' class='img-responsive'/>";
-//                    $d = "<img src='/photo/$basename' width='120' class='img-responsive'/>";
-                        $datas[$tdf] = url("/photo/$basename");
+//                    $d = "<img src='/thumb/$basename' width='120' class='img-responsive'/>";
+                        $datas[$tdf] = url("/thumb/$basename");
                     } elseif ($tdf == 'user_sex') {
                         switch ($upload[$tdf]) {
                             case 'M':
