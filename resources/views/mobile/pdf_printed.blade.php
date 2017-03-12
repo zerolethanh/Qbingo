@@ -702,7 +702,7 @@
             if ($tdf == 'user_photo') {
                 $user_photo = $upload[$tdf];
                 $basename = pathinfo($user_photo, PATHINFO_BASENAME);
-                $datas[$tdf] = url("/photo/$basename");
+                $datas[$tdf] = url("/thumb/$basename");
             } elseif ($tdf == 'user_sex') {
                 switch ($upload[$tdf]) {
                     case 'M':

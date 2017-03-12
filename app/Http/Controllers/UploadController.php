@@ -7,6 +7,7 @@ use App\Upload;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\ViewErrorBag;
 
 class UploadController extends Controller
 {
@@ -26,6 +27,11 @@ class UploadController extends Controller
 
     public function upload()
     {
+        if (!($origin_image_fullpath = session('origin_image_fullpath'))
+            || !($editted_image_fullpath = session('editted_image_fullpath'))
+        ) {
+            return back()->withErrors('ファイルを選択して下さい。');
+        }
         $this->validate($this->request, [
             'user_name' => 'required',
             'user_sex' => 'required',
@@ -41,13 +47,21 @@ class UploadController extends Controller
 
         $data = $this->request->only(Upload::getColumnListing());
 
+        //db begin transaction
         DB::beginTransaction();
-//        list($user_photo, $thumb) = Upload::savePhoto('user_photo');
-        PhotoController::savePhoto();
+        //save photo
+//        PhotoController::savePhoto();
+        //get full photo path
         $user_photo = PhotoController::fullPhotoPath();
+        copy($origin_image_fullpath, $user_photo);
+        //get full photo thumb path
         $thumb = PhotoController::fullThumbPath();
+        copy($editted_image_fullpath, $thumb);
+        //get upload's serial number be saved
         $number = Upload::where('happy_uuid', $this->request->happy_uuid)->max(('number')) + 1;
+        //create upload
         $upload = Upload::create(array_merge($data, compact('user_photo', 'thumb', 'number')));
+        //commit database
         DB::commit();
 
         if ($upload) {
