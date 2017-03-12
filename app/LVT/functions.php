@@ -95,6 +95,9 @@ if (!function_exists('saveBlob')) {
         $write = file_put_contents($save_to, $blobdata);
 
         if ($write) {
+            \Intervention\Image\Facades\Image::make($save_to)
+                ->orientate()
+                ->save($save_to, 100);
             return [
                 'saved' => true,
                 'download_url' => url("/{$save_to}"),
