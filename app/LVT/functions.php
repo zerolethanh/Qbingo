@@ -82,15 +82,15 @@ if (!function_exists('saveBlob')) {
         list(, $blobdata) = explode(',', $blobdata);
         $blobdata = base64_decode($blobdata);
 
-        $download_key = \Faker\Provider\Uuid::uuid() . date('_Y_m_d');
+        $filename = request()->session()->token();//\Faker\Provider\Uuid::uuid() . date('_Y_m_d');
         $fileExtension = last(explode('/', $type));
 
-        if (!is_dir($dir) || !is_dir(public_path($dir))) {
-            $save_dir = public_path($dir);
-            mkdir($save_dir, 0777, true);
+        $public_dir = public_path($dir);
+        if (!is_dir($public_dir)) {
+            mkdir($public_dir, 0777, true);
         }
-        $file_name = "{$download_key}.{$fileExtension}";
-        $save_to = "{$dir}/{$file_name}";
+        $file_name = "{$filename}.{$fileExtension}";
+        $save_to = "{$public_dir}/{$file_name}";
 
         $write = file_put_contents($save_to, $blobdata);
 
@@ -100,7 +100,7 @@ if (!function_exists('saveBlob')) {
                 ->save($save_to, 100);
             return [
                 'saved' => true,
-                'download_url' => url("/{$save_to}"),
+                'download_url' => url("/{$dir}/{$file_name}?_t=" . time()),
                 'file_name' => $file_name
             ];
         }
