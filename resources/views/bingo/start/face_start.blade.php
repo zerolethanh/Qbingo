@@ -11,8 +11,8 @@
 
 </style>
 <button onclick="return startFace(event);" class="btn-slot start-buttons"></button>
-<audio id="start_audio" src="/audio/tympani-roll1.mp3" loop></audio>
-<audio id="end_audio" src="/audio/question1.mp3"></audio>
+<audio id="start_audio" src="/audio/tympani-roll1.mp3" preload="metadata" loop></audio>
+<audio id="end_audio" src="/audio/question1.mp3" preload="metadata"></audio>
 <script>
 
     /// start face
