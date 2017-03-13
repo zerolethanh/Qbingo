@@ -10,6 +10,7 @@ Route::group(['prefix' => 'bingo'], function () {
     Route::get('/upload-list', 'BingoController@uploadList');
     Route::get('/quizzes', 'BingoController@quizzes');
     Route::get('/start', 'BingoController@start');
+    Route::get('/description', 'BingoController@description');
 });
 
 //Route::resource('/', 'HappyController');

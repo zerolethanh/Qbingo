@@ -118,6 +118,11 @@ class BingoController extends Controller
         return view('bingo.start', compact('faces', 'quizzes', 'hits', 'no_hits', 'start', 'face', 'quiz', 'uploads'));
     }
 
+    function description()
+    {
+        return view('bingo.description');
+    }
+
     public function face()
     {
 
