@@ -11,7 +11,8 @@
 
 </style>
 <button onclick="return startFace(event);" class="btn-slot start-buttons"></button>
-
+<audio id="start_audio" src="/audio/tympani-roll1.mp3" loop></audio>
+<audio id="end_audio" src="/audio/question1.mp3"></audio>
 <script>
 
     /// start face
@@ -43,16 +44,21 @@
                     var faceImageEle = document.getElementById('face_img');
                     var quizTextField = document.getElementById('quiz_text');
 
+                    var start_audio = document.getElementById('start_audio');
                     var whenRollStart = function () {
                         userNameField.value = '';
                         faceImageEle.src = '';
                         quizTextField.value = '';
+                        start_audio.play();
                     };
                     var whenRollEnded = function () {
                         // when roll stop then set text, user name , face img
                         userNameField.value = res.face.user_name;
                         quizTextField.value = res.quiz.quiz_text;
                         faceImageEle.src = "/getphoto/" + res.face.user_photo;
+                        start_audio.pause();
+                        start_audio.currentTime = 0;
+                        document.getElementById('end_audio').play();
                     };
 
                     roll(res.face_index, whenRollEnded, whenRollStart);
