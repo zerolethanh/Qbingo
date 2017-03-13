@@ -120,6 +120,8 @@ class BingoController extends Controller
 
     function description()
     {
+        if (IS_MOBILE)
+            return view('mobile.bingo');
         return view('bingo.description');
     }
 
