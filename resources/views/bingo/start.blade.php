@@ -98,7 +98,7 @@
             height: 30px;
             /*position: absolute;*/
             border: none;
-            font-weight:bol;
+            font-weight: bold;
             /*margin: 3px;;*/
             /*top: 10px;*/
             /*left: 20px;;*/
@@ -145,7 +145,7 @@
 
 <div class="container">
     {{-- row 1--}}
-    <div class="row center-block">
+    <div class="row center-block" id="main_slots">
 
         {{--left panel face photo --}}
         <div class="col-sm-4">

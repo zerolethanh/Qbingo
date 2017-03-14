@@ -21,12 +21,27 @@
     /*#quiz_text_div{background:#cc0000}*/
 </style>
 <div>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="all_fullscreen()" class=" btn-screens">全画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="face_quiz_fullscreen()" class=" btn-screens" style="width: 150px">フェイスクイズ画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="face_fullscreen()" class=" btn-screens" style="width: 120px">フェイス1画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="quiz_fullscreen()" class=" btn-screens">クイズ1画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="hit_numbers_fullscreen()" class=" btn-screens">数字1画面</button>
-    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="camera_fullscreen()" class=" btn-screens" style="width: 180px">外付けカメラ１画面</button>
+    <button
+            {{--data-toggle="modal" --}}
+            {{--data-target="#fullscreen_modal" --}}
+            onclick="all_fullscreen()"
+            class=" btn-screens">全画面
+    </button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="face_quiz_fullscreen()" class=" btn-screens"
+            style="width: 150px">フェイスクイズ画面
+    </button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="face_fullscreen()" class=" btn-screens"
+            style="width: 120px">フェイス1画面
+    </button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="quiz_fullscreen()" class=" btn-screens">
+        クイズ1画面
+    </button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="hit_numbers_fullscreen()" class=" btn-screens">
+        数字1画面
+    </button>
+    <button data-toggle="modal" data-target="#fullscreen_modal" onclick="camera_fullscreen()" class=" btn-screens"
+            style="width: 180px">外付けカメラ１画面
+    </button>
 </div>
 <!-- モーダル・ダイアログ -->
 <div class="modal" id="fullscreen_modal" tabindex="-1">
@@ -37,7 +52,7 @@
                 {{--<h4 class="modal-title">Hit Details</h4>--}}
             </div>
             <div class="modal-body">
-                <p>hitdetails</p>
+                {{--<p>hitdetails</p>--}}
             </div>
         </div>
     </div>
@@ -45,9 +60,28 @@
 <script>
 
     function all_fullscreen() {
-
+        toggleFullScreen();
     }
-
+    function toggleFullScreen() {
+        if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+            (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+            if (document.documentElement.requestFullScreen) {
+                document.documentElement.requestFullScreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullScreen) {
+                document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.cancelFullScreen) {
+                document.cancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+        }
+    }
     function face_quiz_fullscreen() {
         var face_src =
             "<img src='"
