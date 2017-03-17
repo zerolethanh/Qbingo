@@ -52,6 +52,7 @@ Route::get('getqr/{filename}', 'QRController@getQRImg');
 
 Route::group(['prefix' => 'quiz'], function () {
     Route::post('/', 'QuizController@save');
+    Route::get('img/{number}', 'QuizController@img');
 });
 
 

@@ -65,4 +65,21 @@ class Happy extends Authenticatable
     {
         return Auth::guard('happy')->user();
     }
+
+    public static function uploadPath($dir = null, $filename = '')
+    {
+        $happy_uuid = request('happy_uuid', self::user()->happy_uuid);
+        $storage_app_upload = storage_path("app/upload/$happy_uuid");
+        if (is_null($dir))
+            return $storage_app_upload;
+        if (!is_dir($check_path = "$storage_app_upload/$dir")) {
+            try {
+                mkdir($check_path, 0777, true);
+            } catch (\Exception $exception) {
+                throw $exception;
+            }
+        }
+        return "$check_path/$filename";
+    }
+
 }

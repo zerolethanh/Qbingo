@@ -158,9 +158,9 @@
                 <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
                 <div id="face_img_div" class="face-container">
                     @include('bingo.start.rouletter')
+                    <img src="" alt="" id="face_img" hidden>
                 </div>
 
-                <img src="" alt="" id="face_img" hidden>
             </div>
         </div>
 
@@ -175,9 +175,51 @@
 
                 {{--<p class="pull-left">--}}
                 <div class="face-container">
-                <textarea name="quiz_text" id="quiz_text"
-                          style="font-size: xx-large; width: 352px;height: 305px"
-                          class="form-control" disabled>{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
+                    <textarea name="quiz_text" id="quiz_text"
+                              style="font-size: xx-large; width: 352px;height: 305px"
+                              class="form-control" disabled>{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
+
+                    <div id="quiz_imgs">
+                        <div class="quiz_imgs">
+                            @foreach($quizzes as $q)
+                                <img src="/quiz/img/{{$q->quiz_number}}" id="quiz_img_{{$q->quiz_number}}"
+                                     width="{{\App\Http\Controllers\UploadController::IMG_W}}px"
+                                     height="{{\App\Http\Controllers\UploadController::IMG_H}}px" alt="">
+                            @endforeach
+                        </div>
+                    </div>
+                    <script>
+                        //                        $("#quiz_text").hide();
+                        console.log($("#quiz_imgs"));
+                        $("#quiz_imgs").hide();
+                        var quiz_imgs_option = {
+                            speed: 20,
+                            duration: 1,
+                            stopImageNumber: 0,
+                            startCallback: function () {
+                                console.log('start');
+                            },
+                            slowDownCallback: function () {
+                                console.log('slowDown');
+                            },
+                            stopCallback: function ($stopElm) {
+                                console.log('stop');
+                            }
+                        };
+
+                        var quiz_imgs_r = $("div.quiz_imgs");
+                        quiz_imgs_r.roulette('option', quiz_imgs_option);
+
+                        function quiz_imgs_roll(stopFaceIndex, whenRollEnded, whenRollStart) {
+                            quiz_imgs_option.stopImageNumber = Number(stopFaceIndex);
+                            quiz_imgs_option.stopCallback = whenRollEnded;
+                            quiz_imgs_option.startCallback = whenRollStart;
+
+                            console.log(quiz_imgs_option);
+                            quiz_imgs_r.roulette('option', quiz_imgs_option);
+                            quiz_imgs_r.roulette('start');
+                        }
+                    </script>
                 </div>
                 {{--</p>--}}
 
@@ -224,7 +266,8 @@
                 @include('bingo.start.face_start')
             </div>
 
-            <img src="/img/heads620-65.jpg" class="hitnumbers-container bottom-containers" style="height: 150px;z-index: -1">
+            <img src="/img/heads620-65.jpg" class="hitnumbers-container bottom-containers"
+                 style="height: 150px;z-index: -1">
 
             <div id="hit_numbers" class="hitnumbers-container bottom-containers" style="bottom: 130px;left: 255px;">
                 @include('bingo.start.hit_numbers')

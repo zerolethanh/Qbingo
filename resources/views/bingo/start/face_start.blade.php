@@ -46,6 +46,10 @@
 
                     var start_audio = document.getElementById('start_audio');
                     var whenRollStart = function () {
+                        $("#quiz_text").show();
+                        $("#quiz_imgs").hide();
+                        $("#face_img").hide();
+                        $("#face_imgs").show();
                         userNameField.value = '';
                         faceImageEle.src = '';
                         quizTextField.value = '';
@@ -55,7 +59,7 @@
                         // when roll stop then set text, user name , face img
                         userNameField.value = res.face.user_name;
                         quizTextField.value = res.quiz.quiz_text;
-                        faceImageEle.src = "/getphoto/" + res.face.user_photo;
+                        faceImageEle.src = "/thumb/" + res.face.user_photo;
                         start_audio.pause();
                         start_audio.currentTime = 0;
                         document.getElementById('end_audio').play();

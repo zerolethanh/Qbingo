@@ -88,7 +88,7 @@ class BingoController extends Controller
     {
         $uploads = Auth::user()->uploads;
         $faces = $uploads->pluck('user_photo');
-        $quizzes = Auth::user()->quizzes;
+        $quizzes = Auth::user()->quizzes()->orderBy('quiz_number','asc')->get();
 
 
         // hits and no hits numbers

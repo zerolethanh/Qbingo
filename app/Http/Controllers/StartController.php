@@ -64,7 +64,8 @@ class StartController extends Controller
                     break;
             }
 
-            $face_index = array_search($face->thumb, $uploads->pluck('thumb')->toArray());
+            $face_index = array_search($face->id, $uploads->pluck('id')->toArray());
+            $quiz_index = array_search($quiz->id, $quizzes->pluck('id')->toArray());
 
             // write last quiz number to starts table
             Auth::user()->starts()->create([
@@ -76,7 +77,7 @@ class StartController extends Controller
             session()->put('upload_id', $face->id);
 
             $game_ended = false;
-            return compact('quiz', 'face', 'game_ended', 'face_index');
+            return compact('quiz', 'face', 'game_ended', 'face_index', 'quiz_index');
         }
 
         $game_ended = true;

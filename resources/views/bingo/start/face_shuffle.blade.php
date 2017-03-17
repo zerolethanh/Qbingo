@@ -23,14 +23,14 @@
                     var whenRollEnded = function () {
                         // when roll stop then set text, user name , face img
                         userNameField.value = res.face.user_name;
-                        faceImageEle.src = "/getphoto/" + res.face.user_photo;
+                        faceImageEle.src = "/thumb/" + res.face.user_photo;
                     };
                     var whenRollStart = function () {
                         userNameField.value = '';
                         faceImageEle.src = '';
                     };
                     roll(res.face_index, whenRollEnded, whenRollStart);
-//                    document.getElementById('face_img').src = "/getphoto/" + res.face.user_photo;
+//                    document.getElementById('face_img').src = "/thumb/" + res.face.user_photo;
                 } catch (e) {
                     console.log(e);
                 }

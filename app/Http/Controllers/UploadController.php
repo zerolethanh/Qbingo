@@ -12,7 +12,8 @@ use Illuminate\Support\ViewErrorBag;
 class UploadController extends Controller
 {
     //
-
+    const IMG_W = 352;
+    const IMG_H = 308;
     private $request;
 
     function __construct(Request $request)
