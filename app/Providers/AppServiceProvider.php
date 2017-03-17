@@ -40,6 +40,9 @@ class AppServiceProvider extends ServiceProvider
 
     function logRequest()
     {
+        if (request()->is('saveblob', 'save_cropped_image')) {
+            return;
+        }
         $method = request()->method();
         $url = request()->url();
         $request_all = request()->all();
