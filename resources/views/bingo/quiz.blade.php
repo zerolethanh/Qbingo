@@ -161,7 +161,9 @@ EOD;
         if (!isFormDataValid(form)) {
             return;
         }
-        var form_data = $(form).serializeArray();
+        var form_data;// = $(form).serializeArray();
+        form_data = formNameValues(form);
+        form_data._token = "{{ csrf_token() }}";
 
         $.post(form.action, form_data, function (res) {
             console.log(res);
