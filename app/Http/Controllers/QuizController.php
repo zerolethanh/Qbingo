@@ -58,7 +58,7 @@ class QuizController extends Controller
         $caption = $quiz_text;
 
         //save image
-        $cmd = escapeshellcmd("convert -font $text_font -pointsize $pointsize -size $size caption:$caption $saveTo");
+        $cmd = "convert -font $text_font -pointsize $pointsize -size $size caption:'{$quiz_text}' $saveTo";
         info($cmd);
 
         $process = new Process($cmd);
