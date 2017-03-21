@@ -8,7 +8,8 @@
         left: 10%;
     }
 </style>
-<button onclick="face_shuffle()" class=" start-buttons btn-shuffle"></button>
+<button onclick="face_shuffle()" class="start-buttons btn-shuffle"
+        id="face_shuffle_button"></button>
 
 <script>
     function face_shuffle() {
@@ -24,10 +25,12 @@
                         // when roll stop then set text, user name , face img
                         userNameField.value = res.face.user_name;
                         faceImageEle.src = "/thumb/" + res.face.user_photo;
+                        document.getElementById('face_shuffle_button').disabled = false;
                     };
                     var whenRollStart = function () {
                         userNameField.value = '';
                         faceImageEle.src = '';
+                        document.getElementById('face_shuffle_button').disabled = true;
                     };
                     roll(res.face_index, whenRollEnded, whenRollStart);
 //                    document.getElementById('face_img').src = "/thumb/" + res.face.user_photo;

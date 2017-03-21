@@ -54,6 +54,8 @@
                         faceImageEle.src = '';
                         quizTextField.value = '';
                         start_audio.play();
+                        document.getElementById('face_shuffle_button').disabled = true;
+
                     };
                     var whenRollEnded = function () {
                         // when roll stop then set text, user name , face img
@@ -63,6 +65,8 @@
                         start_audio.pause();
                         start_audio.currentTime = 0;
                         document.getElementById('end_audio').play();
+                        document.getElementById('face_shuffle_button').disabled = false;
+
                     };
 
                     roll(res.face_index, whenRollEnded, whenRollStart);
