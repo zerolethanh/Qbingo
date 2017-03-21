@@ -269,7 +269,7 @@
             <img src="/img/heads620-65.jpg" class="hitnumbers-container bottom-containers"
                  style="height: 150px;z-index: -1">
 
-            <div id="hit_numbers" class="hitnumbers-container bottom-containers" style="bottom: 130px;left: 255px;">
+            <div id="hit_numbers" class="hitnumbers-container bottom-containers" style="bottom: 50px;left: 255px;">
                 @include('bingo.start.hit_numbers')
             </div>
         </div>
