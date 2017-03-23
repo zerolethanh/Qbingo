@@ -18,8 +18,10 @@
         event.preventDefault();
 //        startFace(event);
         // fetch image and quiz
-        $.post('/start/face',
-            {_token: "<?php echo e(csrf_token()); ?>"},
+        $.post('/start/face', {
+                _token: "<?php echo e(csrf_token()); ?>",
+                quiz_started: 1
+            },
             function (res, status) {
                 console.log(res);
                 if (res.error) {
@@ -46,9 +48,17 @@
                     var whenRollStart = function () {
                         $("#quiz_text").hide();
                         $("#quiz_imgs").show();
-                        $("#face_img").show();
-                        $("#face_imgs").hide();
-                        userNameField.value = '';
+
+                        if (res.start.slot_started) {
+                            $("#face_imgs").show();
+                            $("#face_img").hide();
+//                            userNameField.value = '';
+                        } else {
+                            $("#face_imgs").hide();
+                            $("#face_img").hide();
+                            userNameField.value = '';
+                        }
+
                         faceImageEle.src = '';
                         quizTextField.value = '';
                         start_audio.play();
@@ -57,7 +67,7 @@
                     };
                     var whenRollEnded = function () {
                         // when roll stop then set text, user name , face img
-                        userNameField.value = res.face.user_name;
+//                        userNameField.value = res.face.user_name;
                         quizTextField.value = res.quiz.quiz_text;
                         faceImageEle.src = "/thumb/" + res.face.user_photo;
                         start_audio.pause();

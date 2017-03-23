@@ -16,17 +16,50 @@ class StartController extends Controller
     const QUIZ_METHOD_ASSIGN = 'a';
 
     /**
-     * @param $isRefresh : ブラウザーがリフレッシュするかどうか？
      * @return array
      */
     public function face()
     {
         //check start record is setting hit
         $start = Auth::user()->starts()->where(['quiz_number' => session('quiz_number')])->first();
-        if ($start && !$start->hit) {
+
+        //if start is not exists
+        // or start round is ended
+        // then make a new start round
+        if (!$start)
+            goto new_start_round;
+        if ($start && $start->slot_started && $start->quiz_started && $start->hit) {
+            goto new_start_round;
+        }
+
+        //if start has no hit number
+        // then make a notification for select a number
+        if ($start && $start->slot_started && $start->quiz_started && !$start->hit) {
             return ['error' => '１つの数字を選んでください。'];
         }
 
+        if ($start && ($start->slot_started || $start->quiz_started)) {
+            if ($start->slot_started) {
+                //get quiz
+                $quiz_started = request('quiz_started', 0);
+                $start->update(compact('quiz_started'));
+                $last_round_result = session('last_round_result');
+                $last_round_result['start'] = $start;
+                session(compact('last_round_result'));
+                return $last_round_result;
+            } else {
+                // get slot (face)
+                $slot_started = request('slot_started', 0);
+                $start->update(compact('slot_started'));
+                $last_round_result = session('last_round_result');
+                $last_round_result['start'] = $start;
+                session(compact('last_round_result'));
+                return $last_round_result;
+            }
+        }
+
+        new_start_round:
+        // make a new start round
         $quizzes = Auth::user()->quizzes()->orderBy('quiz_number', 'asc')->get();
 
         $q_numbers = $quizzes->pluck('quiz_number');
@@ -43,45 +76,49 @@ class StartController extends Controller
             });
         }
 
-        if (isset($quiz_number)) {
+        //quiz_number = null (no next quiz is valid)
+        // then game end
+        if (!isset($quiz_number)) {
+            $game_ended = true;
+            return compact('game_ended');
+        }
+        // get quiz from quiz number
+        $quiz = $quizzes->first(function ($q) use ($quiz_number) {
+            return $quiz_number == $q->quiz_number;
+        });
 
-            // get quiz from quiz number
-            $quiz = $quizzes->first(function ($q) use ($quiz_number) {
-                return $quiz_number == $q->quiz_number;
-            });
+        $uploads = Auth::user()->uploads;
+        // get upload face
+        switch ($quiz->quiz_method) {
+            case self::QUIZ_METHOD_SHUFFLE:
+                //シャッフル
+                $face = $uploads->random();
+                break;
 
-            $uploads = Auth::user()->uploads;
-            // get upload face
-            switch ($quiz->quiz_method) {
-                case self::QUIZ_METHOD_SHUFFLE:
-                    //シャッフル
-                    $face = $uploads->random();
-                    break;
-
-                default:
-                    //番号指定
-                    $face = Auth::user()->uploads()->where('id', $quiz->upload_id)->first();
-                    break;
-            }
-
-            $face_index = array_search($face->id, $uploads->pluck('id')->toArray());
-            $quiz_index = array_search($quiz->id, $quizzes->pluck('id')->toArray());
-
-            // write last quiz number to starts table
-            Auth::user()->starts()->create([
-                'quiz_number' => $quiz_number,
-                'upload_id' => $face->id
-            ]);
-
-            session()->put('quiz_number', $quiz_number);
-            session()->put('upload_id', $face->id);
-
-            $game_ended = false;
-            return compact('quiz', 'face', 'game_ended', 'face_index', 'quiz_index');
+            default:
+                //番号指定
+                $face = Auth::user()->uploads()->where('id', $quiz->upload_id)->first();
+                break;
         }
 
-        $game_ended = true;
-        return compact('game_ended');
+        $face_index = array_search($face->id, $uploads->pluck('id')->toArray());
+        $quiz_index = array_search($quiz->id, $quizzes->pluck('id')->toArray());
+
+        // write last quiz number to starts table
+        $start = Auth::user()->starts()->create([
+            'quiz_number' => $quiz_number,
+            'upload_id' => $face->id,
+            'slot_started' => request('slot_started', 0),
+            'quiz_started' => request('quiz_started', 0)
+        ]);
+
+        session()->put('quiz_number', $quiz_number);
+        session()->put('upload_id', $face->id);
+
+        $game_ended = false;
+        $last_round_result = compact('quiz', 'face', 'game_ended', 'face_index', 'quiz_index', 'start');
+        session(compact('last_round_result'));
+        return $last_round_result;
 
     }
 
@@ -106,9 +143,16 @@ class StartController extends Controller
         // else new record
         $start = $this->lastQuestionedStartButNoHitNumberSetted();
         if ($start) {
+            if (!$start->slot_started) {
+                return ['error' => 'スロットスタートしてください'];
+            }
+            if (!$start->quiz_started) {
+                return ['error' => 'クイズスタートしてください'];
+            }
             $start->update([
                 'hit' => request('number')
             ]);
+
         } else {
             // レコード追加していく
             $start = Auth::user()->starts()->create(

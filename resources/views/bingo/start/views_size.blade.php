@@ -14,10 +14,13 @@
         width: 107px;
         height: 32px;
         border: 0px;
-        font-weight:bold;
+        font-weight: bold;
 
     }
-
+    /*Bootstrap 3*/
+    .modal .modal-lg {
+        width: 80%;
+    }
     /*#quiz_text_div{background:#cc0000}*/
 </style>
 <div>
@@ -113,10 +116,21 @@
 
     function hit_numbers_fullscreen() {
 
-        var hit_numbers = document.getElementById('hit_numbers').innerHTML;
-
-        setFullScreenBody('' +
-            hit_numbers
+//        var hit_numbers = document.getElementById('hit_numbers').innerHTML;
+        var hit_numbers_html = '<div>';
+        for (var i = 0; i < hit_numbers.length; ++i) {
+            var hit = hit_numbers[i];
+            hit_numbers_html +=
+                "<button  data-toggle='modal'" +
+//                " class='suuji'" +
+                " class='btn-warning'" +
+                " data-target='#hit_details'" +
+                " style='font-size: 10em;margin: 5px;color: black;'" +
+                " onclick='hit_details(" + hit + ")'>" + hit + "</button>";
+        }
+        hit_numbers_html += '</div>';
+        setFullScreenBody(
+            hit_numbers_html
         )
     }
     function camera_fullscreen() {
@@ -142,7 +156,7 @@
     function setFullScreenBody(content) {
         try {
             var content_el = document.querySelector('#fullscreen_modal .modal-body');
-            content_el.innerHTML =  content;
+            content_el.innerHTML = content;
         } catch (e) {
             console.log(e)
         }

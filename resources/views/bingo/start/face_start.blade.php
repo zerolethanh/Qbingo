@@ -20,8 +20,10 @@
         event.preventDefault();
 
         // fetch image and quiz
-        $.post('/start/face',
-            {_token: "{{ csrf_token() }}"},
+        $.post('/start/face', {
+                _token: "{{ csrf_token() }}",
+                slot_started: 1
+            },
             function (res, status) {
                 console.log(res);
                 if (res.error) {
@@ -46,13 +48,19 @@
 
                     var start_audio = document.getElementById('start_audio');
                     var whenRollStart = function () {
-                        $("#quiz_text").show();
-                        $("#quiz_imgs").hide();
+                        if (res.start.quiz_started) {
+                            $("#quiz_text").hide();
+                            $("#quiz_imgs").show();
+                        } else {
+                            $("#quiz_text").hide();
+                            $("#quiz_imgs").hide();
+                        }
                         $("#face_img").hide();
                         $("#face_imgs").show();
                         userNameField.value = '';
                         faceImageEle.src = '';
                         quizTextField.value = '';
+                        //play start audio
                         start_audio.play();
                         document.getElementById('face_shuffle_button').disabled = true;
 
@@ -60,8 +68,14 @@
                     var whenRollEnded = function () {
                         // when roll stop then set text, user name , face img
                         userNameField.value = res.face.user_name;
-                        quizTextField.value = res.quiz.quiz_text;
+                        console.log(res.start.quiz_started);
+                        if (res.start.quiz_started) {
+                            quizTextField.value = res.quiz.quiz_text;
+                        }
                         faceImageEle.src = "/thumb/" + res.face.user_photo;
+
+                        //stop roulet audio
+                        //play "stop" audio
                         start_audio.pause();
                         start_audio.currentTime = 0;
                         document.getElementById('end_audio').play();

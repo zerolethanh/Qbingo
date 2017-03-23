@@ -14,14 +14,22 @@ $no_hits->each(function ($n) {
             'number': $n
         }, function (res, status) {
             console.log(res);
+            if (res.error) {
+                //show error
+                $.notify(res.error);
+                return;
+            }
 
             if (!res.start) {
                 //game is not be started
                 $.notify('ゲームを始めてください。');
                 return;
             }
+
             var hit_elements = [/*'<label for="">Hit Numbers:</label><br>'*/];
             var no_hit_elements = [/*'<label for="">Numbers:</label><br>'*/];
+            hit_numbers = res.hits;
+            no_hit_numbers = res.no_hits;
             res.hits.forEach(function (hit) {
                 hit_elements.push("<button  data-toggle='modal'" +
                     " class='suuji'" +

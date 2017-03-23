@@ -13,7 +13,9 @@ class Start extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'hit' => 'int'
+        'hit' => 'int',
+        'slot_started' => 'boolean',
+        'quiz_started' => 'boolean',
     ];
 
     public function scopeMaxQuizNumber($q)

@@ -177,7 +177,7 @@
                 <div class="face-container">
                     <textarea name="quiz_text" id="quiz_text"
                               style="font-size: xx-large; width: 352px;height: 305px"
-                              class="form-control" disabled>{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
+                              class="form-control">{{ isset($quiz) ? $quiz->quiz_text : ''}}</textarea>
 
                     <div id="quiz_imgs">
                         <div class="quiz_imgs">

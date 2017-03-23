@@ -21,15 +21,23 @@
                 try {
                     var userNameField = document.getElementById('user_name');
                     var faceImageEle = document.getElementById('face_img');
+                    var start_audio = document.getElementById('start_audio');
                     var whenRollEnded = function () {
                         // when roll stop then set text, user name , face img
                         userNameField.value = res.face.user_name;
                         faceImageEle.src = "/thumb/" + res.face.user_photo;
+                        //stop roulet audio
+                        //play "stop" audio
+                        start_audio.pause();
+                        start_audio.currentTime = 0;
+                        document.getElementById('end_audio').play();
                         document.getElementById('face_shuffle_button').disabled = false;
                     };
                     var whenRollStart = function () {
                         userNameField.value = '';
                         faceImageEle.src = '';
+                        //play start audio
+                        start_audio.play();
                         document.getElementById('face_shuffle_button').disabled = true;
                     };
                     roll(res.face_index, whenRollEnded, whenRollStart);
