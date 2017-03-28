@@ -107,9 +107,9 @@
         .user-name-field {
 
             position: relative;
-            top: 75px;
+            top: 70px;
             left: 5px;
-            height: 30px;
+            /*height: 30px;*/
             width: 100%;
             background-color: black;
             border: none;
@@ -151,8 +151,8 @@
         <div class="col-sm-4">
 
             <div style="position: relative; ">
-                <img src="/img/name250-50.jpg" alt="" class="name-img">
-                <input type="text" id="user_name" value="{{$face->user_name or ''}}" class="user-name-field" disabled>
+                <img src="/img/name_slot.jpg" alt="" class="name-img">
+                <input type="text" id="user_name" value="{{$face->user_name or ''}}" class="user-name-field">
             </div>
             <div style="position: relative; top: 30px;">
                 <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
