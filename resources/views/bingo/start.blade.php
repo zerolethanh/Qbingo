@@ -169,7 +169,7 @@
             <div style="position: relative; ">
                 <img src="/img/mondai705-300.png" alt="" class="mondai-img">
             </div>
-            <div id="quiz_text_div" style="position: relative; top: 60px;">
+            <div id="quiz_text_div" style="position: relative; top: 70px;">
 
                 <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
 
@@ -235,7 +235,7 @@
             </div>
 
 
-            <div style="position: relative; top: 60px;">
+            <div style="position: relative; top: 70px;">
 
                 <img src="/img/bgw240-210.jpg" alt="" class="face-slot-bg-image">
 
