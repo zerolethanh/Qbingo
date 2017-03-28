@@ -10,7 +10,7 @@
     }
 
 </style>
-<button onclick="return startFace(event);" class="btn-slot start-buttons"></button>
+<button onclick="return startFace(event);" class="btn-slot start-buttons" id="start_face_button"></button>
 <audio id="start_audio" src="/audio/tympani-roll1.mp3" preload="metadata" loop></audio>
 <audio id="end_audio" src="/audio/question1.mp3" preload="metadata"></audio>
 <script>
@@ -63,7 +63,8 @@
                         //play start audio
                         start_audio.play();
                         document.getElementById('face_shuffle_button').disabled = true;
-
+                        document.getElementById('start_face_button').disabled = true;
+                        document.getElementById('start_quiz_button').disabled = true;
                     };
                     var whenRollEnded = function () {
                         // when roll stop then set text, user name , face img
@@ -80,6 +81,8 @@
                         start_audio.currentTime = 0;
                         document.getElementById('end_audio').play();
                         document.getElementById('face_shuffle_button').disabled = false;
+                        document.getElementById('start_face_button').disabled = false;
+                        document.getElementById('start_quiz_button').disabled = false;
 
                     };
 

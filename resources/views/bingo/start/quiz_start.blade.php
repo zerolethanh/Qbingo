@@ -8,7 +8,7 @@
         position: relative;
     }
 </style>
-<button onclick="return startQuiz(event);" class="btn-quiz start-buttons">
+<button onclick="return startQuiz(event);" class="btn-quiz start-buttons" id="start_quiz_button">
 
 </button>
 
@@ -63,7 +63,8 @@
                         quizTextField.value = '';
                         start_audio.play();
                         document.getElementById('face_shuffle_button').disabled = true;
-
+                        document.getElementById('start_face_button').disabled = true;
+                        document.getElementById('start_quiz_button').disabled = true;
                     };
                     var whenRollEnded = function () {
                         // when roll stop then set text, user name , face img
@@ -74,6 +75,8 @@
                         start_audio.currentTime = 0;
                         document.getElementById('end_audio').play();
                         document.getElementById('face_shuffle_button').disabled = false;
+                        document.getElementById('start_face_button').disabled = false;
+                        document.getElementById('start_quiz_button').disabled = false;
 
                     };
 
