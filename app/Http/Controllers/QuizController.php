@@ -48,7 +48,7 @@ class QuizController extends Controller
         return $quiz;
     }
 
-    public function saveQuizImg($quiz_number, $quiz_text)
+    static public function saveQuizImg($quiz_number, $quiz_text)
     {
         //convert -font ~/Qbingo/public/fonts/IPAfont00303/ipag.ttf -pointsize 40 -size 352x  caption:日本語Englishベトナム語 caption.gif
         $saveTo = Happy::uploadPath("quizzes", "$quiz_number.gif");
@@ -70,11 +70,11 @@ class QuizController extends Controller
         }
 
         //resize image for used in routllet
-        $this->resizeQuizImg($saveTo);
+        static::resizeQuizImg($saveTo);
         return $saveTo;
     }
 
-    public function resizeQuizImg($originalQuizImgPath)
+    static public function resizeQuizImg($originalQuizImgPath)
     {
         $w = UploadController::IMG_W;
         $h = UploadController::IMG_H;

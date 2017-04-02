@@ -182,7 +182,8 @@
                     <div id="quiz_imgs">
                         <div class="quiz_imgs">
                             @foreach($quizzes as $q)
-                                <img src="/quiz/img/{{$q->quiz_number}}" id="quiz_img_{{$q->quiz_number}}"
+                                <img src="/quiz/img/{{$q->quiz_number.'?_t='.time()}}"
+                                     id="quiz_img_{{$q->quiz_number}}"
                                      width="{{\App\Http\Controllers\UploadController::IMG_W}}px"
                                      height="{{\App\Http\Controllers\UploadController::IMG_H}}px" alt="">
                             @endforeach

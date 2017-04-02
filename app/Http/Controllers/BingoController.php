@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Happy;
 use App\Quiz;
 use App\Upload;
 use Illuminate\Http\Request;
@@ -115,6 +116,14 @@ class BingoController extends Controller
 //        foreach ($uploads as $upload) {
 //            Upload::createThumbFromUpload($upload);
 //        }
+        foreach ($quizzes as $q) {
+            $quiz_number = $q['quiz_number'];
+            $saveTo = Happy::uploadPath("quizzes", "$quiz_number.gif");
+            if (!file_exists($saveTo)) {
+                $quiz_text = $q['quiz_text'];
+                QuizController::saveQuizImg($quiz_number, $quiz_text);
+            }
+        }
         return view('bingo.start', compact('faces', 'quizzes', 'hits', 'no_hits', 'start', 'face', 'quiz', 'uploads'));
     }
 

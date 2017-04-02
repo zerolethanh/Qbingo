@@ -38,22 +38,26 @@ EOD;
         <div style="float: left;"><h1>クイズ作成</h1></div>
         <div style="float: right;">
 
-            <button style="background-image: url('/botann/newボタン1.png'); " onclick="window.open().location.href = '/bingo/description'" class="control-buttons">
+            <button style="background-image: url('/botann/newボタン1.png'); "
+                    onclick="window.open().location.href = '/bingo/description'" class="control-buttons">
             </button>
-            <button onclick="location.href = '/bingo/upload-list'" style="background-image: url('/botann/newボタン2.png')" class="control-buttons">
+            <button onclick="location.href = '/bingo/upload-list'" style="background-image: url('/botann/newボタン2.png')"
+                    class="control-buttons">
 
             </button>
 
-            <button onclick=" location.href = '/bingo/quizzes'" style="background-image: url('/botann/newボタン3.png');" class="control-buttons">
+            <button onclick=" location.href = '/bingo/quizzes'" style="background-image: url('/botann/newボタン3.png');"
+                    class="control-buttons">
 
             </button>
-            <button onclick=" location.href = '/bingo/start'" class="control-buttons" style="background-image: url('/botann/newボタン41.png')">
+            <button onclick=" location.href = '/bingo/start'" class="control-buttons"
+                    style="background-image: url('/botann/newボタン41.png')">
 
             </button>
 
         </div>
     </div>
-    
+
 
     <table class="table table-bordered">
         {{-- quiz head --}}
@@ -193,7 +197,10 @@ EOD;
             console.log(res);
             $.notify(res.quiz_number + '問目を保存しました', 'success')
         }).fail(function (res, status) {
-            console.log(res)
+            console.log(res);
+            notifyFail(`トークンが無効になっています。
+            ブラウザーをリフレッシュして続けてください。`);
+//            location.reload();
         })
     }
 
