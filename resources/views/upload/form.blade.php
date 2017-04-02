@@ -84,7 +84,7 @@
                             <label for="user_name" class="col-md-4 control-label">名前：</label>
                             <div class="col-md-6">
                                 <input id="user_name" type="text" class="form-control" name="user_name"
-                                       value="{{ Faker\Provider\ja_JP\Person::firstKanaName(). Faker\Provider\ja_JP\Person::lastKanaName() }}"
+                                       {{--value="{{ Faker\Provider\ja_JP\Person::firstKanaName(). Faker\Provider\ja_JP\Person::lastKanaName() }}"--}}
                                        required
                                        autofocus>
                                 <p style="color:red" id="user_name_validation_message"></p>
@@ -108,9 +108,9 @@
                             <label for="user_message" class="col-md-4 control-label">お祝い<br>メッセージ:</label>
                             <div class="col-md-6">
                                 <textarea class="form-control" id="user_message" name="user_message"
-                                          placeholder="Message"
+                                          {{--placeholder="Message"--}}
                                           required
-                                          rows="5">{{ \App\Shiawase::gift() }}</textarea>
+                                          rows="5">{{--{{ \App\Shiawase::gift() }}--}}</textarea>
                                 <p style="color:red" id="user_message_validation_message"></p>
                             </div>
                         </div>
