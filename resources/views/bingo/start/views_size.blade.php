@@ -109,6 +109,7 @@
 
     function face_fullscreen() {
         var face_src = document.getElementById('face_img').src;
+        face_src = face_src.replace(/\/thumb\//, '/photo/');
         setFullScreenBody(
             "<img src='" + face_src + "' class='img-responsive'/>"
         )
