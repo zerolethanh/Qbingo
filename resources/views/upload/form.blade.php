@@ -126,7 +126,7 @@
                                                userPhotoPreview('preview_user_photo')"
                                        name="{{$user_photo}}" accept="image/*" required>
                                 <div style="max-width: 100%" class="container">
-                                    <img src="/image/load.gif" alt="" id="loading_img" hidden>
+                                    <img src="/image/load.gif" alt="" id="loading_img" class="img-responsive" style="display: none;">
                                     <img src="" alt="" id="preview_user_photo" class="frame img-responsive">
                                 </div>
                                 <p style="color:red" id="user_photo_validation_message"></p>
@@ -220,10 +220,10 @@
 //                        console.log('compressedData size : ', Math.round(compressedData.length * 6 / 8 / 1024), ' kb');
 //                        notifySuccess(`画像アップロード中です。
 //                            しばらくお待ちください。`);
-                        $('#loading_img').show();
+                        $('#loading_img').css('display', 'block');
                         //4. upload compressed data
                         uploadBlob(compressedData, function (res) {
-                            $('#loading_img').hide();
+                            $('#loading_img').css('display', 'none');
                             last_file_name = res.file_name;
                             $('#confirm_screen_button').click(function (e) {
                                 e.preventDefault();
