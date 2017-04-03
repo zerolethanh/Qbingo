@@ -126,6 +126,7 @@
                                                userPhotoPreview('preview_user_photo')"
                                        name="{{$user_photo}}" accept="image/*" required>
                                 <div style="max-width: 100%" class="container">
+                                    <img src="/image/load.gif" alt="" id="loading_img" hidden>
                                     <img src="" alt="" id="preview_user_photo" class="frame img-responsive">
                                 </div>
                                 <p style="color:red" id="user_photo_validation_message"></p>
@@ -201,7 +202,7 @@
                 console.log(e);
             }
             if (file) {
-                console.log('file size: ', file.size / 1024, ' kb');
+//                console.log('file size: ', file.size / 1024, ' kb');
                 //on load file ended
                 reader.onloadend = function () {
                     //create new image
@@ -216,13 +217,14 @@
                         var ctx = cvs.getContext("2d").drawImage(this, 0, 0);
                         //3. compress image data
                         var compressedData = cvs.toDataURL(mime_type, quality / 100);
-                        console.log('compressedData size : ', Math.round(compressedData.length * 6 / 8 / 1024), ' kb');
-
+//                        console.log('compressedData size : ', Math.round(compressedData.length * 6 / 8 / 1024), ' kb');
+//                        notifySuccess(`画像アップロード中です。
+//                            しばらくお待ちください。`);
+                        $('#loading_img').show();
                         //4. upload compressed data
                         uploadBlob(compressedData, function (res) {
-
+                            $('#loading_img').hide();
                             last_file_name = res.file_name;
-                            //                        $('#save_cropped_image')
                             $('#confirm_screen_button').click(function (e) {
                                 e.preventDefault();
                                 var cropped_data = picture.guillotine('getData');
