@@ -121,10 +121,13 @@
                             <label for="" class="col-md-4 control-label">自撮り</label>
                             <div class="col-md-6">
                                 <input type="file" id="{{$user_photo}}"
-                                       onchange="/*uploadThenPreview('{{$user_photo}}');*/
+                                       onchange="
+                                       {{--uploadThenPreview('{{$user_photo}}');--}}
                                                userPhotoPreview('preview_user_photo')"
                                        name="{{$user_photo}}" accept="image/*" required>
-                                <img src="" alt="" id="preview_user_photo" class="frame">
+                                <div style="max-width: 100%" class="container">
+                                    <img src="" alt="" id="preview_user_photo" class="frame img-responsive">
+                                </div>
                                 <p style="color:red" id="user_photo_validation_message"></p>
                             </div>
                         </div>
@@ -190,67 +193,94 @@
             input_id = input_id || 'user_photo';
             var file = document.getElementById(input_id).files[0];
             var reader = new FileReader();
-
+            var picture = $('#' + preview_element_id);  // Must be already loaded or cached!
+            try {
+                picture.attr('src', '');
+                picture.guillotine('remove');
+            } catch (e) {
+                console.log(e);
+            }
             if (file) {
+                console.log('file size: ', file.size / 1024, ' kb');
+                //on load file ended
                 reader.onloadend = function () {
+                    //create new image
+                    var img = new Image();
+                    //2. on image src setted
+                    img.onload = function () {
+                        var mime_type = 'image/jpeg', quality = 30;
+                        //make canvas
+                        var cvs = document.createElement('canvas');
+                        cvs.width = this.naturalWidth;
+                        cvs.height = this.naturalHeight;
+                        var ctx = cvs.getContext("2d").drawImage(this, 0, 0);
+                        //3. compress image data
+                        var compressedData = cvs.toDataURL(mime_type, quality / 100);
+                        console.log('compressedData size : ', Math.round(compressedData.length * 6 / 8 / 1024), ' kb');
 
-                    uploadBlob(reader.result, function (res) {
-                        var picture = $('#' + preview_element_id);  // Must be already loaded or cached!
-                        picture.guillotine('remove');
-                        last_file_name = res.file_name;
-//                        $('#save_cropped_image')
-                        $('#confirm_screen_button').click(function (e) {
-                            e.preventDefault();
-                            var cropped_data = picture.guillotine('getData');
-                            cropped_data.file_name = res.file_name;
-                            cropped_data.origin_image_url = res.download_url;
-                            console.log(cropped_data);
-                            if (last_file_name == res.file_name) {
-                                $.post('save_cropped_image', {cropped_data: cropped_data}, function (res) {
-                                    console.log(res);
-                                    $('#confirm_user_photo_preview').attr('src', res.editted_image_url)
+                        //4. upload compressed data
+                        uploadBlob(compressedData, function (res) {
+
+                            last_file_name = res.file_name;
+                            //                        $('#save_cropped_image')
+                            $('#confirm_screen_button').click(function (e) {
+                                e.preventDefault();
+                                var cropped_data = picture.guillotine('getData');
+                                cropped_data.file_name = res.file_name;
+                                cropped_data.origin_image_url = res.download_url;
+                                console.log(cropped_data);
+                                if (last_file_name === res.file_name) {
+                                    $.post('save_cropped_image', {cropped_data: cropped_data}, function (res) {
+                                        console.log(res);
+                                        $('#confirm_user_photo_preview').attr('src', res.editted_image_url)
+                                    })
+                                }
+
+                            });
+
+                            var camelize = function () {
+                                var regex = /[\W_]+(.)/g;
+                                var replacer = function (match, submatch) {
+                                    return submatch.toUpperCase()
+                                };
+                                return function (str) {
+                                    return str.replace(regex, replacer)
+                                }
+                            }();
+
+                            picture.on('load', function () {
+                                picture.guillotine({
+                                    eventOnChange: 'guillotinechange',
+                                    width: 352,
+                                    height: 308,
                                 })
-                            }
+                                picture.guillotine('fit')
 
+                                // Show controls and data
+                                $('.notice, #controls, #data').removeClass('hidden')
+
+                                // Bind actions
+                                $('#controls a').click(function (e) {
+                                    e.preventDefault()
+                                    var action = camelize(this.id)
+                                    picture.guillotine(action)
+                                })
+
+                                // Update data on change
+                                picture.on('guillotinechange', function (e, data, action) {
+                                    console.log(action, data);
+                                })
+                            })
+                            picture.attr('src', res.download_url);
                         });
 
-                        var camelize = function () {
-                            var regex = /[\W_]+(.)/g;
-                            var replacer = function (match, submatch) {
-                                return submatch.toUpperCase()
-                            };
-                            return function (str) {
-                                return str.replace(regex, replacer)
-                            }
-                        }();
-
-                        picture.on('load', function () {
-                            picture.guillotine({
-                                eventOnChange: 'guillotinechange',
-                                width: 352,
-                                height: 308,
-                            })
-                            picture.guillotine('fit')
-
-                            // Show controls and data
-                            $('.notice, #controls, #data').removeClass('hidden')
-
-                            // Bind actions
-                            $('#controls a').click(function (e) {
-                                e.preventDefault()
-                                var action = camelize(this.id)
-                                picture.guillotine(action)
-                            })
-
-                            // Update data on change
-                            picture.on('guillotinechange', function (e, data, action) {
-                                console.log(action, data);
-                            })
-                        })
-                        picture.attr('src', res.download_url);
-                    });
+                    }
+                    //set image src
+                    img.src = reader.result;
+                    //clear invalid message
                     id("user_photo_validation_message").innerHTML = '';
                 };
+                //1. start load file
                 reader.readAsDataURL(file);
             } else {
 //                preview.src = '';
@@ -266,6 +296,27 @@
                 callback(res);
             }
         })
+    }
+    function compressImage(source_img_obj, quality, output_format, then) {
+
+        var mime_type = "image/jpeg";
+        if (typeof output_format !== "undefined" && output_format === "png") {
+            mime_type = "image/png";
+        }
+
+        var cvs = document.createElement('canvas');
+        cvs.width = source_img_obj.naturalWidth;
+        cvs.height = source_img_obj.naturalHeight;
+        var ctx = cvs.getContext("2d").drawImage(source_img_obj, 0, 0);
+        var newImageData = cvs.toDataURL(mime_type, quality / 100);
+        if (then) {
+            then(newImageData);
+        }
+        source_img_obj.src = newImageData;
+//        return newImageData;
+//        var result_image_obj = new Image();
+//        result_image_obj.src = newImageData;
+//        return result_image_obj;
     }
 
     $('#confirm_upload_modal').on('show.bs.modal', function (e) {
