@@ -13,7 +13,41 @@
 </button>
 
 <script>
+    if (!face_idxs) {
+        var face_idxs = JSON.parse(document.getElementsByName('face_idxs')[0].getAttribute('content'));
+    }
+    $("#quiz_imgs").hide();
+    var quiz_imgs_option = {
+            speed: face_idxs.length * 10,
+            duration: 5,
+            stopImageNumber: 0,
+            startCallback: function () {
+                console.log('start');
+            },
+            slowDownCallback: function () {
+                console.log('slowDown');
+            },
+            stopCallback: function ($stopElm) {
+                console.log('stop');
+            },
+        }
+    ;
 
+    var quiz_imgs_r = $("div.quiz_imgs");
+    quiz_imgs_r.roulette('option', quiz_imgs_option);
+
+    function quiz_imgs_roll(stopFaceIndex, whenRollEnded, whenRollStart) {
+        quiz_imgs_option.stopImageNumber = Number(stopFaceIndex);
+        quiz_imgs_option.stopCallback = whenRollEnded;
+        quiz_imgs_option.startCallback = whenRollStart;
+
+        console.log(quiz_imgs_option);
+        quiz_imgs_r.roulette('option', quiz_imgs_option);
+        quiz_imgs_r.roulette('start');
+//        setTimeout(function () {
+//            quiz_imgs_r.roulette('stop');
+//        }, 2500)
+    }
     function startQuiz(event) {
         event.preventDefault();
 //        startFace(event);
@@ -45,7 +79,9 @@
                     var quizTextField = document.getElementById('quiz_text');
 
                     var start_audio = document.getElementById('start_audio');
+                    var start_time, stop_time;
                     var whenRollStart = function () {
+                        start_time = new Date();
                         $("#quiz_text").hide();
                         $("#quiz_imgs").show();
 
@@ -67,6 +103,8 @@
                         document.getElementById('start_quiz_button').disabled = true;
                     };
                     var whenRollEnded = function () {
+                        stop_time = new Date();
+                        console.log('quiz_roll_time:', (stop_time.getTime() - start_time.getTime()) / 1000, 's');
                         // when roll stop then set text, user name , face img
 //                        userNameField.value = res.face.user_name;
                         quizTextField.value = res.quiz.quiz_text;

@@ -11,10 +11,41 @@
 
 </style>
 <button onclick="return startFace(event);" class="btn-slot start-buttons" id="start_face_button"></button>
-<audio id="start_audio" src="/audio/tympani-roll1.mp3" preload="metadata" loop></audio>
+<audio id="start_audio" src="/audio/tympani-roll1.mp3" preload="metadata"></audio>
 <audio id="end_audio" src="/audio/question1.mp3" preload="metadata"></audio>
 <script>
+    var face_idxs = JSON.parse(document.getElementsByName('face_idxs')[0].getAttribute('content'));
+    console.log(face_idxs.length);
 
+    // roulette 設定
+
+    var option = {
+        speed: face_idxs.length * 10,
+        duration: 4,
+        stopImageNumber: 0,
+        startCallback: function () {
+            console.log('start');
+        },
+        slowDownCallback: function () {
+            console.log('slowDown');
+        },
+        stopCallback: function ($stopElm) {
+            console.log('stop');
+        },
+    };
+
+    var rouletter = $('div.roulette');
+    rouletter.roulette('option', option);
+
+    function roll(stopFaceIndex, whenRollEnded, whenRollStart) {
+        option['stopImageNumber'] = Number(stopFaceIndex);
+        option.stopCallback = whenRollEnded;
+        option.startCallback = whenRollStart;
+
+        console.log(option);
+        rouletter.roulette('option', option);
+        rouletter.roulette('start');
+    }
     /// start face
     function startFace(event) {
         event.preventDefault();
@@ -47,7 +78,10 @@
                     var quizTextField = document.getElementById('quiz_text');
 
                     var start_audio = document.getElementById('start_audio');
+
+                    var start_time, stop_time;
                     var whenRollStart = function () {
+                        start_time = new Date().getTime();
                         if (res.start.quiz_started) {
                             $("#quiz_text").hide();
                             $("#quiz_imgs").show();
@@ -67,6 +101,8 @@
                         document.getElementById('start_quiz_button').disabled = true;
                     };
                     var whenRollEnded = function () {
+                        stop_time = new Date().getTime();
+                        console.log('roll_time: ', (stop_time - start_time) / 1000, ' s');
                         // when roll stop then set text, user name , face img
                         userNameField.value = res.face.user_name;
                         console.log(res.start.quiz_started);

@@ -189,38 +189,6 @@
                             @endforeach
                         </div>
                     </div>
-                    <script>
-                        //                        $("#quiz_text").hide();
-                        console.log($("#quiz_imgs"));
-                        $("#quiz_imgs").hide();
-                        var quiz_imgs_option = {
-                            speed: 20,
-                            duration: 1,
-                            stopImageNumber: 0,
-                            startCallback: function () {
-                                console.log('start');
-                            },
-                            slowDownCallback: function () {
-                                console.log('slowDown');
-                            },
-                            stopCallback: function ($stopElm) {
-                                console.log('stop');
-                            }
-                        };
-
-                        var quiz_imgs_r = $("div.quiz_imgs");
-                        quiz_imgs_r.roulette('option', quiz_imgs_option);
-
-                        function quiz_imgs_roll(stopFaceIndex, whenRollEnded, whenRollStart) {
-                            quiz_imgs_option.stopImageNumber = Number(stopFaceIndex);
-                            quiz_imgs_option.stopCallback = whenRollEnded;
-                            quiz_imgs_option.startCallback = whenRollStart;
-
-                            console.log(quiz_imgs_option);
-                            quiz_imgs_r.roulette('option', quiz_imgs_option);
-                            quiz_imgs_r.roulette('start');
-                        }
-                    </script>
                 </div>
                 {{--</p>--}}
 
