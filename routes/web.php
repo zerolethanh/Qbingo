@@ -18,6 +18,7 @@ Route::group(['prefix' => 'bingo'], function () {
 Route::group(['prefix' => 'upload'], function () {
 //    Route::get('/', 'UploadController@index');
     Route::post('/', 'UploadController@upload');
+    Route::get('/success', 'UploadController@upload_success');
 });
 Route::get('getphoto/upload/{photoname}', 'PhotoController@getphoto');
 Route::get('getphoto/{photoname?}', 'PhotoController@getphoto');

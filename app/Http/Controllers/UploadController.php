@@ -37,7 +37,7 @@ class UploadController extends Controller
             'user_name' => 'required',
             'user_sex' => 'required',
             'user_message' => 'required',
-            PhotoController::REQUEST_USER_PHOTO_KEY => 'required|file|image',
+//            PhotoController::REQUEST_USER_PHOTO_KEY => 'required|file|image',
             'happy_uuid' => 'required|exists:happies'
         ], [
                 'user_name.required' => '名前が必須です。',
@@ -53,10 +53,12 @@ class UploadController extends Controller
         //save photo
 //        PhotoController::savePhoto();
         //get full photo path
-        $user_photo = PhotoController::fullPhotoPath();
+        $photo_name = Uuid::uuid() . '.' . pathinfo($origin_image_fullpath, PATHINFO_EXTENSION);
+
+        $user_photo = PhotoController::fullPhotoPath($photo_name);
         copy($origin_image_fullpath, $user_photo);
         //get full photo thumb path
-        $thumb = PhotoController::fullThumbPath();
+        $thumb = PhotoController::fullThumbPath($photo_name);
         copy($editted_image_fullpath, $thumb);
         //get upload's serial number be saved
         $number = Upload::where('happy_uuid', $this->request->happy_uuid)->max(('number')) + 1;
@@ -66,8 +68,15 @@ class UploadController extends Controller
         DB::commit();
 
         if ($upload) {
-            return view('upload.form.upload_success');
+//            return redirect(url('upload/success'));
+//            return view('upload.form.upload_success');
+            return ['success_url' => url('upload/success')];
         }
+    }
+
+    public function upload_success()
+    {
+        return view('upload.form.upload_success');
     }
 
     public function uploadConfirm()

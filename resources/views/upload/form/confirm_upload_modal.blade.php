@@ -15,8 +15,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal"
-                        onclick="document.getElementById('upload_form').submit();">このままに送信
-                </button>
+                        {{--onclick="document.getElementById('upload_form').submit();"--}}
+                        onclick="upload_form_submit()">このままに送信</button>
                 <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">編集</button>
             </div>
         </div>
@@ -24,6 +24,13 @@
 </div>
 
 <script>
+    function upload_form_submit() {
+        var data = formNameValues('#upload_form');
+        $.post('/upload', data, function (res) {
+            console.log(res);
+            location.href = res.success_url;
+        })
+    }
     function setModalTitle(modal_id, title) {
         var selector = '#' + modal_id + ' .modal-title';
         var modal_title = document.querySelector(selector);
