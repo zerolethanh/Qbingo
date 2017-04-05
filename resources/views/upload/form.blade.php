@@ -127,7 +127,7 @@
                                        {{--uploadThenPreview('{{$user_photo}}');--}}
                                                userPhotoPreview('preview_user_photo')"
                                        name="{{$user_photo}}" accept="image/*" required>
-                                <div style="max-width: 100%;margin-top: 10px;" class="container">
+                                <div style="max-width: 100%;margin-top: 10px;">
                                     <img src="/image/load.gif" alt="" id="loading_img" class="img-responsive"
                                          style="display: none;">
                                     <img src="" alt="" id="preview_user_photo" class="frame img-responsive">
