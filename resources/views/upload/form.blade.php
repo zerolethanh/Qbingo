@@ -8,6 +8,7 @@
     <title>アップロード</title>
     @include('bootstrap.sources')
     <script src="/js/jquery.guillotine.min.js"></script>
+    <script src="/js/jquery-input-file-text.js"></script>
     <link rel="stylesheet" href="/css/jquery.guillotine.css">
     <link href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css' rel='stylesheet'>
     <style>
@@ -118,15 +119,17 @@
                         {{-- user photo --}}
                         <div class="form-group">
                             <?php $user_photo = \App\Http\Controllers\PhotoController::REQUEST_USER_PHOTO_KEY; ?>
-                            <label for="" class="col-md-4 control-label">自撮り</label>
+                            <label for="" class="col-md-4 control-label"></label>
                             <div class="col-md-6">
                                 <input type="file" id="{{$user_photo}}"
+                                       value="自撮りorファイルを選択"
                                        onchange="
                                        {{--uploadThenPreview('{{$user_photo}}');--}}
                                                userPhotoPreview('preview_user_photo')"
                                        name="{{$user_photo}}" accept="image/*" required>
-                                <div style="max-width: 100%" class="container">
-                                    <img src="/image/load.gif" alt="" id="loading_img" class="img-responsive" style="display: none;">
+                                <div style="max-width: 100%;margin-top: 10px;" class="container">
+                                    <img src="/image/load.gif" alt="" id="loading_img" class="img-responsive"
+                                         style="display: none;">
                                     <img src="" alt="" id="preview_user_photo" class="frame img-responsive">
                                 </div>
                                 <p style="color:red" id="user_photo_validation_message"></p>
@@ -187,7 +190,11 @@
 </div>
 
 <script>
-
+    $("#{{$user_photo}}").inputFileText({
+        text: '自撮りorファイルを選択',
+        buttonClass: 'btn',
+        textClass: ''
+    });
     var last_file_name;
     function userPhotoPreview(preview_element_id, input_id) {
         if (!!window.FileReader) {
