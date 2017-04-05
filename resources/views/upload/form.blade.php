@@ -192,8 +192,8 @@
 <script>
     $("#{{$user_photo}}").inputFileText({
         text: '自撮りorファイルを選択',
-        buttonClass: 'btn',
-        textClass: ''
+//        buttonClass: 'btn',
+//        textClass: ''
     });
     var last_file_name;
     function userPhotoPreview(preview_element_id, input_id) {
