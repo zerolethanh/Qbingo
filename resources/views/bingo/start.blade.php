@@ -151,6 +151,10 @@
         <div class="col-sm-4">
 
             <div style="position: relative; ">
+                <input id="quiz_num"
+                       style="position:absolute;width:100%;border-width:0;
+                       font-size:xx-large;color:white;background-color:transparent ;text-align: center;"
+                       type="text">
                 <img src="/img/name_slot.jpg" alt="" class="name-img">
                 <input type="text" id="user_name" value="{{$face->user_name or ''}}" class="user-name-field">
             </div>

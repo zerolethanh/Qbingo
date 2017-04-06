@@ -304,6 +304,10 @@
             if (callback) {
                 callback(res);
             }
+        }).fail(function (res) {
+            notifyFail(`エラーが発生しました
+            画像を確認した上再実行してください。`);
+            console.log(res);
         })
     }
     function compressImage(source_img_obj, quality, output_format, then) {

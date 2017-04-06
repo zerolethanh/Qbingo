@@ -99,6 +99,10 @@
                         document.getElementById('face_shuffle_button').disabled = true;
                         document.getElementById('start_face_button').disabled = true;
                         document.getElementById('start_quiz_button').disabled = true;
+                        if (!res.start.quiz_started) {
+                            //if quiz not started then hide
+                            $('#quiz_num').css('display', 'none');//hide
+                        }
                     };
                     var whenRollEnded = function () {
                         stop_time = new Date().getTime();

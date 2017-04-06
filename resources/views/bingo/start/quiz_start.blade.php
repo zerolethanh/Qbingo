@@ -101,6 +101,7 @@
                         document.getElementById('face_shuffle_button').disabled = true;
                         document.getElementById('start_face_button').disabled = true;
                         document.getElementById('start_quiz_button').disabled = true;
+                        $('#quiz_num').css('display', 'none');//hide
                     };
                     var whenRollEnded = function () {
                         stop_time = new Date();
@@ -115,6 +116,9 @@
                         document.getElementById('face_shuffle_button').disabled = false;
                         document.getElementById('start_face_button').disabled = false;
                         document.getElementById('start_quiz_button').disabled = false;
+                        $('#quiz_num')
+                            .val('問 ' + String(res.quiz_index + 1))
+                            .css('display', 'block')//show
 
                     };
 
