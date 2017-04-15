@@ -10,6 +10,7 @@
                 <p id="confirm_user_sex"></p>
                 <p id="confirm_user_message"></p>
                 <p id="confirm_user_photo">
+                    <img src="/image/load.gif" alt="" id="confirm_loading_img" class="img-responsive"/>
                     <img src="" alt="" id="confirm_user_photo_preview" class="img-responsive">
                 </p>
             </div>

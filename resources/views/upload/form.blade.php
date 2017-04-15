@@ -224,7 +224,7 @@
                         var ctx = cvs.getContext("2d").drawImage(this, 0, 0);
                         //3. compress image data
                         var compressedData = cvs.toDataURL(mime_type, quality / 100);
-//                        console.log('compressedData size : ', Math.round(compressedData.length * 6 / 8 / 1024), ' kb');
+                        console.log('compressedData size : ', Math.round(compressedData.length * 6 / 8 / 1024), ' kb');
 //                        notifySuccess(`画像アップロード中です。
 //                            しばらくお待ちください。`);
                         $('#loading_img').css('display', 'block');
@@ -239,9 +239,14 @@
                                 cropped_data.origin_image_url = res.download_url;
                                 console.log(cropped_data);
                                 if (last_file_name === res.file_name) {
+                                    $('#confirm_user_photo_preview').hide();
+                                    $('#confirm_loading_img').show();
                                     $.post('save_cropped_image', {cropped_data: cropped_data}, function (res) {
                                         console.log(res);
-                                        $('#confirm_user_photo_preview').attr('src', res.editted_image_url)
+                                        $('#confirm_loading_img').hide();
+                                        $('#confirm_user_photo_preview')
+                                            .attr('src', res.editted_image_url)
+                                            .show();
                                     })
                                 }
 
@@ -308,6 +313,8 @@
             notifyFail(`エラーが発生しました
             画像を確認した上再実行してください。`);
             console.log(res);
+        }).always(function () {
+            $('#loading_img').css('display', 'none');
         })
     }
     function compressImage(source_img_obj, quality, output_format, then) {
