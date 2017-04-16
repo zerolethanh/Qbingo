@@ -373,29 +373,31 @@
 
     function checkFormIsValid() {
         var check_el_ids = ['user_name', 'user_sex', 'user_message', 'user_photo'];
-
-        for (var i = 0; i < check_el_ids.length; i++) {
-            if (!isValid(check_el_ids[i])) {
-                check_el_ids.forEach(function (id) {
-                    setValidationMessage(id, eval(id + '.validationMessage'));
-                });
-                return false;
-            }
-        }
-
+        //clear all old error message
         check_el_ids.forEach(function (id) {
             setValidationMessage(id, '');
         });
+
+        var messages = {
+            'user_name': '名前を入力してください。',
+            'user_message': 'メッセージを入力してください。',
+            'user_photo': '写真を選択してください。'
+        };
+        //loop and set if error
+        for (var i = 0; i < check_el_ids.length; i++) {
+            var checked_id = check_el_ids[i];
+            if (!isValid(checked_id)) {
+                setValidationMessage(checked_id, messages[checked_id]);
+                return false;
+            }
+        }
 
         return true;
     }
 
     function setValidationMessage(el_id, validation_message) {
         try {
-            var messages = {'user_name': '名前を入力してください。', 'user_message': 'メッセージを入力してください。'}
-            if (el_id in messages) {
-                document.getElementById(el_id + '_validation_message').innerHTML = messages[el_id];
-            }
+            document.getElementById(el_id + '_validation_message').innerHTML = validation_message;
         } catch (e) {
             console.log(e);
         }
