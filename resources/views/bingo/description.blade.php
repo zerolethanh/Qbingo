@@ -46,10 +46,11 @@
         </div>
     </div>
     <div class="text-center">
-        <img src="/img/des1.jpg" alt="" class="img-responsive center-block">
-        <img src="/img/des2.jpg" alt="" class="img-responsive center-block">
-        <img src="/img/des3.jpg" alt="" class="img-responsive center-block">
-        <img src="/img/des4.jpg" alt="" class="img-responsive center-block">
+        <img src="/img/des.jpg" alt="" class="img-responsive center-block">
+        {{--<img src="/img/des1.jpg" alt="" class="img-responsive center-block">--}}
+        {{--<img src="/img/des2.jpg" alt="" class="img-responsive center-block">--}}
+        {{--<img src="/img/des3.jpg" alt="" class="img-responsive center-block">--}}
+        {{--<img src="/img/des4.jpg" alt="" class="img-responsive center-block">--}}
     </div>
 </div>
 </body>
