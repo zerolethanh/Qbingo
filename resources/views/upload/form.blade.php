@@ -123,9 +123,7 @@
                             <div class="col-md-6">
                                 <input type="file" id="{{$user_photo}}"
                                        value="自撮りorファイルを選択"
-                                       onchange="
-                                       {{--uploadThenPreview('{{$user_photo}}');--}}
-                                               userPhotoPreview('preview_user_photo')"
+                                       onchange="userPhotoPreview('preview_user_photo')"
                                        name="{{$user_photo}}" accept="image/*" required>
                                 <div style="max-width: 100%;margin-top: 10px;">
                                     <img src="/image/load.gif" alt="" id="loading_img" class="img-responsive"
@@ -265,8 +263,8 @@
                             picture.on('load', function () {
                                 picture.guillotine({
                                     eventOnChange: 'guillotinechange',
-                                    width: 352,
-                                    height: 308,
+                                    width: "{{ \App\Http\Controllers\UploadController::IMG_W * 2 }}",
+                                    height: "{{\App\Http\Controllers\UploadController::IMG_H * 2 }}",
                                 })
                                 picture.guillotine('fit')
 
@@ -309,10 +307,10 @@
             if (callback) {
                 callback(res);
             }
-        }).fail(function (res) {
+        }).fail(function (res, status, err) {
             notifyFail(`エラーが発生しました
             画像を確認した上再実行してください。`);
-            console.log(res);
+//            console.log(res, status, err);
         }).always(function () {
             $('#loading_img').css('display', 'none');
         })
@@ -394,7 +392,10 @@
 
     function setValidationMessage(el_id, validation_message) {
         try {
-            document.getElementById(el_id + '_validation_message').innerHTML = validation_message;
+            var messages = {'user_name': '名前を入力してください。', 'user_message': 'メッセージを入力してください。'}
+            if (el_id in messages) {
+                document.getElementById(el_id + '_validation_message').innerHTML = messages[el_id];
+            }
         } catch (e) {
             console.log(e);
         }
