@@ -1,6 +1,6 @@
 <div class="modal fade" id="confirm_upload_modal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="height: 100vh">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
                 <h4 class="modal-title">Confirm Upload Modal</h4>
