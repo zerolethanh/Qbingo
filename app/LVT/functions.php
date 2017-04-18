@@ -184,7 +184,9 @@ if (!function_exists('save_cropped_image')) {
 //            ->crop($w, $h, $x, $y)
 //            ->save("$public_blobdata/$editted_file_name", (int)100);
         $scale100 = 100 * $scale;
-        $crop_cmd = "magick $file_full_path -resize '{$scale100}%' -rotate -$angle -crop {$w}x{$h}+{$x}+{$y} $public_blobdata/$editted_file_name";
+        $crop_cmd = <<<EOD
+magick '$file_full_path' -resize '{$scale100}%' -rotate -$angle -crop {$w}x{$h}+{$x}+{$y} '$public_blobdata/$editted_file_name'
+EOD;
 //        $output = '';
 //        $result = '';
 //        exec($crop_cmd, $output, $result);
