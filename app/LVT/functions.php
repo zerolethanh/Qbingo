@@ -112,6 +112,41 @@ if (!function_exists('saveBlob')) {
         ];
     }
 }
+if (!function_exists('saveBlob2')) {
+    function saveBlob2($dir = 'blobdata')
+    {
+        $filename = request()->session()->token();//\Faker\Provider\Uuid::uuid() . date('_Y_m_d');
+        $fileExtension = last(explode('.', request('qqfilename')));
+        $public_dir = public_path($dir);
+        if (!is_dir($public_dir)) {
+            mkdir($public_dir, 0777, true);
+        }
+        $file_name = "{$filename}.{$fileExtension}";
+        $save_to = "{$public_dir}/{$file_name}";
+        $file = request()->file('qqfile');
+//        dd($file->extension(), $file->path(), $_FILES["qqfile"]["tmp_name"]);
+//        $write = $file->store($save_to);
+        $write = false;
+        if ($file->isValid()) {
+            $write = move_uploaded_file($file->path(), $save_to);
+            if ($write) {
+//                \Intervention\Image\Facades\Image::make($save_to)
+//                    ->orientate()
+//                    ->save($save_to, 100);
+                return [
+                    'success' => $write,
+                    'download_url' => url("/{$dir}/{$file_name}?_t=" . time()),
+                    'file_name' => $file_name
+                ];
+            }
+        }
+        return [
+            'success' => $write,
+            'err' => true,
+            'err_message' => 'can not save to ' . $save_to
+        ];
+    }
+}
 if (!function_exists('save_cropped_image')) {
     function save_cropped_image()
     {
@@ -135,20 +170,23 @@ if (!function_exists('save_cropped_image')) {
             ];
         };
 
-        $img = Intervention\Image\Facades\Image::make($file_full_path);
-        $width = $img->width();
-        $height = $img->height();
+//        $img = Intervention\Image\Facades\Image::make($file_full_path);
+//        $width = $img->width();
+//        $height = $img->height();
 
         $blobdata = 'blobdata';
         if (!is_dir($public_blobdata = public_path($blobdata))) {
             mkdir($public_blobdata, 0777, true);
         }
         $editted_file_name = "editted_{$file_name}";
-        $img->resize(intval($width * $scale), intval($height * $scale))
-            ->rotate(-$angle)
-            ->crop($w, $h, $x, $y)
-            ->save("$public_blobdata/$editted_file_name", (int)100);
-
+//        $img->resize(intval($width * $scale), intval($height * $scale))
+//            ->rotate(-$angle)
+//            ->crop($w, $h, $x, $y)
+//            ->save("$public_blobdata/$editted_file_name", (int)100);
+        $scale100 = 100 * $scale;
+        $crop_cmd =
+            "magick $file_full_path -resize '{$scale100}%' -rotate -$angle -crop {$w}x{$h}+{$x}+{$y} $public_blobdata/$editted_file_name";
+        shell_exec($crop_cmd);
         session([
             'origin_image_fullpath' => $file_full_path,
             'editted_image_fullpath' => "$public_blobdata/$editted_file_name"

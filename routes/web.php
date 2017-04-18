@@ -129,6 +129,9 @@ Route::get('/mobile/download_pdf_dataurl', 'MobileController@download_pdf_dataur
 Route::post('/saveblob', function () {
     return saveBlob();
 });
+Route::post('/saveblob2', function () {
+    return saveBlob2();
+});
 Route::post('save_cropped_image', function () {
     return save_cropped_image();
 });
