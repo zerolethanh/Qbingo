@@ -184,12 +184,20 @@ if (!function_exists('save_cropped_image')) {
 //            ->crop($w, $h, $x, $y)
 //            ->save("$public_blobdata/$editted_file_name", (int)100);
         $scale100 = 100 * $scale;
-        $crop_cmd =
-            escapeshellcmd("magick $file_full_path -resize '{$scale100}%' -rotate -$angle -crop {$w}x{$h}+{$x}+{$y} $public_blobdata/$editted_file_name");
-        $output = '';
-        $result = '';
-        exec($crop_cmd, $output, $result);
+        $crop_cmd = "magick $file_full_path -resize '{$scale100}%' -rotate -$angle -crop {$w}x{$h}+{$x}+{$y} $public_blobdata/$editted_file_name";
+//        $output = '';
+//        $result = '';
+//        exec($crop_cmd, $output, $result);
         info(compact('crop_cmd', 'output', 'result'));
+
+        $process = new \Symfony\Component\Process\Process($crop_cmd);
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new \Symfony\Component\Process\Exception\ProcessFailedException($process);
+        }
+
         session([
             'origin_image_fullpath' => $file_full_path,
             'editted_image_fullpath' => "$public_blobdata/$editted_file_name"
