@@ -141,9 +141,16 @@ if (!function_exists('saveBlob2')) {
         if ($file->isValid()) {
             $write = move_uploaded_file($file->path(), $save_to);
             if ($write) {
-//                \Intervention\Image\Facades\Image::make($save_to)
-//                    ->orientate()
-//                    ->save($save_to, 100);
+                $auto_orient_cmd = <<<EOD
+magick $save_to -auto-orient $save_to
+EOD;
+                info(compact('auto_orient_cmd', 'output', 'result'));
+                $process = new \Symfony\Component\Process\Process($auto_orient_cmd);
+                $process->run();
+                // executes after the command finishes
+                if (!$process->isSuccessful()) {
+                    throw new \Symfony\Component\Process\Exception\ProcessFailedException($process);
+                }
                 return [
                     'success' => $write,
                     'download_url' => url("/{$dir}/{$file_name}?_t=" . time()),
