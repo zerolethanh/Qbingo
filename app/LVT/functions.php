@@ -189,7 +189,7 @@ if (!function_exists('save_cropped_image')) {
         $output = '';
         $result = '';
         exec($crop_cmd, $output, $result);
-        info(compact('output', 'result'));
+        info(compact('crop_cmd', 'output', 'result'));
         session([
             'origin_image_fullpath' => $file_full_path,
             'editted_image_fullpath' => "$public_blobdata/$editted_file_name"
