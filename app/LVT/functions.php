@@ -96,9 +96,20 @@ if (!function_exists('saveBlob')) {
         $write = file_put_contents($save_to, $blobdata);
 
         if ($write) {
-            \Intervention\Image\Facades\Image::make($save_to)
-                ->orientate()
-                ->save($save_to, 100);
+//            \Intervention\Image\Facades\Image::make($save_to)
+//                ->orientate()
+//                ->save($save_to, 100);
+            $crop_cmd = <<<EOD
+magick $save_to -auto-orient $save_to
+EOD;
+            info(compact('crop_cmd', 'output', 'result'));
+            $process = new \Symfony\Component\Process\Process($crop_cmd);
+            $process->run();
+            // executes after the command finishes
+            if (!$process->isSuccessful()) {
+                throw new \Symfony\Component\Process\Exception\ProcessFailedException($process);
+            }
+
             return [
                 'saved' => true,
                 'download_url' => url("/{$dir}/{$file_name}?_t=" . time()),
