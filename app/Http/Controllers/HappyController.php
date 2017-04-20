@@ -89,7 +89,8 @@ class HappyController extends Controller
     function loggedin_view()
     {
         if (IS_MOBILE) {
-            return view('mobile.bingo');
+//            return view('mobile.bingo');
+            return view('mobile.bingo20170420');
         }
         return view('bingo.control');
     }

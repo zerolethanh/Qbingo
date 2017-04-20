@@ -7,7 +7,7 @@ use App\Quiz;
 use App\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use JavaScript;
+//use JavaScript;
 use PHPQRCode\Constants;
 
 class BingoController extends Controller
@@ -130,7 +130,8 @@ class BingoController extends Controller
     function description()
     {
         if (IS_MOBILE)
-            return view('mobile.bingo');
+//            return view('mobile.bingo');
+            return view('mobile.bingo20170420');
         return view('bingo.description');
     }
 
