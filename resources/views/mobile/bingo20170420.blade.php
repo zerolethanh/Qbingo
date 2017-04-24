@@ -5,7 +5,8 @@
   <title>クイズ＆ビンゴ</title>
   <link href="css/reset.css" rel="stylesheet" type="text/css">
   <link href="css/css.css" rel="stylesheet" type="text/css">
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="js/top.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <!--[if lt IE 9]>
@@ -27,7 +28,7 @@
 <!--<img class="img_w" src="image/des.jpg" width="100%">-->
 <img src="/img/des.jpg" alt="" class="img_w">
 <br>
-<div class="urlrec3"><a class="btn" href="rec2.html">まずは回答者を登録しましょう！</a>
+<div class="urlrec3"><a class="btn" href="/mobile/rec2">まずは回答者を登録しましょう！</a>
   <br>
   <article>
 
@@ -37,6 +38,6 @@
   <footer>
     <address>Copyright(C)2017 クイズ＆ビンゴAllright Reserved.</address>
   </footer>
-
+</div>
 </body>
 </html>
