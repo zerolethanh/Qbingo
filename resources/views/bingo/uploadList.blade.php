@@ -92,6 +92,8 @@
       </div>
     </div>
     {{--/自分で登録する場合--}}
+    <h3 style="text-align: center;padding-top: 15px;padding-bottom: 10px;clear: both;margin: 0;"> ↓登録が完了した方はこちらに表示されます。</h3>
+
   </div>
 
   <table class="table table-bordered">
