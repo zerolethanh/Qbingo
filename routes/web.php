@@ -4,7 +4,8 @@ Route::get('/', 'HappyController@index');
 Route::post('/', 'HappyController@login');
 Route::post('/login', 'HappyController@login');
 Route::get('/logout', 'HappyController@logout');
-
+Route::post('/logout', 'HappyController@logout');
+Route::get('/user', 'UserController@index');
 Route::group(['prefix' => 'bingo'], function () {
     Route::get('/', 'BingoController@index');
     Route::get('/upload-list', 'BingoController@uploadList');
