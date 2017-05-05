@@ -61,6 +61,12 @@
 
       </button>
     </div>
+    <div>
+      <button onclick="window.open().location.href = '/bingo/gift'" class="button-background"
+              style="background-image: url('/botann/keihinn.jpg')">
+
+      </button>
+    </div>
   </div>
 </div>
 

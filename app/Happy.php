@@ -46,6 +46,11 @@ class Happy extends Authenticatable
         return $this->hasMany(Start::class, 'happy_uuid', 'happy_uuid');
     }
 
+    public function gifts()
+    {
+        return $this->hasMany(Gift::class, 'happy_uuid', 'happy_uuid');
+    }
+
     public function scopeQuizNumber($q, $quiz_number)
     {
         return Auth::user()->quizzes()->where('quiz_number', $quiz_number);
