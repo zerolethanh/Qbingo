@@ -14,6 +14,7 @@ Route::group(['prefix' => 'bingo'], function () {
     Route::get('/description', 'BingoController@description');
     Route::get('/gift', 'GiftController@gift');
     Route::post('/gift/upload', 'GiftController@upload');
+    Route::get('/gift/img', 'GiftController@img');
 });
 
 //Route::resource('/', 'HappyController');

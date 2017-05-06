@@ -5,7 +5,11 @@
 <!-- Fine Uploader -->
 <link href="{{url('libs/fine-uploader/fine-uploader-new.css')}}" rel="stylesheet" type="text/css"/>
 <script src="{{url('/libs/fine-uploader/fine-uploader.min.js')}}" type="text/javascript"></script>
-
+<style>
+  ul.qq-upload-list-selector.qq-upload-list li * {
+    max-width: 200px;
+  }
+</style>
 <script type="text/template" id="qq-template">
   <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop file here">
     <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container ">
@@ -68,8 +72,7 @@
 </script>
 <script>
 
-  var uploader = new qq.FineUploader({
-    debug: true,
+  var uploader{{$id}} = new qq.FineUploader({
     element: document.getElementById('fine-uploader{{$id}}'),
     multiple: false,
     request: {
@@ -85,6 +88,9 @@
       },
       onComplete: function (id, name, resJ, xhr) {
         console.log(arguments)
+        if (resJ.gift.img_path) {
+          document.getElementById('img{{$id}}').src = resJ.gift.img_path;
+        }
       }
     }
   });

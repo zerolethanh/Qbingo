@@ -6,6 +6,7 @@ use App\Gift;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class GiftController extends Controller
 {
@@ -15,11 +16,12 @@ class GiftController extends Controller
     public function gift()
     {
         $row = 100;
-
+        $gifts = Auth::user()->gifts;
         return
             view('bingo.gift',
                 compact(
-                    'row'
+                    'row',
+                    'gifts'
                 )
             );
     }
@@ -59,5 +61,13 @@ class GiftController extends Controller
         $filename = \request('id') . '.' . $ext;
         $dir = 'upload/' . Auth::user()->happy_uuid . '/gifts';
         return compact('dir', 'filename');
+    }
+
+    public function img()
+    {
+        $path = \request('path');
+        $fpath = storage_path('app/' . $path);
+        info($fpath);
+        return response()->download($fpath);
     }
 }

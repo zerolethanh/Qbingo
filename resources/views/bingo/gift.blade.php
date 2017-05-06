@@ -27,17 +27,17 @@
       @for($i = 1 ; $i <= $row; $i++)
         <tr class="text-center">
           {{-- 回目 --}}
-          <td width="190"><h3>{{$i }}&nbsp;回目</h3></td>
+          <td width="120"><h3>{{$i }}&nbsp;回目</h3></td>
           {{--景品名--}}
           <td>
             <textarea name="gift_name{{$i}}" id="gift_name{{$i}}" rows="5" class="form-control"></textarea>
           </td>
           {{--写真--}}
-          <td>
-            <img src="" alt="" id="img{{$i}}">
+          <td class="text-center">
+            <img src="{{ $gifts[$i-1]->img_path or '' }}" alt="" id="img{{$i}}" style="width: 200px" class="img-responsive center-block">
           </td>
           {{--写真アップロード--}}
-          <td width="200">
+          <td width="200px">
             @include('bingo.gift_fine_uploader',['id'=>$i])
           </td>
           {{--保存　全て保存--}}
