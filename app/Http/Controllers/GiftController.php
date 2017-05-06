@@ -17,11 +17,13 @@ class GiftController extends Controller
     {
         $row = 100;
         $gifts = Auth::user()->gifts;
+        $img_paths = $gifts->pluck('img_path', 'num');
         return
             view('bingo.gift',
                 compact(
                     'row',
-                    'gifts'
+                    'gifts',
+                    'img_paths'
                 )
             );
     }

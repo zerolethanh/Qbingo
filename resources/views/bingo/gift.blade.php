@@ -34,7 +34,8 @@
           </td>
           {{--写真--}}
           <td class="text-center">
-            <img src="{{ $gifts[$i-1]->img_path or '' }}" alt="" id="img{{$i}}" style="width: 200px" class="img-responsive center-block">
+            <img src="{{ $img_paths[$i] or '' }}" alt="" id="img{{$i}}" style="width: 200px"
+                 class="img-responsive center-block">
           </td>
           {{--写真アップロード--}}
           <td width="200px">
