@@ -33,6 +33,8 @@ class GiftController extends Controller
             $imgPath['dir'], $imgPath['filename']
         );
         if ($path) {
+            //orient
+            $this->autoOrient($this->fullImgPath($imgPath));
             $gift = Auth::user()->gifts()->find(\request('id'));
             if ($gift) {
                 $gift->num = \request('id');
@@ -55,19 +57,44 @@ class GiftController extends Controller
         ];
     }
 
-    function imgPath()
+    public function autoOrient($img)
+    {
+        $cmd = <<<EOD
+magick $img -auto-orient $img
+EOD;
+        info(compact('cmd'));
+        $process = new \Symfony\Component\Process\Process($cmd);
+        $process->run();
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new \Symfony\Component\Process\Exception\ProcessFailedException($process);
+        }
+        return true;
+    }
+
+    function imgPath($fullPath = false)
     {
         $ext = pathinfo(\request('qqfilename'), PATHINFO_EXTENSION);
         $filename = \request('id') . '.' . $ext;
         $dir = 'upload/' . Auth::user()->happy_uuid . '/gifts';
+        if ($fullPath)
+            $dir = storage_path('app/' . $dir);
+
         return compact('dir', 'filename');
+    }
+
+    function fullImgPath(array $path)
+    {
+        if (!isset($path['dir']) || !isset($path['filename'])) {
+            throw new \Error('$path must have dir and filename');
+        }
+        return storage_path('app/' . $path['dir'] . '/' . $path['filename']);
     }
 
     public function img()
     {
         $path = \request('path');
         $fpath = storage_path('app/' . $path);
-        info($fpath);
         return response()->download($fpath);
     }
 }
