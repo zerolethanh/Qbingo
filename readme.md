@@ -1,14 +1,14 @@
-#Qbingo
+# Qbingo
 
 www.qandb.com
 
 ## Install
 
-# Library Install
+### Library Install
 `composer install`
 
-# Storage Permission 許可
+### Storage Permission 許可
 `sh ./777.sh`
 
-# Run Application
+### Run Application
 `php server.php`
